@@ -1,0 +1,10 @@
+numba
+numpy
+pandas
+pillow
+plotly
+scikit-learn
+scipy
+streamlit
+umap-learn
+kagglehub
