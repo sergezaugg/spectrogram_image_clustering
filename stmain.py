@@ -17,11 +17,9 @@ if 'dapar' not in ss:
         'npdata'    : 'empty',
         'dataset_name' :  'empty',
         'X' : np.array([]),
-        'clusters_true' : np.array([]),
         'clusters_pred_str' : np.array([]),
         'im_filenames' : np.array([]),
         }
-
 
 if 'upar' not in ss:
     ss['upar'] = {
@@ -34,17 +32,13 @@ if 'upar' not in ss:
 
 with st.sidebar:
     st.info(ss['dapar']['dataset_name'])
-    st.header(''':blue[**CLUSTER IMAGES WITH DNN FEATURES AND DIM REDUCTION**]''')
+    st.header(''':blue[**CLUSTER SPECTROGRAMMS**]''')
     st.text("v0.0.0")
     st.markdown(''':blue[QUICK GUIDE]''')
     st.text("(0) Select a dataset")
     st.text("(1) Choose UMAP params")
     st.text("(2) Tune DBSCAN params")
     st.text("(3) Explore metrics & plots")
-    
-    st.markdown(":bulb: Plots are zoomable!")
-    st.markdown(":bulb: Hide cats by click in legend!")
-    st.markdown(":bulb: ID '-01' = not assigned to cluster") 
     st.markdown(''':blue[COMPUTATION SPEED]''')
     st.text("UMAP can take a few minutes while DBSCAN takes a few seconds; if values cached it is faster.")
 

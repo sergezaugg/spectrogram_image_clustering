@@ -10,10 +10,10 @@ import numpy as np
 import pandas as pd
 import gc
 from utils import dim_reduction_for_2D_plot, dim_reduction_for_clustering, perform_dbscan_clusterin, update_ss
-from utils import make_sorted_df, make_scatter_plot, show_cluster_details, make_scatter_3d_plot, display_imags_from_cluster
+from utils import make_sorted_df, make_scatter_plot, display_mini_images_by_file
 gc.collect()
 
-cols = st.columns([0.1, 0.35, 0.1, 0.35, 0.25])
+cols = st.columns([0.1, 0.35, 0.1, 0.35, 0.15])
 
 # Handle start-up of app
 if ss['dapar']['dataset_name'] == 'empty' :
@@ -33,7 +33,7 @@ if len(ss['dapar']['X']) > 0 :
    
     with cols[1]:
         with st.container(border=True, height = 250):   
-            _ = st.select_slider(label = "UMAP reduce dim", options=[2,4,8,16,32,64,], disabled = ss['upar']['skip_umap'],
+            _ = st.select_slider(label = "UMAP reduce dim", options=[2,4,8,16,32,64,128], disabled = ss['upar']['skip_umap'],
                                 key = "k_UMAP_dim", value = ss['upar']["umap_n_dims_red"], on_change=update_ss, args=["k_UMAP_dim", "umap_n_dims_red"])
             _ = st.select_slider(label = "UMAP nb neighbors", options=[2,5,10,15,20,30,40,50,75,100], disabled = ss['upar']['skip_umap'], 
                             key = "k_UMAP_n_neigh", value=ss['upar']["umap_n_neighbors"], on_change=update_ss, args=["k_UMAP_n_neigh", "umap_n_neighbors"])   
@@ -68,11 +68,8 @@ if len(ss['dapar']['X']) > 0 :
     num_clusters = len(np.unique(clusters_pred))
     ss['dapar']['clusters_pred_str'] = np.array([format(a, '03d') for a in clusters_pred])
     df_pred = make_sorted_df(cat = ss['dapar']['clusters_pred_str'], cat_name = 'Predicted cluster', X = X2D_scaled)
+    fig02 = make_scatter_plot(df = df_pred, cat_name = 'Predicted cluster', title = "Predicted clusters", height = 900, width = 1000, b_margin = 300)
     gc.collect()
-    fig02 = make_scatter_plot(df = df_pred, cat_name = 'Predicted cluster', title = "Predicted clusters", height = 800, width = 1000, b_margin = 300)
-
-    gc.collect()
-  
     #-------------------------------------------
 
     with cols[4]:
@@ -83,22 +80,25 @@ if len(ss['dapar']['X']) > 0 :
             coco[0].metric("N clusters", num_clusters)
           
     # show plots 
-    c01, c02 = st.columns([0.5, 0.5])
+    c01, c02 = st.columns([0.4, 0.5])
     with c01:
-        st.text("")
-        # st.plotly_chart(fig01, use_container_width=False, theme=None)
+        st.plotly_chart(fig02, use_container_width=False, theme=None)  
     with c02:
-        st.plotly_chart(fig02, use_container_width=False, theme=None)
-   
-    st.text("Cluster content preview (up to 60 random images from cluster)")
-    display_imags_from_cluster()
+        clu_id_list = np.unique(ss['dapar']['clusters_pred_str'])
+        clu_selected = st.segmented_control(label = "Select a cluster ID", options = clu_id_list, selection_mode="single", key = "k_img_clu",
+                                        default = clu_id_list[-1], label_visibility="hidden")        
+        
+        st.text("Cluster content preview (up to 60 random images from cluster)")
+    
+        # select all images in a given cluster 
+        sel = ss['dapar']['clusters_pred_str'] == clu_selected
+        images_in_cluster = ss['dapar']['im_filenames'][sel]
+        # take a smaller subsample 
+        rand_index = np.random.choice(np.arange(len(images_in_cluster)), size=min(120, len(images_in_cluster)), replace=False)    
+        images_in_cluster_sample = images_in_cluster[rand_index]
+        display_mini_images_by_file(sel_imgs = images_in_cluster_sample)
 
 
-    st.write(ss['dapar']['imgs_path'])
-   
-
-
-  
 
         
      
