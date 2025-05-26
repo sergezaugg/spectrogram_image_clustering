@@ -12,9 +12,8 @@ torch.cuda.is_available()
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 #-------------------------
-# set params  D:\image_clust\xc_spectrograms
-# image_path = "D:/image_clust/xc_spectrograms_long"
-image_path = "D:/image_clust/xc_spectrograms"
+# set params  
+image_path = "D:/xc_real_projects/xc_sw_europe/images_24000sps_20250526_143802"
 featu_path = "./extracted_features"
 batch_size = 64
 
@@ -28,32 +27,17 @@ model_tag = "MobileNet_V3_Large"
 #-------------------------
 # Step 1: Initialize model with pre-trained weights
 model, weights = load_pretraind_model(model_tag)
-# (32, 1000)
 
-# model = torch.nn.Sequential(*(list(model.children())[:-2]))
-# print(model)
-
-#  "MobileNet_V3_Large"
+#  remove the final pooling layers (we wan output of last convs)
 model = torch.nn.Sequential(*(list(model.children())[:-2]))
 print(model)
-
-
-
-
 
 #-------------------------
 # Step 2: Extract features 
 model.eval()
 preprocess = weights.transforms()
-# preprocess = None
 dataset = ImageDataset(image_path, preprocess)
 loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size,  shuffle=False, drop_last=False)
-
-
-
-# batch.dtype
-# inp torch.Size([32, 3, 224, 224])
-# inp torch.Size([32, 3, 128, 256])
 
 X_li = [] # features
 N_li = [] # file Nanes
@@ -73,7 +57,7 @@ N = np.concatenate(N_li)
 # check dims
 print(X.shape, N.shape)
 
-# averag pool over time 
+# average pool over time 
 X = X.mean(axis=3)
 print(X.shape)
 # unwrap freq int feature dim
