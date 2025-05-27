@@ -35,15 +35,15 @@ batch_size = 32
 # model = torch.nn.Sequential(*(list(model.children())[:-2]))
 # freq_pool = 2
 
-model_tag = "vgg16"
-model, weights = load_pretraind_model(model_tag)
-model = torch.nn.Sequential(*(list(model.children())[:-2]))
-freq_pool = 1
-
-# model_tag = "ResNet50"
+# model_tag = "vgg16"
 # model, weights = load_pretraind_model(model_tag)
-# model = torch.nn.Sequential(*(list(model.children())[:-3]))
-# freq_pool = 4
+# model = torch.nn.Sequential(*(list(model.children())[:-2]))
+# freq_pool = 1
+
+model_tag = "ResNet50"
+model, weights = load_pretraind_model(model_tag)
+model = torch.nn.Sequential(*(list(model.children())[:-3]))
+freq_pool = 4
 
 #-------------------------
 # Step 2: Extract features 
