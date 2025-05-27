@@ -33,14 +33,14 @@ if 'upar' not in ss:
         }
 
 with st.sidebar:
-    st.info(ss['dapar']['dataset_name'])
+    st.info('Selected: ' + ss['dapar']['dataset_name'])
     st.header(''':primary[**CLUSTER SPECTROGRAMMS**]''')
     st.text("v0.0.2")
     st.markdown(''':primary[QUICK GUIDE]''')
     st.text("(0) Select a dataset")
     st.text("(1) Choose UMAP params")
     st.text("(2) Tune DBSCAN params")
-    st.text("(3) Explore metrics & plots")
+    st.text("(3) Explore plots and figures")
     st.markdown(''':primary[COMPUTATION SPEED]''')
     st.text("UMAP can take a few minutes while DBSCAN takes a few seconds; if values cached it is faster.")
 
