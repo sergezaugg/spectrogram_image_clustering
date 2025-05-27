@@ -9,7 +9,7 @@ import datetime
 import torch
 import skimage.measure
 from sklearn.decomposition import PCA
-
+from torchvision.models.feature_extraction import create_feature_extractor
 from pt_extract_features.utils_ml import ImageDataset, load_pretraind_model
 torch.cuda.is_available()
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -40,14 +40,36 @@ batch_size = 32
 # model = torch.nn.Sequential(*(list(model.children())[:-2]))
 # freq_pool = 1
 
+
+
+
+
+
+# model = torch.nn.Sequential(*(list(model.children())[:-3]))
 model_tag = "ResNet50"
 model, weights = load_pretraind_model(model_tag)
-model = torch.nn.Sequential(*(list(model.children())[:-3]))
 freq_pool = 4
+return_nodes = {"layer3.5.conv3": "feature_1"}
+model = create_feature_extractor(model, return_nodes=return_nodes)
+
+
+
+
+# # model = torch.nn.Sequential(*(list(model.children())[:-3]))
+# model_tag = "DenseNet121"
+# model, weights = load_pretraind_model(model_tag)
+# freq_pool = 4
+# return_nodes = {"features.denseblock3": "feature_1"}
+# model = create_feature_extractor(model, return_nodes=return_nodes)
+
+
+
+
+
 
 #-------------------------
 # Step 2: Extract features 
-model.eval()
+_ = model.eval()
 preprocess = weights.transforms()
 dataset = ImageDataset(image_path, preprocess)
 loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size,  shuffle=False, drop_last=False)
@@ -57,7 +79,7 @@ N_li = [] # file Nanes
 for ii, (batch, finam) in enumerate(loader, 0):
     print('inp', batch.shape)
     # batch = batch.to(torch.float)
-    pred = model(batch).detach().numpy() 
+    pred = model(batch)['feature_1'].detach().numpy() 
     print('out of net', pred.shape)
     # blockwise pooling along frequency axe 
     pred = skimage.measure.block_reduce(pred, (1,1,freq_pool,1), np.mean)
@@ -70,6 +92,10 @@ for ii, (batch, finam) in enumerate(loader, 0):
     # do it dirty
     X_li.append(pred)
     N_li.append(np.array(finam))
+
+    # dev
+    if ii > 200:
+        break
 
 X = np.concatenate(X_li)
 N = np.concatenate(N_li)
