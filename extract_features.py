@@ -18,16 +18,17 @@ featu_path = "./extracted_features"
 batch_size = 32
 
 # model_tag = "MobileNet_V3_Large"
-# model_tag = "Vit_b_16"
-# model_tag = "MaxVit_T"
-
-
-model_tag = "ResNet50"
-# model_tag = "DenseNet121"
 # model_tag = "vgg16"
-# model_tag = 'MobileNet_randinit'
+# model_tag = "DenseNet121"
+# model_tag = "ResNet50"
+
+
+
+model_tag = "Vit_b_16"
 # model_tag = "MaxVit_T"
 # model_tag = "Swin_S"
+
+
 
 
 #-------------------------
@@ -36,7 +37,10 @@ model, weights = load_pretraind_model(model_tag)
 
 #  remove the final pooling layers (we wan output of last convs)
 
-# # "MobileNet_V3_Large" "Vit_b_16"
+# # "MobileNet_V3_Large" "vgg16"
+# model = torch.nn.Sequential(*(list(model.children())[:-2]))
+
+# "ccc"
 model = torch.nn.Sequential(*(list(model.children())[:-2]))
 
 print(model)

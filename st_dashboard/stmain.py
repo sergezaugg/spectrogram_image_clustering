@@ -1,7 +1,7 @@
 #--------------------             
 # Author : Serge Zaugg
 # Description : Main streamlit entry point
-# run locally : streamlit run stmain.py
+# run locally : streamlit run st_dashboard/stmain.py
 #--------------------
 
 import streamlit as st
