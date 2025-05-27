@@ -12,7 +12,7 @@ import gc
 # streamlit need it like that:
 from utils import dim_reduction_for_2D_plot, dim_reduction_for_clustering, perform_dbscan_clusterin, update_ss
 from utils import make_sorted_df, make_scatter_plot, display_mini_images_by_file
-# streamlit doe not find the module !!!
+# streamlit does not find the module !!!
 # from st_dashboard.utils import dim_reduction_for_2D_plot, dim_reduction_for_clustering, perform_dbscan_clusterin, update_ss
 # from st_dashboard.utils import make_sorted_df, make_scatter_plot, display_mini_images_by_file
 gc.collect()
@@ -75,6 +75,17 @@ if len(ss['dapar']['X']) > 0 :
     fig02 = make_scatter_plot(df = df_pred, cat_name = 'Predicted cluster', title = "Predicted clusters", height = 900, width = 1000, b_margin = 300)
     gc.collect()
     #-------------------------------------------
+
+
+    
+
+    # st.write('clusters_pred.shape', clusters_pred.shape)
+    # st.write("X", ss['dapar']['X'].sum(1).shape)
+    # aa = pd.DataFrame({'clusters_pred': clusters_pred, 'featusum': (np.abs((ss['dapar']['X']))).mean(1)})
+    # bb = aa.groupby('clusters_pred').std().reset_index()
+    # bb = bb.sort_values(by = 'featusum', ascending = False)
+    # st.write(bb)
+
 
     with cols[4]:
         with st.container(border=True, height = 250): 

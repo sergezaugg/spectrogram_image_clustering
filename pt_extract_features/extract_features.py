@@ -42,7 +42,7 @@ batch_size = 16
 # freq_pool = 1
 
 
-
+# -----------------
 # # model = torch.nn.Sequential(*(list(model.children())[:-3]))
 # model_tag = "ResNet50"
 # model, weights = load_pretraind_model(model_tag)
@@ -50,6 +50,7 @@ batch_size = 16
 # return_nodes = {"layer3.5.conv3": "feature_1"}
 # model = create_feature_extractor(model, return_nodes=return_nodes)
 
+# -----------------
 # # model = torch.nn.Sequential(*(list(model.children())[:-3]))
 # model_tag = "DenseNet121"
 # model, weights = load_pretraind_model(model_tag)
@@ -57,10 +58,11 @@ batch_size = 16
 # return_nodes = {"features.denseblock3": "feature_1"}
 # model = create_feature_extractor(model, return_nodes=return_nodes)
 
-
+# -----------------
 model_tag = "MaxVit_T"
 model, weights = load_pretraind_model(model_tag)
 train_nodes, eval_nodes = get_graph_node_names(model)
+freq_pool = 1
 return_nodes = {"blocks.3.layers.1.layers.MBconv.layers.conv_c": "feature_1"}
 model = create_feature_extractor(model, return_nodes=return_nodes)
 
