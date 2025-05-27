@@ -30,7 +30,7 @@ if ss['dapar']['feat_path'] == 'empty' :
         npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
         npzfile = np.load(npzfile_full_path)
         # take a subset of data (else public streamlit.app will crash) 
-        X_train, X_test, N_train, N_test, = train_test_split(npzfile['X'], npzfile['N'], train_size=15000, random_state=6666, shuffle=True)
+        X_train, X_test, N_train, N_test, = train_test_split(npzfile['X'], npzfile['N'], train_size=5000, random_state=6666, shuffle=True)
         di[npz_finame] = {'X' : X_train , 'im_filenames' : N_train}
     ss['dapar']['npdata'] = di
     gc.collect()

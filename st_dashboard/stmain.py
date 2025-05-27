@@ -24,7 +24,7 @@ if 'dapar' not in ss:
 if 'upar' not in ss:
     ss['upar'] = {
         'umap_n_neighbors' : 10,
-        'umap_n_dims_red' : 16,
+        'umap_n_dims_red' : 8,
         'skip_umap' : False,
         'dbscan_eps' : 0.501,
         'dbscan_min_samples' : 10,
