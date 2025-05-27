@@ -20,33 +20,30 @@ image_path = "D:/xc_real_projects/xc_sw_europe/xc_spectrograms"
 featu_path = "./extracted_features"
 batch_size = 32
 
-# model_tag = "MobileNet_V3_Large"
-# model_tag = "vgg16"
+
 # model_tag = "DenseNet121"
 # model_tag = "Vit_b_16"
 # model_tag = "MaxVit_T"
 # model_tag = "Swin_S"
 
 
-
-
 #-------------------------
 # Step 1: Initialize model with pre-trained weights
+
+# model_tag = "MobileNet_V3_Large"
+# model, weights = load_pretraind_model(model_tag)
+# model = torch.nn.Sequential(*(list(model.children())[:-2]))
+# freq_pool = 2
+
+model_tag = "vgg16"
+model, weights = load_pretraind_model(model_tag)
+model = torch.nn.Sequential(*(list(model.children())[:-2]))
+freq_pool = 1
 
 # model_tag = "ResNet50"
 # model, weights = load_pretraind_model(model_tag)
 # model = torch.nn.Sequential(*(list(model.children())[:-3]))
 # freq_pool = 4
-
-
-
-
-model_tag = "MobileNet_V3_Large"
-model, weights = load_pretraind_model(model_tag)
-model = torch.nn.Sequential(*(list(model.children())[:-2]))
-freq_pool = 2
-
-# print(model)
 
 #-------------------------
 # Step 2: Extract features 
@@ -88,15 +85,15 @@ tstmp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S_")
 out_name = os.path.join(featu_path, tstmp + 'unwrapped_features_' + model_tag + '.npz')
 np.savez(file = out_name, X = X, N = N)
 
-# further reduce dim with pca 
-pca = PCA(n_components=1024)
-pca.fit(X)
-print(pca.explained_variance_ratio_.sum())
-X_red = pca.transform(X)
-X_red.shape
+# # further reduce dim with pca 
+# pca = PCA(n_components=1024)
+# pca.fit(X)
+# print(pca.explained_variance_ratio_.sum())
+# X_red = pca.transform(X)
+# X_red.shape
 
-# save as npz
-out_name = os.path.join(featu_path, tstmp + 'unwrapped_feat_pca_' + model_tag + '.npz')
-np.savez(file = out_name, X = X_red, N = N)
+# # save as npz
+# out_name = os.path.join(featu_path, tstmp + 'unwrapped_feat_pca_' + model_tag + '.npz')
+# np.savez(file = out_name, X = X_red, N = N)
 
 

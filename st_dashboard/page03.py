@@ -13,22 +13,19 @@ import gc
 from sklearn.model_selection import train_test_split
 gc.collect()
 
-
-
-
 c00, c01  = st.columns([0.1, 0.18])
 
 # First, get data into ss
 if ss['dapar']['feat_path'] == 'empty' :
     st.text("Preparing data ...")
     
-    kgl_ds = "sezaugg/" + 'spectrogra-images-experiment' 
+    kgl_ds = "sezaugg/" + 'spectrogram-clustering-01' 
 
     kgl_path = kagglehub.dataset_download(kgl_ds, force_download = False) # get local path where downloaded
     ss['dapar']['feat_path'] = kgl_path
     ss['dapar']['imgs_path'] = os.path.join(ss['dapar']['feat_path'], 'xc_spectrograms', 'xc_spectrograms')
     di = dict()
-    li_npz = [a for a in os.listdir(ss['dapar']['feat_path']) if ('.npz' in a) and (('xxxxxx_' in a) or ('unwrapped_features_' in a))]
+    li_npz = [a for a in os.listdir(ss['dapar']['feat_path']) if ('.npz' in a) and (('unwrapped_features_' in a) or ('unwrapped_feat_pca_' in a))]
     for npz_finame in li_npz:
         npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
         npzfile = np.load(npzfile_full_path)
