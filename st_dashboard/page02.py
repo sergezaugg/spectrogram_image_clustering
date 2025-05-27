@@ -9,8 +9,12 @@ from streamlit import session_state as ss
 import numpy as np
 import pandas as pd
 import gc
+# streamlit need it like that:
 from utils import dim_reduction_for_2D_plot, dim_reduction_for_clustering, perform_dbscan_clusterin, update_ss
 from utils import make_sorted_df, make_scatter_plot, display_mini_images_by_file
+# streamlit doe not find the module !!!
+# from st_dashboard.utils import dim_reduction_for_2D_plot, dim_reduction_for_clustering, perform_dbscan_clusterin, update_ss
+# from st_dashboard.utils import make_sorted_df, make_scatter_plot, display_mini_images_by_file
 gc.collect()
 
 cols = st.columns([0.1, 0.35, 0.1, 0.35, 0.15])
