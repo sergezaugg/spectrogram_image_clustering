@@ -11,6 +11,8 @@ import skimage.measure
 from sklearn.decomposition import PCA
 from torchvision.models.feature_extraction import create_feature_extractor
 from pt_extract_features.utils_ml import ImageDataset, load_pretraind_model
+from torchvision.models.feature_extraction import get_graph_node_names
+
 torch.cuda.is_available()
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -18,10 +20,9 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 # set params  
 image_path = "D:/xc_real_projects/xc_sw_europe/xc_spectrograms"
 featu_path = "./extracted_features"
-batch_size = 32
+batch_size = 16
 
 
-# model_tag = "DenseNet121"
 # model_tag = "Vit_b_16"
 # model_tag = "MaxVit_T"
 # model_tag = "Swin_S"
@@ -42,18 +43,12 @@ batch_size = 32
 
 
 
-
-
-
-# model = torch.nn.Sequential(*(list(model.children())[:-3]))
-model_tag = "ResNet50"
-model, weights = load_pretraind_model(model_tag)
-freq_pool = 4
-return_nodes = {"layer3.5.conv3": "feature_1"}
-model = create_feature_extractor(model, return_nodes=return_nodes)
-
-
-
+# # model = torch.nn.Sequential(*(list(model.children())[:-3]))
+# model_tag = "ResNet50"
+# model, weights = load_pretraind_model(model_tag)
+# freq_pool = 4
+# return_nodes = {"layer3.5.conv3": "feature_1"}
+# model = create_feature_extractor(model, return_nodes=return_nodes)
 
 # # model = torch.nn.Sequential(*(list(model.children())[:-3]))
 # model_tag = "DenseNet121"
@@ -63,6 +58,11 @@ model = create_feature_extractor(model, return_nodes=return_nodes)
 # model = create_feature_extractor(model, return_nodes=return_nodes)
 
 
+model_tag = "MaxVit_T"
+model, weights = load_pretraind_model(model_tag)
+train_nodes, eval_nodes = get_graph_node_names(model)
+return_nodes = {"blocks.3.layers.1.layers.MBconv.layers.conv_c": "feature_1"}
+model = create_feature_extractor(model, return_nodes=return_nodes)
 
 
 
@@ -94,7 +94,7 @@ for ii, (batch, finam) in enumerate(loader, 0):
     N_li.append(np.array(finam))
 
     # dev
-    if ii > 200:
+    if ii > 400:
         break
 
 X = np.concatenate(X_li)

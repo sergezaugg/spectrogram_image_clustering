@@ -6,15 +6,14 @@ import numpy as np
 import plotly.express as px
 from sklearn.model_selection import train_test_split
 
-npzfile_full_path = "extracted_features/20250527_110409_unwrapped_features_MobileNet_V3_Large.npz"
-npzfile_full_path = "extracted_features/20250527_123259_unwrapped_features_vgg16.npz"
 
-npzfile_full_path = "extracted_features/20250527_125947_unwrapped_features_ResNet50.npz"
-npzfile_full_path = "extracted_features/20250527_141245_unwrapped_features_ResNet50.npz"
-npzfile_full_path = "extracted_features/20250527_142138_unwrapped_features_ResNet50.npz"
-npzfile_full_path = "extracted_features/20250527_142532_unwrapped_features_ResNet50.npz"
-npzfile_full_path = "extracted_features/20250527_144012_unwrapped_features_DenseNet121.npz"
-
+npzfile_full_path = "extracted_features/20250527_145142_unwrapped_features_ResNet50.npz"
+npzfile_full_path = "extracted_features/20250527_150211_unwrapped_features_DenseNet121.npz"
+npzfile_full_path = "extracted_features/sssssssssss.npz"
+npzfile_full_path = "extracted_features/sssssssssss.npz"
+npzfile_full_path = "extracted_features/sssssssssss.npz"
+npzfile_full_path = "extracted_features/sssssssssss.npz"
+npzfile_full_path = "extracted_features/sssssssssss.npz"
 
 
 npzfile = np.load(npzfile_full_path)
