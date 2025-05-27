@@ -132,6 +132,11 @@ def make_scatter_plot(df, cat_name, title = "not set", height = 900, width = 100
     _ = fig.update_layout(xaxis_title=None)
     _ = fig.update_xaxes(showline=True, linewidth=2, linecolor='white', mirror=True)
     _ = fig.update_yaxes(showline=True, linewidth=2, linecolor='white', mirror=True)
+    _ = fig.update_layout(paper_bgcolor="#000000", plot_bgcolor="#000000") 
+    _ = fig.update_layout(xaxis_title_font_size=15)
+    _ = fig.update_layout(yaxis_title_font_size=15)
+    _ = fig.update_layout(xaxis_tickfont_size=15)
+    _ = fig.update_layout(legend_font_size=20)
     return(fig)
 
 @st.fragment

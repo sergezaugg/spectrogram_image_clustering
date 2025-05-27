@@ -7,6 +7,8 @@
 import streamlit as st
 from streamlit import session_state as ss
 import numpy as np
+import gc
+gc.collect()
 
 st.set_page_config(layout="wide")
 

@@ -103,6 +103,7 @@ if len(ss['dapar']['X']) > 0 :
         display_mini_images_by_file(sel_imgs = images_in_cluster_sample)
 
 
+gc.collect()
 
         
      

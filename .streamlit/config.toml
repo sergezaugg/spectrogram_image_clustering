@@ -3,7 +3,7 @@
 base="dark"
 primaryColor="#cc0044"
 textColor="white"
-backgroundColor="#1d1d1d"
+backgroundColor="#000000"
 secondaryBackgroundColor="#330000"
 
 [server]
