@@ -10,7 +10,7 @@ import pandas as pd
 import plotly.express as px
 import umap.umap_ as umap
 from sklearn.preprocessing import StandardScaler
-from sklearn.cluster import DBSCAN, OPTICS
+from sklearn.cluster import DBSCAN, OPTICS, k_means
 import numpy as np
 
 def update_ss(kname, ssname):
@@ -97,8 +97,8 @@ def dim_reduction_for_clustering(X, n_neigh, n_dims_red, skip_umap = False):
 def perform_dbscan_clusterin(X, eps, min_samples):
     """ 
     """
-    # clu = DBSCAN(eps = eps, min_samples = min_samples, metric='euclidean', n_jobs = 4) 
-    clu = OPTICS(min_samples=min_samples, max_eps=eps, metric='euclidean', n_jobs=4)
+    clu = DBSCAN(eps = eps, min_samples = min_samples, metric='euclidean', n_jobs = 4) 
+    # clu = OPTICS(min_samples=min_samples, max_eps=eps, metric='euclidean', n_jobs=4)
     clusters_pred = clu.fit_predict(X)
     return(clusters_pred)
 
