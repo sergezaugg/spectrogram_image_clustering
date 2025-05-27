@@ -33,6 +33,7 @@ if ss['dapar']['feat_path'] == 'empty' :
         X_train, X_test, N_train, N_test, = train_test_split(npzfile['X'], npzfile['N'], train_size=5000, random_state=6666, shuffle=True)
         di[npz_finame] = {'X' : X_train , 'im_filenames' : N_train}
     ss['dapar']['npdata'] = di
+    del(npzfile, X_train, X_test, N_train, N_test)
     gc.collect()
     st.rerun()
 # Then, choose a dataset
@@ -44,8 +45,8 @@ else :
                 submitted_1 = st.form_submit_button("Activate dataset", type = "primary")   
                 if submitted_1:
                     # copy selected data into dedicated dict 
-                    ss['dapar']['dataset_name']   = npz_finame 
-                    ss['dapar']['X']              = ss['dapar']['npdata'][npz_finame]['X']  
+                    ss['dapar']['dataset_name']  = npz_finame 
+                    ss['dapar']['X']             = ss['dapar']['npdata'][npz_finame]['X']  
                     ss['dapar']['im_filenames']  = ss['dapar']['npdata'][npz_finame]['im_filenames'] 
                     st.rerun()  # mainly to update sidebar   
         
