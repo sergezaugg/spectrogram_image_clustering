@@ -9,9 +9,10 @@ from streamlit import session_state as ss
 import pandas as pd 
 import plotly.express as px
 import umap.umap_ as umap
-from sklearn.preprocessing import StandardScaler
-from sklearn.cluster import DBSCAN
+# from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import DBSCAN, OPTICS, k_means
 import numpy as np
+
 
 def update_ss(kname, ssname):
     """
@@ -21,84 +22,16 @@ def update_ss(kname, ssname):
     """
     ss["upar"][ssname] = ss[kname]      
 
+
 def get_short_class_name(a):
     """ a : a string"""
     return("-".join(a.split("-")[0:2]))
-
-
-
-
-
-
-
-
-@st.cache_data
-def dim_reduction_for_2D_plot(X, n_neigh, n_components = 2):
-    """
-    UMAP dim reduction for 2D plot 
-    """
-    scaler = StandardScaler()
-    # make a smaller random subsample for training
-    # rand_index = np.random.choice(np.arange(len(X)), size=3000, replace=False)    
-    # X_small = X[rand_index]
-    # print('X.shape', X.shape)
-    # print('X_small.shape', X_small.shape)
-    reducer = umap.UMAP(
-        n_neighbors = n_neigh, 
-        n_components = n_components, 
-        metric = 'euclidean',
-        n_jobs = -1
-        )
-    X_scaled = scaler.fit_transform(X)
-    # reducer.fit(X_small, ensure_all_finite=True)
-    # X2D_trans = reducer.transform(X)
-    X2D_trans = reducer.fit_transform(X_scaled)
-    X2D_scaled = scaler.fit_transform(X2D_trans)
-    return(X2D_scaled)
-
-
-
-
-@st.cache_data
-def dim_reduction_for_clustering(X, n_neigh, n_dims_red, skip_umap = False):
-    """
-    UMAP dim reduction for clustering
-    """
-    scaler = StandardScaler()
-    if skip_umap == True:
-        X_scaled = scaler.fit_transform(X)
-        return(X_scaled)
-    else:    
-        # make a smaller random subsample for training
-        # rand_index = np.random.choice(np.arange(len(X)), size=3000, replace=False)    
-        # X_small = X[rand_index]
-        # print('X.shape', X.shape)
-        # print('X_small.shape', X_small.shape)
-        reducer = umap.UMAP(
-            n_neighbors = n_neigh, 
-            n_components = n_dims_red, 
-            metric = 'euclidean',
-            n_jobs = -1
-            )
-        # X_trans = reducer.fit_transform(X, ensure_all_finite=True)
-        # reducer.fit(X_small, ensure_all_finite=True)
-        # X_trans = reducer.transform(X)
-        X_scaled = scaler.fit_transform(X)
-        X_trans = reducer.fit_transform(X_scaled)
-        X_out = scaler.fit_transform(X_trans)
-        return(X_out)
-
-
-
-
-
 
 @st.cache_data
 def perform_dbscan_clusterin(X, eps, min_samples):
     """ 
     """
-    clu = DBSCAN(eps = eps, min_samples = min_samples, metric='euclidean', n_jobs = 4) 
-    # clu = OPTICS(min_samples=min_samples, max_eps=eps, metric='euclidean', n_jobs=-1)
+    clu = DBSCAN(eps = eps, min_samples = min_samples, metric='euclidean', n_jobs = -1) 
     clusters_pred = clu.fit_predict(X)
     return(clusters_pred)
 
@@ -111,8 +44,27 @@ def make_sorted_df(cat, cat_name, X):
     df = df.sort_values(by=cat_name)
     return(df)
 
-@st.cache_data
-def make_scatter_plot(df, cat_name, title = "not set", height = 900, width = 1000, b_margin=300):
+# @st.cache_data
+@st.fragment
+def make_scatter_plot(df, cat_name, title = "not set", height = 900, width = 1000, b_margin=300, exclude_non_assigned = False):
+
+    # heuristics to exclude outliers from plot
+    std_1 = df['Dim-1'].std()
+    qua_1_lo = np.quantile(df['Dim-1'], q=0.005) - 0.5*std_1
+    qua_1_up = np.quantile(df['Dim-1'], q=0.995) + 0.5*std_1
+    std_2 = df['Dim-1'].std()
+    qua_2_lo = np.quantile(df['Dim-2'], q=0.005) - 0.5*std_2
+    qua_2_up = np.quantile(df['Dim-2'], q=0.995) + 0.5*std_2
+  
+   
+    if exclude_non_assigned:
+        print(df.shape)
+        df = df[df[cat_name] != '-01']
+        colsec = px.colors.qualitative.Light24
+        print(df.shape)
+    else:
+        colsec = ["#777777"] + px.colors.qualitative.Light24
+
     fig = px.scatter(
         data_frame = df,
         x = 'Dim-1',
@@ -121,7 +73,7 @@ def make_scatter_plot(df, cat_name, title = "not set", height = 900, width = 100
         template='plotly_dark',
         height= height,
         width = width,
-        color_discrete_sequence = px.colors.qualitative.Light24,
+        color_discrete_sequence = colsec,
         title = title,
         # labels = {'aaa', ""}
         )
@@ -132,11 +84,20 @@ def make_scatter_plot(df, cat_name, title = "not set", height = 900, width = 100
     _ = fig.update_layout(xaxis_title=None)
     _ = fig.update_xaxes(showline=True, linewidth=2, linecolor='white', mirror=True)
     _ = fig.update_yaxes(showline=True, linewidth=2, linecolor='white', mirror=True)
+    _ = fig.update_layout(paper_bgcolor="#000000", plot_bgcolor="#000000") 
+    _ = fig.update_layout(xaxis_title_font_size=15)
+    _ = fig.update_layout(yaxis_title_font_size=15)
+    _ = fig.update_layout(xaxis_tickfont_size=15)
+    _ = fig.update_layout(legend_font_size=15)
+    _ = fig.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=False))
+    _ = fig.update_xaxes(range=[qua_1_lo, qua_1_up])
+    _ = fig.update_yaxes(range=[qua_2_lo, qua_2_up])
+
     return(fig)
 
 @st.fragment
 def display_mini_images_by_file(sel_imgs):
-    num_cols = 8
+    num_cols = 5
     grid = st.columns(num_cols)
     col = 0
     for ii, im_filname in enumerate(sel_imgs):
