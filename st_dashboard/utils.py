@@ -50,8 +50,10 @@ def make_scatter_plot(df, cat_name, title = "not set", height = 900, width = 100
     if exclude_non_assigned:
         print(df.shape)
         df = df[df[cat_name] != '-01']
+        colsec = px.colors.qualitative.Light24
         print(df.shape)
-
+    else:
+        colsec = ["#777777"] + px.colors.qualitative.Light24
 
 
     fig = px.scatter(
@@ -62,7 +64,7 @@ def make_scatter_plot(df, cat_name, title = "not set", height = 900, width = 100
         template='plotly_dark',
         height= height,
         width = width,
-        color_discrete_sequence = px.colors.qualitative.Light24,
+        color_discrete_sequence = colsec,
         title = title,
         # labels = {'aaa', ""}
         )
