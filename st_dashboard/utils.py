@@ -44,7 +44,8 @@ def make_sorted_df(cat, cat_name, X):
     df = df.sort_values(by=cat_name)
     return(df)
 
-@st.cache_data
+# @st.cache_data
+@st.fragment
 def make_scatter_plot(df, cat_name, title = "not set", height = 900, width = 1000, b_margin=300, exclude_non_assigned = False):
 
     if exclude_non_assigned:
@@ -54,7 +55,6 @@ def make_scatter_plot(df, cat_name, title = "not set", height = 900, width = 100
         print(df.shape)
     else:
         colsec = ["#777777"] + px.colors.qualitative.Light24
-
 
     fig = px.scatter(
         data_frame = df,
@@ -80,6 +80,7 @@ def make_scatter_plot(df, cat_name, title = "not set", height = 900, width = 100
     _ = fig.update_layout(yaxis_title_font_size=15)
     _ = fig.update_layout(xaxis_tickfont_size=15)
     _ = fig.update_layout(legend_font_size=15)
+    _ = fig.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=False))
     return(fig)
 
 @st.fragment

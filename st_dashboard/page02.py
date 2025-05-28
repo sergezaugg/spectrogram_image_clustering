@@ -31,10 +31,10 @@ if len(ss['dapar']['X_dimred']) > 0 :
     cols = st.columns([0.35, 0.35, 0.05])
 
     with cols[0]:
-        c01, c02 = st.columns([0.2, 0.5])    
+        c01, c02 = st.columns([0.2, 0.6])    
         with c01:
             with st.container(border=True, height = 250): 
-                st.text("Dimension")  
+                st.text("Input to DBSCAN")  
                 st.info(str(ss['dapar']['X_dimred'].shape[0]) + ' images')
                 st.info(str(ss['dapar']['X_dimred'].shape[1]) + ' features')
         with c02:
@@ -53,15 +53,12 @@ if len(ss['dapar']['X_dimred']) > 0 :
         num_unasigned = (clusters_pred == -1).sum()
         num_asigned = len(clusters_pred) - num_unasigned
         num_clusters = len(np.unique(clusters_pred))
-
-
         # clusters_str = np.array([format(a, '03d') for a in clusters_pred])
         # clusters_str[clusters_str == '-01'] = '-ua'
-
-
         ss['dapar']['clusters_pred_str'] = np.array([format(a, '03d') for a in clusters_pred])
         df_pred = make_sorted_df(cat = ss['dapar']['clusters_pred_str'], cat_name = 'Predicted cluster', X = ss['dapar']['X2D'])
-        fig02 = make_scatter_plot(df = df_pred, cat_name = 'Predicted cluster', title = "Predicted clusters", height = 900, width = 1000, b_margin = 300,
+        fig02 = make_scatter_plot(df = df_pred, cat_name = 'Predicted cluster', 
+                                title = "Predicted clusters      (Scatterplot from 2D UMAP mapping)", height = 900, width = 1000, b_margin = 300,
                                 exclude_non_assigned = ss['upar']["exclude_non_assigned"])
         #-------------------------------------------
 
@@ -70,7 +67,7 @@ if len(ss['dapar']['X_dimred']) > 0 :
     
     with cols[1]:
         with st.container(border=True): 
-            c01, c02 = st.columns([0.3, 0.5])    
+            c01, c02, _ = st.columns([0.1, 0.1, 0.3])    
             c01.metric("N images assigned ", num_asigned)
             c02.metric("N clusters", num_clusters)
 

@@ -27,9 +27,11 @@ if ss['dapar']['feat_path'] == 'empty' :
 # Then, choose a dataset
 else :
     with c00:
-        with st.container(border=True, height = 200):   
+        with st.container(border=True):   
             with st.form("form01", border=False):
-                npz_finame = st.selectbox("Select data with extracted features", options = ss['dapar']['li_npz'])
+                # npz_finame = st.selectbox("Select data with extracted features", options = ss['dapar']['li_npz'])
+                npz_finame = st.radio("Select data with extracted features", options = ss['dapar']['li_npz'])
+
                 submitted_1 = st.form_submit_button("Activate dataset", type = "primary")  
                 if submitted_1:
                     npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
