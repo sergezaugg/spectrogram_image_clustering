@@ -12,6 +12,8 @@ gc.collect()
 st.text("Paths:")
 st.write(ss['dapar']['feat_path'])
 st.write(ss['dapar']['imgs_path'])
+st.write('Nb images:', len(os.listdir(ss['dapar']['imgs_path'])))
+st.write(ss['dapar']['df_meta'].head())
 
 st.divider()
 st.text("Active data:")

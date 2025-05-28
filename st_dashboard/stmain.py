@@ -23,6 +23,7 @@ if 'dapar' not in ss:
         'li_npz' : 'empty', # list of available files
         'X2D' : np.array([]),
         'X_dimred' : np.array([]),
+        'df_meta' : np.array([]),
         }
 
 # user provided parameters
@@ -49,7 +50,8 @@ with st.sidebar:
 p01 = st.Page("page01.py", title="Summary")
 p02 = st.Page("page02.py", title="Analyse")
 p03 = st.Page("page03.py", title="Select dataset")
+p04 = st.Page("page04.py", title="Data info/credits")
 pss = st.Page("page_ss.py", title="(Debug diagnostics)")
-pg = st.navigation([p03, p02, p01, pss])
+pg = st.navigation([p03, p02, p01, p04, pss])
 pg.run()
 
