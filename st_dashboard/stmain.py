@@ -38,12 +38,13 @@ if 'upar' not in ss:
 
 with st.sidebar:
     st.info('Selected: ' + ss['dapar']['dataset_name'])
-    st.header(''':primary[**CLUSTER SPECTROGRAMMS**]''')
+    st.header(''':primary[**CLUSTERING SPECTROGRAMS WITH FEATURES FROM PRE-TRAINED MODELS**]''')
     st.text("v0.2.0")
     st.markdown(''':primary[QUICK GUIDE]''')
     st.text("(1) Select a dataset")
     st.text("(2) Tune DBSCAN params")
-    st.text("(3) Explore plots and figures")
+    st.text("(3) Explore scatterplot")
+    st.text("(4) Check cluster contents")
 
 p01 = st.Page("page01.py", title="Summary")
 p02 = st.Page("page02.py", title="Analyse")

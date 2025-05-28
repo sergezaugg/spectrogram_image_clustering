@@ -48,6 +48,15 @@ def make_sorted_df(cat, cat_name, X):
 @st.fragment
 def make_scatter_plot(df, cat_name, title = "not set", height = 900, width = 1000, b_margin=300, exclude_non_assigned = False):
 
+    # heuristics to exclude outliers from plot
+    std_1 = df['Dim-1'].std()
+    qua_1_lo = np.quantile(df['Dim-1'], q=0.005) - 0.5*std_1
+    qua_1_up = np.quantile(df['Dim-1'], q=0.995) + 0.5*std_1
+    std_2 = df['Dim-1'].std()
+    qua_2_lo = np.quantile(df['Dim-2'], q=0.005) - 0.5*std_2
+    qua_2_up = np.quantile(df['Dim-2'], q=0.995) + 0.5*std_2
+  
+   
     if exclude_non_assigned:
         print(df.shape)
         df = df[df[cat_name] != '-01']
@@ -81,6 +90,9 @@ def make_scatter_plot(df, cat_name, title = "not set", height = 900, width = 100
     _ = fig.update_layout(xaxis_tickfont_size=15)
     _ = fig.update_layout(legend_font_size=15)
     _ = fig.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=False))
+    _ = fig.update_xaxes(range=[qua_1_lo, qua_1_up])
+    _ = fig.update_yaxes(range=[qua_2_lo, qua_2_up])
+
     return(fig)
 
 @st.fragment
