@@ -22,7 +22,7 @@ if ss['dapar']['feat_path'] == 'empty' :
     kgl_path = kagglehub.dataset_download(kgl_ds, force_download = False) # get local path where downloaded
     ss['dapar']['feat_path'] = kgl_path
     ss['dapar']['imgs_path'] = os.path.join(ss['dapar']['feat_path'], 'xc_spectrograms', 'xc_spectrograms')
-    ss['dapar']['li_npz'] = [a for a in os.listdir(ss['dapar']['feat_path']) if ('.npz' in a) and (('features_' in a) or ('xxxxxxxx' in a))]
+    ss['dapar']['li_npz'] = [a for a in os.listdir(ss['dapar']['feat_path']) if ('.npz' in a) and (('dimred_16_features' in a))]
     st.rerun()
 # Then, choose a dataset
 else :
@@ -35,22 +35,13 @@ else :
                     npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
                     npzfile = np.load(npzfile_full_path)
                     # take a subset of data (else public streamlit.app will crash) 
-                    X_train, _, N_train, _, = train_test_split(npzfile['X'], npzfile['N'], train_size=10000, random_state=6666, shuffle=True)
-
-                    # # pragmatically exclude images tha had high abs feature across all features
-                    # outli_score = np.abs(X_train).mean(1)
-                    # thld = np.quantile(outli_score, 0.99)
-                    # sel = outli_score < thld
-                    # print(X_train.shape, N_train.shape)
-                    # X_train = X_train[sel]
-                    # N_train = N_train[sel]
-                    # print(X_train.shape, N_train.shape)
-
+                    X_red, _, X_2D, _, N, _, = train_test_split(npzfile['X_red'], npzfile['X_2D'], npzfile['N'], train_size=10000, random_state=6666, shuffle=True)
                     # copy selected data into ss
                     ss['dapar']['dataset_name']  = npz_finame 
-                    ss['dapar']['X']             = X_train.astype(np.float16)
-                    ss['dapar']['im_filenames']  = N_train
-                    del(npzfile, X_train, N_train)
+                    ss['dapar']['X2D']           = X_2D.astype(np.float16)
+                    ss['dapar']['X_dimred']      = X_red.astype(np.float16)
+                    ss['dapar']['im_filenames']  = N
+                    del(X_red, X_2D, N)
                     st.rerun() # to update sidebar - 
 
 gc.collect()

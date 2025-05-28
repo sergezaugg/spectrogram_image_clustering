@@ -9,7 +9,7 @@ from streamlit import session_state as ss
 import pandas as pd 
 import plotly.express as px
 import umap.umap_ as umap
-from sklearn.preprocessing import StandardScaler
+# from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import DBSCAN, OPTICS, k_means
 import numpy as np
 
@@ -27,43 +27,43 @@ def get_short_class_name(a):
     """ a : a string"""
     return("-".join(a.split("-")[0:2]))
 
-@st.cache_data
-def dim_reduction_for_2D_plot(X, n_neigh, n_components = 2):
-    """
-    UMAP dim reduction for 2D plot 
-    """
-    scaler = StandardScaler()
-    reducer = umap.UMAP(
-        n_neighbors = n_neigh, 
-        n_components = n_components, 
-        metric = 'euclidean',
-        n_jobs = -1
-        )
-    X_scaled = scaler.fit_transform(X)
-    X2D_trans = reducer.fit_transform(X_scaled)
-    X2D_scaled = scaler.fit_transform(X2D_trans)
-    return(X2D_scaled)
+# @st.cache_data
+# def dim_reduction_for_2D_plot(X, n_neigh, n_components = 2):
+#     """
+#     UMAP dim reduction for 2D plot 
+#     """
+#     scaler = StandardScaler()
+#     reducer = umap.UMAP(
+#         n_neighbors = n_neigh, 
+#         n_components = n_components, 
+#         metric = 'euclidean',
+#         n_jobs = -1
+#         )
+#     X_scaled = scaler.fit_transform(X)
+#     X2D_trans = reducer.fit_transform(X_scaled)
+#     X2D_scaled = scaler.fit_transform(X2D_trans)
+#     return(X2D_scaled)
 
-@st.cache_data
-def dim_reduction_for_clustering(X, n_neigh, n_dims_red, skip_umap = False):
-    """
-    UMAP dim reduction for clustering
-    """
-    scaler = StandardScaler()
-    if skip_umap == True:
-        X_scaled = scaler.fit_transform(X)
-        return(X_scaled)
-    else:    
-        reducer = umap.UMAP(
-            n_neighbors = n_neigh, 
-            n_components = n_dims_red, 
-            metric = 'euclidean',
-            n_jobs = -1
-            )
-        X_scaled = scaler.fit_transform(X)
-        X_trans = reducer.fit_transform(X_scaled)
-        X_out = scaler.fit_transform(X_trans)
-        return(X_out)
+# @st.cache_data
+# def dim_reduction_for_clustering(X, n_neigh, n_dims_red, skip_umap = False):
+#     """
+#     UMAP dim reduction for clustering
+#     """
+#     scaler = StandardScaler()
+#     if skip_umap == True:
+#         X_scaled = scaler.fit_transform(X)
+#         return(X_scaled)
+#     else:    
+#         reducer = umap.UMAP(
+#             n_neighbors = n_neigh, 
+#             n_components = n_dims_red, 
+#             metric = 'euclidean',
+#             n_jobs = -1
+#             )
+#         X_scaled = scaler.fit_transform(X)
+#         X_trans = reducer.fit_transform(X_scaled)
+#         X_out = scaler.fit_transform(X_trans)
+#         return(X_out)
 
 @st.cache_data
 def perform_dbscan_clusterin(X, eps, min_samples):

@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 import gc
 # streamlit need it like that:
-from utils import dim_reduction_for_2D_plot, dim_reduction_for_clustering, perform_dbscan_clusterin, update_ss
+from utils import perform_dbscan_clusterin, update_ss
 from utils import make_sorted_df, make_scatter_plot, display_mini_images_by_file
 # streamlit does not find the module !!!
 # from st_dashboard.utils import dim_reduction_for_2D_plot, dim_reduction_for_clustering, perform_dbscan_clusterin, update_ss
@@ -29,18 +29,18 @@ else :
 # main dashboard
 if len(ss['dapar']['X']) > 0 :
 
-    with cols[0]: 
-        with st.container(border=True, height = 250):  
-            st.text("Dimension") 
-            st.info(str(ss['dapar']['X'].shape[0]) + '  imgs')
-            st.info(str(ss['dapar']['X'].shape[1]) + '  feats') 
+    # with cols[0]: 
+    #     with st.container(border=True, height = 250):  
+    #         st.text("Dimension") 
+    #         st.info(str(ss['dapar']['X'].shape[0]) + '  imgs')
+    #         st.info(str(ss['dapar']['X'].shape[1]) + '  feats') 
    
-    with cols[1]:
-        with st.container(border=True, height = 250):   
-            _ = st.select_slider(label = "UMAP reduce dim", options=[2,4,8,16,32], disabled = ss['upar']['skip_umap'],
-                                key = "k_UMAP_dim", value = ss['upar']["umap_n_dims_red"], on_change=update_ss, args=["k_UMAP_dim", "umap_n_dims_red"])
-            _ = st.select_slider(label = "UMAP nb neighbors", options=[2,5,10,15,20,30,40,50], disabled = ss['upar']['skip_umap'], 
-                            key = "k_UMAP_n_neigh", value=ss['upar']["umap_n_neighbors"], on_change=update_ss, args=["k_UMAP_n_neigh", "umap_n_neighbors"])   
+    # with cols[1]:
+    #     with st.container(border=True, height = 250):   
+    #         _ = st.select_slider(label = "UMAP reduce dim", options=[2,4,8,16,32], disabled = ss['upar']['skip_umap'],
+    #                             key = "k_UMAP_dim", value = ss['upar']["umap_n_dims_red"], on_change=update_ss, args=["k_UMAP_dim", "umap_n_dims_red"])
+    #         _ = st.select_slider(label = "UMAP nb neighbors", options=[2,5,10,15,20,30,40,50], disabled = ss['upar']['skip_umap'], 
+    #                         key = "k_UMAP_n_neigh", value=ss['upar']["umap_n_neighbors"], on_change=update_ss, args=["k_UMAP_n_neigh", "umap_n_neighbors"])   
     
     #-------------------------------------------
     # computational block 1 (st-cached)

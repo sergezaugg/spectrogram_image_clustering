@@ -8,6 +8,8 @@ import pandas as pd
 import numpy as np
 from torch.utils.data import Dataset
 from torchvision.io import decode_image
+from sklearn.preprocessing import StandardScaler
+import umap.umap_ as umap
 
 class ImageDataset(Dataset):
     """
@@ -77,3 +79,19 @@ def load_pretraind_model(model_tag):
         print("not a valid model_tag")
     return(model, weights)    
 
+
+def dim_reduce(X, n_neigh, n_dims_red):
+    """
+    UMAP dim reduction for clustering
+    """
+    scaler = StandardScaler()
+    reducer = umap.UMAP(
+        n_neighbors = n_neigh, 
+        n_components = n_dims_red, 
+        metric = 'euclidean',
+        n_jobs = -1
+        )
+    X_scaled = scaler.fit_transform(X)
+    X_trans = reducer.fit_transform(X_scaled)
+    X_out = scaler.fit_transform(X_trans)
+    return(X_out)

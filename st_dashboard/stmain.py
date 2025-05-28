@@ -21,7 +21,8 @@ if 'dapar' not in ss:
         'X' : np.array([]),
         'clusters_pred_str' : np.array([]),
         'im_filenames' : np.array([]),
-        'li_npz' : 'empty', # list of available files 
+        'li_npz' : 'empty', # list of available files
+        # 'li_npz_2d' : 'empty',
         'X2D' : np.array([]),
         'X_dimred' : np.array([]),
         }
