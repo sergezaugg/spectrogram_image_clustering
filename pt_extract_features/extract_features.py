@@ -126,7 +126,7 @@ print(X.shape, N.shape)
 tstmp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S_")
 
 # save as npz
-out_name = os.path.join(featu_path, tstmp + 'unwrapped_features_' + model_tag + fex_tag + '.npz')
+out_name = os.path.join(featu_path, tstmp + 'features_' + model_tag + fex_tag + '.npz')
 np.savez(file = out_name, X = X, N = N)
 
 
