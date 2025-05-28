@@ -38,7 +38,7 @@ else :
                     X_train, _, N_train, _, = train_test_split(npzfile['X'], npzfile['N'], train_size=10000, random_state=6666, shuffle=True)
                     # copy selected data into ss
                     ss['dapar']['dataset_name']  = npz_finame 
-                    ss['dapar']['X']             = X_train 
+                    ss['dapar']['X']             = X_train.astype(np.float16)
                     ss['dapar']['im_filenames']  = N_train
                     del(npzfile, X_train, N_train)
                     st.rerun() # to update sidebar - 

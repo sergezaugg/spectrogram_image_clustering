@@ -10,7 +10,7 @@ gc.collect()
 
 c00, c01  = st.columns([0.1, 0.18])
         
-with c01:
+with c00:
     with st.container(border=True) : 
         
         st.markdown(''' 
