@@ -35,7 +35,7 @@ else :
                     npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
                     npzfile = np.load(npzfile_full_path)
                     # take a subset of data (else public streamlit.app will crash) 
-                    X_train, _, N_train, _, = train_test_split(npzfile['X'], npzfile['N'], train_size=1000, random_state=6666, shuffle=True)
+                    X_train, _, N_train, _, = train_test_split(npzfile['X'], npzfile['N'], train_size=10000, random_state=6666, shuffle=True)
 
                     # # pragmatically exclude images tha had high abs feature across all features
                     # outli_score = np.abs(X_train).mean(1)
