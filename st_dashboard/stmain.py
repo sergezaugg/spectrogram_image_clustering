@@ -17,11 +17,12 @@ if 'dapar' not in ss:
     ss['dapar'] = {
         'feat_path' : 'empty',
         'imgs_path' : 'empty',
-        'npdata'    : 'empty',
+        # 'npdata'    : 'empty',
         'dataset_name' :  'empty',
         'X' : np.array([]),
         'clusters_pred_str' : np.array([]),
         'im_filenames' : np.array([]),
+        'li_npz' : 'empty', # list of available files 
         }
 
 # user provided parameters
