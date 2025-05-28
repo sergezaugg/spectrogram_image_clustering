@@ -37,7 +37,7 @@ if len(ss['dapar']['X']) > 0 :
    
     with cols[1]:
         with st.container(border=True, height = 250):   
-            _ = st.select_slider(label = "UMAP reduce dim", options=[2,4,8,16,32,64], disabled = ss['upar']['skip_umap'],
+            _ = st.select_slider(label = "UMAP reduce dim", options=[2,4,8,16,32], disabled = ss['upar']['skip_umap'],
                                 key = "k_UMAP_dim", value = ss['upar']["umap_n_dims_red"], on_change=update_ss, args=["k_UMAP_dim", "umap_n_dims_red"])
             _ = st.select_slider(label = "UMAP nb neighbors", options=[2,5,10,15,20,30,40,50], disabled = ss['upar']['skip_umap'], 
                             key = "k_UMAP_n_neigh", value=ss['upar']["umap_n_neighbors"], on_change=update_ss, args=["k_UMAP_n_neigh", "umap_n_neighbors"])   
