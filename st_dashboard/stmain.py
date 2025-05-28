@@ -12,6 +12,7 @@ gc.collect()
 
 st.set_page_config(layout="wide")
 
+# data objects
 if 'dapar' not in ss:
     ss['dapar'] = {
         'feat_path' : 'empty',
@@ -23,6 +24,7 @@ if 'dapar' not in ss:
         'im_filenames' : np.array([]),
         }
 
+# user provided parameters
 if 'upar' not in ss:
     ss['upar'] = {
         'umap_n_neighbors' : 10,
@@ -37,12 +39,12 @@ with st.sidebar:
     st.header(''':primary[**CLUSTER SPECTROGRAMMS**]''')
     st.text("v0.0.2")
     st.markdown(''':primary[QUICK GUIDE]''')
-    st.text("(0) Select a dataset")
-    st.text("(1) Choose UMAP params")
-    st.text("(2) Tune DBSCAN params")
-    st.text("(3) Explore plots and figures")
+    st.text("(1) Select a dataset")
+    st.text("(2) Choose UMAP params")
+    st.text("(3) Tune DBSCAN params")
+    st.text("(4) Explore plots and figures")
     st.markdown(''':primary[COMPUTATION SPEED]''')
-    st.text("UMAP can take a few minutes while DBSCAN takes a few seconds; if values cached it is faster.")
+    st.text("UMAP can take a few minutes while DBSCAN takes a few seconds. if values cached it can be faster.")
 
 p01 = st.Page("page01.py", title="Summary")
 p02 = st.Page("page02.py", title="Analyse")

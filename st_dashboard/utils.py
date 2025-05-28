@@ -13,6 +13,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import DBSCAN, OPTICS, k_means
 import numpy as np
 
+
 def update_ss(kname, ssname):
     """
     description : helper callback fun to implement statefull apps
@@ -21,16 +22,10 @@ def update_ss(kname, ssname):
     """
     ss["upar"][ssname] = ss[kname]      
 
+
 def get_short_class_name(a):
     """ a : a string"""
     return("-".join(a.split("-")[0:2]))
-
-
-
-
-
-
-
 
 @st.cache_data
 def dim_reduction_for_2D_plot(X, n_neigh, n_components = 2):
@@ -38,11 +33,6 @@ def dim_reduction_for_2D_plot(X, n_neigh, n_components = 2):
     UMAP dim reduction for 2D plot 
     """
     scaler = StandardScaler()
-    # make a smaller random subsample for training
-    # rand_index = np.random.choice(np.arange(len(X)), size=3000, replace=False)    
-    # X_small = X[rand_index]
-    # print('X.shape', X.shape)
-    # print('X_small.shape', X_small.shape)
     reducer = umap.UMAP(
         n_neighbors = n_neigh, 
         n_components = n_components, 
@@ -50,14 +40,9 @@ def dim_reduction_for_2D_plot(X, n_neigh, n_components = 2):
         n_jobs = 8
         )
     X_scaled = scaler.fit_transform(X)
-    # reducer.fit(X_small, ensure_all_finite=True)
-    # X2D_trans = reducer.transform(X)
     X2D_trans = reducer.fit_transform(X_scaled)
     X2D_scaled = scaler.fit_transform(X2D_trans)
     return(X2D_scaled)
-
-
-
 
 @st.cache_data
 def dim_reduction_for_clustering(X, n_neigh, n_dims_red, skip_umap = False):
@@ -69,29 +54,16 @@ def dim_reduction_for_clustering(X, n_neigh, n_dims_red, skip_umap = False):
         X_scaled = scaler.fit_transform(X)
         return(X_scaled)
     else:    
-        # make a smaller random subsample for training
-        # rand_index = np.random.choice(np.arange(len(X)), size=3000, replace=False)    
-        # X_small = X[rand_index]
-        # print('X.shape', X.shape)
-        # print('X_small.shape', X_small.shape)
         reducer = umap.UMAP(
             n_neighbors = n_neigh, 
             n_components = n_dims_red, 
             metric = 'euclidean',
             n_jobs = 8
             )
-        # X_trans = reducer.fit_transform(X, ensure_all_finite=True)
-        # reducer.fit(X_small, ensure_all_finite=True)
-        # X_trans = reducer.transform(X)
         X_scaled = scaler.fit_transform(X)
         X_trans = reducer.fit_transform(X_scaled)
         X_out = scaler.fit_transform(X_trans)
         return(X_out)
-
-
-
-
-
 
 @st.cache_data
 def perform_dbscan_clusterin(X, eps, min_samples):
@@ -136,7 +108,7 @@ def make_scatter_plot(df, cat_name, title = "not set", height = 900, width = 100
     _ = fig.update_layout(xaxis_title_font_size=15)
     _ = fig.update_layout(yaxis_title_font_size=15)
     _ = fig.update_layout(xaxis_tickfont_size=15)
-    _ = fig.update_layout(legend_font_size=20)
+    _ = fig.update_layout(legend_font_size=15)
     return(fig)
 
 @st.fragment
