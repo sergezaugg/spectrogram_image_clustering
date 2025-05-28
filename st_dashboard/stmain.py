@@ -42,11 +42,8 @@ with st.sidebar:
     st.text("v0.2.0")
     st.markdown(''':primary[QUICK GUIDE]''')
     st.text("(1) Select a dataset")
-    st.text("(2) Choose UMAP params")
-    st.text("(3) Tune DBSCAN params")
-    st.text("(4) Explore plots and figures")
-    st.markdown(''':primary[COMPUTATION SPEED]''')
-    st.text("UMAP can take a few minutes while DBSCAN takes a few seconds. if values cached it can be faster.")
+    st.text("(2) Tune DBSCAN params")
+    st.text("(3) Explore plots and figures")
 
 p01 = st.Page("page01.py", title="Summary")
 p02 = st.Page("page02.py", title="Analyse")
