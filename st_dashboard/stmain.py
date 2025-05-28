@@ -34,12 +34,13 @@ if 'upar' not in ss:
         'skip_umap' : False,
         'dbscan_eps' : 0.501,
         'dbscan_min_samples' : 10,
+        'exclude_non_assigned' : False
         }
 
 with st.sidebar:
     st.info('Selected: ' + ss['dapar']['dataset_name'])
     st.header(''':primary[**CLUSTER SPECTROGRAMMS**]''')
-    st.text("v0.0.3")
+    st.text("v0.0.5")
     st.markdown(''':primary[QUICK GUIDE]''')
     st.text("(1) Select a dataset")
     st.text("(2) Choose UMAP params")

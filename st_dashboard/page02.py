@@ -62,6 +62,12 @@ if len(ss['dapar']['X']) > 0 :
             _ = st.select_slider(label = "DBSCAN min samples", options=np.arange(5, 31, 5), 
                 key = "k_dbscan_min", value=ss['upar']["dbscan_min_samples"], on_change=update_ss, args=["k_dbscan_min", "dbscan_min_samples"])
 
+
+    _ = st.checkbox("Hide dots (spectrograms) not assigned to a cluster",
+         key = "k_suppress", value=ss['upar']["exclude_non_assigned"], on_change=update_ss, args=["k_suppress", "exclude_non_assigned"])
+
+
+
     #-------------------------------------------
     # computational block 2 (st-cached)
     clusters_pred = perform_dbscan_clusterin(X = ss['dapar']['X_dimred'] , eps = ss['upar']['dbscan_eps'], min_samples = ss['upar']['dbscan_min_samples']) 
@@ -70,7 +76,8 @@ if len(ss['dapar']['X']) > 0 :
     num_clusters = len(np.unique(clusters_pred))
     ss['dapar']['clusters_pred_str'] = np.array([format(a, '03d') for a in clusters_pred])
     df_pred = make_sorted_df(cat = ss['dapar']['clusters_pred_str'], cat_name = 'Predicted cluster', X = ss['dapar']['X2D'])
-    fig02 = make_scatter_plot(df = df_pred, cat_name = 'Predicted cluster', title = "Predicted clusters", height = 900, width = 1000, b_margin = 300)
+    fig02 = make_scatter_plot(df = df_pred, cat_name = 'Predicted cluster', title = "Predicted clusters", height = 900, width = 1000, b_margin = 300,
+                              exclude_non_assigned = ss['upar']["exclude_non_assigned"])
     gc.collect()
     #-------------------------------------------
 

@@ -37,7 +37,7 @@ def dim_reduction_for_2D_plot(X, n_neigh, n_components = 2):
         n_neighbors = n_neigh, 
         n_components = n_components, 
         metric = 'euclidean',
-        n_jobs = 8
+        n_jobs = -1
         )
     X_scaled = scaler.fit_transform(X)
     X2D_trans = reducer.fit_transform(X_scaled)
@@ -58,7 +58,7 @@ def dim_reduction_for_clustering(X, n_neigh, n_dims_red, skip_umap = False):
             n_neighbors = n_neigh, 
             n_components = n_dims_red, 
             metric = 'euclidean',
-            n_jobs = 8
+            n_jobs = -1
             )
         X_scaled = scaler.fit_transform(X)
         X_trans = reducer.fit_transform(X_scaled)
@@ -69,8 +69,7 @@ def dim_reduction_for_clustering(X, n_neigh, n_dims_red, skip_umap = False):
 def perform_dbscan_clusterin(X, eps, min_samples):
     """ 
     """
-    clu = DBSCAN(eps = eps, min_samples = min_samples, metric='euclidean', n_jobs = 8) 
-    # clu = OPTICS(min_samples=min_samples, max_eps=eps, metric='euclidean', n_jobs=8)
+    clu = DBSCAN(eps = eps, min_samples = min_samples, metric='euclidean', n_jobs = -1) 
     clusters_pred = clu.fit_predict(X)
     return(clusters_pred)
 
@@ -84,7 +83,15 @@ def make_sorted_df(cat, cat_name, X):
     return(df)
 
 @st.cache_data
-def make_scatter_plot(df, cat_name, title = "not set", height = 900, width = 1000, b_margin=300):
+def make_scatter_plot(df, cat_name, title = "not set", height = 900, width = 1000, b_margin=300, exclude_non_assigned = False):
+
+    if exclude_non_assigned:
+        print(df.shape)
+        df = df[df[cat_name] != '-01']
+        print(df.shape)
+
+
+
     fig = px.scatter(
         data_frame = df,
         x = 'Dim-1',
