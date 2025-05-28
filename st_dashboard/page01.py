@@ -15,7 +15,11 @@ with c00:
     with st.container(border=True) :  
            st.markdown(''' 
 
-            ### Data
+             ### Data
+            * Spectrograms obtained from recordings from [xeno-canto](https://xeno-canto.org/).
+            * Over 27000 mini spectrograms stored as RGB images. 
+            * A smaller random subsample of N=10000 images used in dashboard to avoid memory issues.   
+            * Extracted features and images are [here](https://www.kaggle.com/datasets/sezaugg/spectrogram-clustering-01)     
          
             ### Feature extraction 
             * Feature extraction was performed offline on a GPU machine.
@@ -29,10 +33,15 @@ with c00:
               * Details are given in the right panel. 
             * Extracted feature are stored on a dedicated [Kaggle dataset](https://www.kaggle.com/datasets/sezaugg/spectrogram-clustering-01)          
 
-          
             ### Dimensionality reduction
-          
+            * UMAP is slow and was pre-computed.           
+            * We used Uniform Manifold Approximation and Projection ([UMAP](https://umap-learn.readthedocs.io)), a technique for general non-linear dimension reduction.  
+            * UMAP is a [stochastic algorithm](https://umap-learn.readthedocs.io/en/latest/reproducibility.html) -> expect small differences between runs!     
+
             ### Clustering
+            * Clustering done with [DBSCAN](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html).
+            * Samples not assigned to a cluster by DBSCAN are given the cluster ID '-01'
+            * The numerical value of Cluster IDs is arbitrary
 
             ''')  
 

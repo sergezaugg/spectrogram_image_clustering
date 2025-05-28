@@ -23,6 +23,7 @@ if ss['dapar']['feat_path'] == 'empty' :
     ss['dapar']['feat_path'] = kgl_path
     ss['dapar']['imgs_path'] = os.path.join(ss['dapar']['feat_path'], 'xc_spectrograms', 'xc_spectrograms')
     ss['dapar']['li_npz'] = [a for a in os.listdir(ss['dapar']['feat_path']) if ('.npz' in a) and (('dimred_4' in a) or ('dimred_16' in a))]
+    ss['dapar']['li_npz'].sort()
     st.rerun()
 # Then, choose a dataset
 else :
