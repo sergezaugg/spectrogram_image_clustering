@@ -39,7 +39,7 @@ if len(ss['dapar']['X']) > 0 :
         with st.container(border=True, height = 250):   
             _ = st.select_slider(label = "UMAP reduce dim", options=[2,4,8,16,32,64], disabled = ss['upar']['skip_umap'],
                                 key = "k_UMAP_dim", value = ss['upar']["umap_n_dims_red"], on_change=update_ss, args=["k_UMAP_dim", "umap_n_dims_red"])
-            _ = st.select_slider(label = "UMAP nb neighbors", options=[2,5,10,15,20,30,40,50,75,100], disabled = ss['upar']['skip_umap'], 
+            _ = st.select_slider(label = "UMAP nb neighbors", options=[2,5,10,15,20,30,40,50], disabled = ss['upar']['skip_umap'], 
                             key = "k_UMAP_n_neigh", value=ss['upar']["umap_n_neighbors"], on_change=update_ss, args=["k_UMAP_n_neigh", "umap_n_neighbors"])   
     
     #-------------------------------------------
@@ -58,7 +58,7 @@ if len(ss['dapar']['X']) > 0 :
 
     with cols[3]:
         with st.container(border=True, height = 250): 
-            eps_options = (10.0**(np.arange(-3.0, 1.01, 0.05))).round(3)
+            eps_options = (10.0**(np.arange(-3.0, 0.50, 0.05))).round(3)
             _ = st.select_slider(label = "DBSCAN eps", options = eps_options, 
                                 key = "k_dbscan_eps", value=ss['upar']["dbscan_eps"], on_change=update_ss, args=["k_dbscan_eps", "dbscan_eps"])
             _ = st.select_slider(label = "DBSCAN min samples", options=np.arange(5, 31, 5), 

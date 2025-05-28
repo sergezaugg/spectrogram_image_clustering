@@ -47,7 +47,7 @@ def dim_reduction_for_2D_plot(X, n_neigh, n_components = 2):
         n_neighbors = n_neigh, 
         n_components = n_components, 
         metric = 'euclidean',
-        n_jobs = -1
+        n_jobs = 8
         )
     X_scaled = scaler.fit_transform(X)
     # reducer.fit(X_small, ensure_all_finite=True)
@@ -78,7 +78,7 @@ def dim_reduction_for_clustering(X, n_neigh, n_dims_red, skip_umap = False):
             n_neighbors = n_neigh, 
             n_components = n_dims_red, 
             metric = 'euclidean',
-            n_jobs = -1
+            n_jobs = 8
             )
         # X_trans = reducer.fit_transform(X, ensure_all_finite=True)
         # reducer.fit(X_small, ensure_all_finite=True)
@@ -97,8 +97,8 @@ def dim_reduction_for_clustering(X, n_neigh, n_dims_red, skip_umap = False):
 def perform_dbscan_clusterin(X, eps, min_samples):
     """ 
     """
-    clu = DBSCAN(eps = eps, min_samples = min_samples, metric='euclidean', n_jobs = 4) 
-    # clu = OPTICS(min_samples=min_samples, max_eps=eps, metric='euclidean', n_jobs=4)
+    clu = DBSCAN(eps = eps, min_samples = min_samples, metric='euclidean', n_jobs = 8) 
+    # clu = OPTICS(min_samples=min_samples, max_eps=eps, metric='euclidean', n_jobs=8)
     clusters_pred = clu.fit_predict(X)
     return(clusters_pred)
 
