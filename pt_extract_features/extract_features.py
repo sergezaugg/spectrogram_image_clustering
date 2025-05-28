@@ -44,40 +44,48 @@ batch_size = 16
 # freq_pool = 1
 
 
+# # -----------------
+# model_tag = "ResNet50"
+# fex_tag = "layer3.5.conv3"
+# model, weights = load_pretraind_model(model_tag)
+# freq_pool = 4
+# return_nodes = {fex_tag: "feature_1"}
+# model = create_feature_extractor(model, return_nodes=return_nodes)
+
+# # -----------------
+# model_tag = "ResNet50"
+# fex_tag = "layer2.3.conv3"
+# model, weights = load_pretraind_model(model_tag)
+# freq_pool = 4
+# return_nodes = {fex_tag: "feature_1"}
+# model = create_feature_extractor(model, return_nodes=return_nodes)
+
 # -----------------
 model_tag = "ResNet50"
-fex_tag = "layer3.5.conv3"
+fex_tag = "layer1.2.conv3"
 model, weights = load_pretraind_model(model_tag)
 freq_pool = 4
 return_nodes = {fex_tag: "feature_1"}
 model = create_feature_extractor(model, return_nodes=return_nodes)
 
 
-# -----------------
-model_tag = "ResNet50"
-fex_tag = "layer2.3.conv3"
-model, weights = load_pretraind_model(model_tag)
-freq_pool = 4
-return_nodes = {fex_tag: "feature_1"}
-model = create_feature_extractor(model, return_nodes=return_nodes)
+
+# # -----------------
+# model_tag = "DenseNet121"
+# fex_tag = "features.denseblock3"
+# model, weights = load_pretraind_model(model_tag)
+# freq_pool = 4
+# return_nodes = {fex_tag: "feature_1"}
+# model = create_feature_extractor(model, return_nodes=return_nodes)
 
 
-# -----------------
-model_tag = "DenseNet121"
-fex_tag = "features.denseblock3"
-model, weights = load_pretraind_model(model_tag)
-freq_pool = 4
-return_nodes = {fex_tag: "feature_1"}
-model = create_feature_extractor(model, return_nodes=return_nodes)
-
-
-# -----------------
-model_tag = "MaxVit_T"
-fex_tag = "blocks.3.layers.1.layers.MBconv.layers.conv_c"
-model, weights = load_pretraind_model(model_tag)
-freq_pool = 1
-return_nodes = {fex_tag: "feature_1"}
-model = create_feature_extractor(model, return_nodes=return_nodes)
+# # -----------------
+# model_tag = "MaxVit_T"
+# fex_tag = "blocks.3.layers.1.layers.MBconv.layers.conv_c"
+# model, weights = load_pretraind_model(model_tag)
+# freq_pool = 1
+# return_nodes = {fex_tag: "feature_1"}
+# model = create_feature_extractor(model, return_nodes=return_nodes)
 
 
 
@@ -95,17 +103,21 @@ loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size,  shuffle=Fa
 X_li = [] # features
 N_li = [] # file Nanes
 for ii, (batch, finam) in enumerate(loader, 0):
-    print('inp', batch.shape)
+    print('Model:', model_tag )
+    print('Feature layer:', fex_tag )
+    print('Input resized image:', batch.shape)
     # batch = batch.to(torch.float)
     pred = model(batch)['feature_1'].detach().numpy() 
-    print('out of net', pred.shape)
+    print('Feature out of net:', pred.shape)
     # blockwise pooling along frequency axe 
     pred = skimage.measure.block_reduce(pred, (1,1,freq_pool,1), np.mean)
+    print('After average pool along freq:', pred.shape)
     # full average pool over time (do asap to avoid memory issues later)
     pred = pred.mean(axis=3)
+    print('After average pool along time:', pred.shape)
     # unwrap freq int feature dim
     pred = np.reshape(pred, shape=(pred.shape[0], pred.shape[1]*pred.shape[2]))
-    print('pooled-reshaped', pred.shape)
+    print('After reshape:', pred.shape)
     print("")
     # do it dirty
     X_li.append(pred)

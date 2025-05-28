@@ -40,7 +40,7 @@ if 'upar' not in ss:
 with st.sidebar:
     st.info('Selected: ' + ss['dapar']['dataset_name'])
     st.header(''':primary[**CLUSTER SPECTROGRAMMS**]''')
-    st.text("v0.1.0")
+    st.text("v0.1.1")
     st.markdown(''':primary[QUICK GUIDE]''')
     st.text("(1) Select a dataset")
     st.text("(2) Choose UMAP params")

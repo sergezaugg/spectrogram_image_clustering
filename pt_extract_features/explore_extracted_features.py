@@ -6,10 +6,7 @@ import numpy as np
 import plotly.express as px
 from sklearn.model_selection import train_test_split
 
-npzfile_full_path = "extracted_features/20250527_190946_unwrapped_features_MaxVit_T.npz"
-npzfile_full_path = "extracted_features/20250527_194433_unwrapped_features_DenseNet121.npz"
-npzfile_full_path = "extracted_features/20250527_200518_unwrapped_features_ResNet50.npz"
-npzfile_full_path = "extracted_features/20250527_202434_unwrapped_features_ResNet50layer2.3.conv3.npz"
+npzfile_full_path = "extracted_features/features_ResNet50_layer1.npz"
 # npzfile_full_path = "extracted_features/sssssssssss.npz"
 # npzfile_full_path = "extracted_features/sssssssssss.npz"
 
