@@ -27,44 +27,6 @@ def get_short_class_name(a):
     """ a : a string"""
     return("-".join(a.split("-")[0:2]))
 
-# @st.cache_data
-# def dim_reduction_for_2D_plot(X, n_neigh, n_components = 2):
-#     """
-#     UMAP dim reduction for 2D plot 
-#     """
-#     scaler = StandardScaler()
-#     reducer = umap.UMAP(
-#         n_neighbors = n_neigh, 
-#         n_components = n_components, 
-#         metric = 'euclidean',
-#         n_jobs = -1
-#         )
-#     X_scaled = scaler.fit_transform(X)
-#     X2D_trans = reducer.fit_transform(X_scaled)
-#     X2D_scaled = scaler.fit_transform(X2D_trans)
-#     return(X2D_scaled)
-
-# @st.cache_data
-# def dim_reduction_for_clustering(X, n_neigh, n_dims_red, skip_umap = False):
-#     """
-#     UMAP dim reduction for clustering
-#     """
-#     scaler = StandardScaler()
-#     if skip_umap == True:
-#         X_scaled = scaler.fit_transform(X)
-#         return(X_scaled)
-#     else:    
-#         reducer = umap.UMAP(
-#             n_neighbors = n_neigh, 
-#             n_components = n_dims_red, 
-#             metric = 'euclidean',
-#             n_jobs = -1
-#             )
-#         X_scaled = scaler.fit_transform(X)
-#         X_trans = reducer.fit_transform(X_scaled)
-#         X_out = scaler.fit_transform(X_trans)
-#         return(X_out)
-
 @st.cache_data
 def perform_dbscan_clusterin(X, eps, min_samples):
     """ 
@@ -120,7 +82,7 @@ def make_scatter_plot(df, cat_name, title = "not set", height = 900, width = 100
 
 @st.fragment
 def display_mini_images_by_file(sel_imgs):
-    num_cols = 8
+    num_cols = 5
     grid = st.columns(num_cols)
     col = 0
     for ii, im_filname in enumerate(sel_imgs):

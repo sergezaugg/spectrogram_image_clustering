@@ -18,11 +18,9 @@ if 'dapar' not in ss:
         'feat_path' : 'empty',
         'imgs_path' : 'empty',
         'dataset_name' :  'empty',
-        'X' : np.array([]),
         'clusters_pred_str' : np.array([]),
         'im_filenames' : np.array([]),
         'li_npz' : 'empty', # list of available files
-        # 'li_npz_2d' : 'empty',
         'X2D' : np.array([]),
         'X_dimred' : np.array([]),
         }
@@ -41,7 +39,7 @@ if 'upar' not in ss:
 with st.sidebar:
     st.info('Selected: ' + ss['dapar']['dataset_name'])
     st.header(''':primary[**CLUSTER SPECTROGRAMMS**]''')
-    st.text("v0.1.1")
+    st.text("v0.2.0")
     st.markdown(''':primary[QUICK GUIDE]''')
     st.text("(1) Select a dataset")
     st.text("(2) Choose UMAP params")

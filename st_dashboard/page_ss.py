@@ -16,11 +16,7 @@ st.write(ss['dapar']['imgs_path'])
 st.divider()
 st.text("Active data:")
 st.write(ss['dapar']['dataset_name'])
-st.write('Feature array:',  ss['dapar']['X'].shape, ss['dapar']['X'].dtype)
 st.write('Filename array:', ss['dapar']['im_filenames'].shape, ss['dapar']['im_filenames'].dtype)
-
-st.divider()
-st.text("Intermediate array:")
 st.write('Dim reduced for plots:', ss['dapar']['X2D'].shape, ss['dapar']['X2D'].dtype)
 st.write('Dim reduced for clustering:', ss['dapar']['X_dimred'].shape, ss['dapar']['X_dimred'].dtype)
 

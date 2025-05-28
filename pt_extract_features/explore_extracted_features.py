@@ -9,15 +9,11 @@ from pt_extract_features.utils_ml import dim_reduce
 
 featu_path = "./extracted_features"
 
-
-
-
-# file_name_in = "features_DenseNet121_denseblock3.npz"
+file_name_in = "features_DenseNet121_denseblock3.npz"
 # file_name_in = "features_MaxVit_T_blocks.3.npz"
 # file_name_in = "features_ResNet50_layer1.npz"
-file_name_in = "features_ResNet50_layer2.npz"
+# file_name_in = "features_ResNet50_layer2.npz"
 # file_name_in = "features_ResNet50_layer3.npz"
-
 
 npzfile_full_path = os.path.join(featu_path, file_name_in)
 
@@ -57,7 +53,7 @@ np.savez(file = out_name, X_red = X_red, X_2D = X_2D, N = N)
 
 
 
-
+# 
 # outli_score = np.abs(X).mean(1)
 # thld = np.quantile(outli_score, 0.99)
 # X.shape
