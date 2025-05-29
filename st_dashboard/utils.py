@@ -122,7 +122,7 @@ def display_bar_plot(x):
     xx = xx.value_counts().reset_index()
     xx.columns = ["File name", "Mini-image counts per XC-file"]
     st.bar_chart(xx, x = "File name", y = "Mini-image counts per XC-file", 
-                 horizontal = True, use_container_width = False, color = "#bb0011",
+                 horizontal = True, use_container_width = False, color = "#cccccc",
                  y_label = '')
 
 
