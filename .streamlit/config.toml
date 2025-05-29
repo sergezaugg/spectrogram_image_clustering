@@ -5,6 +5,14 @@ primaryColor="#cc0044"
 textColor="white"
 backgroundColor="#000000"
 secondaryBackgroundColor="#330000"
+linkColor="#cc0044"
+codeBackgroundColor="111100"
+
+baseRadius = "1.5rem"
+borderColor = "#440023"
+showWidgetBorder = true
+baseFontSize = 15
+
 
 [server]
 maxUploadSize = 400
