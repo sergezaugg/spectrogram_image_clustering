@@ -41,6 +41,9 @@ else :
                 if submitted_1:
                     npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
                     npzfile = np.load(npzfile_full_path)
+
+                    # st.write(npzfile['X_red'].shape, npzfile['X_2D'].shape, npzfile['N'].shape)
+
                     # take a subset of data (else public streamlit.app will crash) 
                     X_red, _, X_2D, _, N, _, = train_test_split(npzfile['X_red'], npzfile['X_2D'], npzfile['N'], train_size=10000, random_state=6666, shuffle=True)
                     # put selected data into ss
@@ -48,7 +51,7 @@ else :
                     ss['dapar']['X2D']           = X_2D.astype(np.float16)
                     ss['dapar']['X_dimred']      = X_red.astype(np.float16)
                     ss['dapar']['im_filenames']  = N
-                    del(X_red, X_2D, N)
+                    del(X_red, X_2D, N, npzfile)
                     st.rerun() # to update sidebar - 
 
 
@@ -56,47 +59,47 @@ else :
         with st.container(border=True) : 
             st.markdown('''                
                 #### features_DenseNet121_denseblock3.npz
-                * Feature layer: :orange[features.denseblock3]
-                * Input resized image: :orange[(, 3, 224, 224)]
-                * Feature out of net: :orange[(, 1024, 14, 14)]
-                * After average pool along freq: :orange[(, 1024, 4, 14)]
-                * After average pool along time: :orange[(, 1024, 4)]
-                * After reshape: :orange[(, 4096)]
+                * Feature layer: :red[features.denseblock3]
+                * Input resized image: :red[(, 3, 224, 224)]
+                * Feature out of net: :red[(, 1024, 14, 14)]
+                * After average pool along freq: :red[(, 1024, 4, 14)]
+                * After average pool along time: :red[(, 1024, 4)]
+                * After reshape: :red[(, 4096)]
                             
                 #### features_MaxVit_T_blocks.3.npz
-                * Feature layer: :orange[blocks.3.layers.1.layers.MBconv.layers.conv_c]
-                * Input resized image:  :orange[( , 3, 224, 224)]
-                * Feature out of net:  :orange[( , 512, 7, 7)]
-                * After average pool along freq:  :orange[( , 512, 7, 7)]
-                * After average pool along time:  :orange[( , 512, 7)]
-                * After reshape:  :orange[( , 3584)]
+                * Feature layer: :red[blocks.3.layers.1.layers.MBconv.layers.conv_c]
+                * Input resized image:  :red[( , 3, 224, 224)]
+                * Feature out of net:  :red[( , 512, 7, 7)]
+                * After average pool along freq:  :red[( , 512, 7, 7)]
+                * After average pool along time:  :red[( , 512, 7)]
+                * After reshape:  :red[( , 3584)]
                 ''')
     with c02:
         with st.container(border=True) : 
             st.markdown('''      
                 #### features_ResNet50_layer1.npz
-                * Feature layer: :orange[layer1.2.conv3]
-                * Input resized image: :orange[(16, 3, 224, 224)]
-                * Feature out of net: :orange[(16, 256, 56, 56)]
-                * After average pool along freq: :orange[(16, 256, 14, 56)]
-                * After average pool along time: :orange[(16, 256, 14)]
-                * After reshape: :orange[(16, 3584)]
+                * Feature layer: :red[layer1.2.conv3]
+                * Input resized image: :red[(, 3, 224, 224)]
+                * Feature out of net: :red[(, 256, 56, 56)]
+                * After average pool along freq: :red[(, 256, 14, 56)]
+                * After average pool along time: :red[(, 256, 14)]
+                * After reshape: :red[(, 3584)]
                         
                 #### features_ResNet50_layer2.npz
-                * Feature layer: :orange[layer2.3.conv3]
-                * Input resized image: :orange[(, 3, 224, 224)]
-                * Feature out of net: :orange[(, 512, 28, 28)]
-                * After average pool along freq: :orange[(, 512, 7, 28)]
-                * After average pool along time: :orange[(, 512, 7)]
-                * After reshape: :orange[(, 3584)]
+                * Feature layer: :red[layer2.3.conv3]
+                * Input resized image: :red[(, 3, 224, 224)]
+                * Feature out of net: :red[(, 512, 28, 28)]
+                * After average pool along freq: :red[(, 512, 7, 28)]
+                * After average pool along time: :red[(, 512, 7)]
+                * After reshape: :red[(, 3584)]
                                
                 #### features_ResNet50_layer3.npz
-                * Feature layer: :orange[layer3.5.conv3] 
-                * Input resized image: :orange[(, 3, 224, 224)] 
-                * Feature out of net: :orange[(, 1024, 14, 14)] 
-                * After average pool along freq: :orange[(, 1024, 4, 14)] 
-                * After average pool along time: :orange[(, 1024, 4)] 
-                * After reshape: :orange[(, 4096)]       
+                * Feature layer: :red[layer3.5.conv3] 
+                * Input resized image: :red[(, 3, 224, 224)] 
+                * Feature out of net: :red[(, 1024, 14, 14)] 
+                * After average pool along freq: :red[(, 1024, 4, 14)] 
+                * After average pool along time: :red[(, 1024, 4)] 
+                * After reshape: :red[(, 4096)]       
                 ''')            
     
 gc.collect() 

@@ -17,7 +17,8 @@ with c00:
 
         ### Data
         * Spectrograms obtained from recordings from [xeno-canto](https://xeno-canto.org/).
-        * Over 27000 mini spectrograms stored as RGB images. 
+        * Standardized preparation of spectrogram images done with [this tool](https://github.com/sergezaugg/xeno_canto_organizer).            
+        * These 25157 mini spectrograms stored as RGB images. 
         * A smaller random subsample of N=10000 images used in dashboard to avoid memory issues.   
         * Extracted features and images are [here](https://www.kaggle.com/datasets/sezaugg/spectrogram-clustering-01)     
 
