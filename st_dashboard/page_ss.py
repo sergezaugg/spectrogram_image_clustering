@@ -13,9 +13,13 @@ st.text("Paths:")
 st.write(ss['dapar']['feat_path'])
 st.write(ss['dapar']['imgs_path'])
 
+
+
 st.divider()
 st.text("Active data:")
-st.write(ss['dapar']['dataset_name'])
+st.write('Nb images:', len(os.listdir(ss['dapar']['imgs_path'])))
+st.write('Per-file metadata', ss['dapar']['df_meta'].shape)
+st.write('Dataset name: ', ss['dapar']['dataset_name'])
 st.write('Filename array:', ss['dapar']['im_filenames'].shape, ss['dapar']['im_filenames'].dtype)
 st.write('Dim reduced for plots:', ss['dapar']['X2D'].shape, ss['dapar']['X2D'].dtype)
 st.write('Dim reduced for clustering:', ss['dapar']['X_dimred'].shape, ss['dapar']['X_dimred'].dtype)
