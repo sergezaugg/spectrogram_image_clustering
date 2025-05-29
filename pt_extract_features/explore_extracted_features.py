@@ -9,11 +9,13 @@ from pt_extract_features.utils_ml import dim_reduce
 
 featu_path = "./extracted_features"
 
-li = ["features_DenseNet121_denseblock3.npz",
-    "features_MaxVit_T_blocks.3.npz",
-    "features_ResNet50_layer1.npz",
-    "features_ResNet50_layer2.npz",
-    "features_ResNet50_layer3.npz",
+li = [
+    # "features_DenseNet121_denseblock3.npz",
+    # "features_MaxVit_T_blocks.3.npz",
+    # "features_ResNet50_layer1.npz",
+    # "features_ResNet50_layer2.npz",
+    # "features_ResNet50_layer3.npz",
+    "20250529_093122_features_vgg16features.28.npz",
     ]
 
 

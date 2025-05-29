@@ -112,7 +112,16 @@ def display_mini_images_by_file(sel_imgs):
             print('shit') 
 
 
-
+@st.fragment
+def display_bar_plot(x):
+    """
+    Arguments : 
+    files_counts : A 1D numpy array
+    """
+    xx = pd.Series(x).str.slice(start=0, stop=8)
+    xx = xx.value_counts().reset_index()
+    xx.columns = ["File name", "Mini-image counts per XC-file"]
+    st.bar_chart(xx, x = "File name", y = "Mini-image counts per XC-file", horizontal = False, use_container_width = False)
 
 
 

@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 import gc
 # streamlit need it like that:
-from utils import perform_dbscan_clusterin, update_ss
+from utils import perform_dbscan_clusterin, update_ss, display_bar_plot
 from utils import make_sorted_df, make_scatter_plot, display_mini_images_by_file
 # streamlit does not find the module !!!
 # from st_dashboard.utils import dim_reduction_for_2D_plot, dim_reduction_for_clustering, perform_dbscan_clusterin, update_ss
@@ -82,6 +82,16 @@ if len(ss['dapar']['X_dimred']) > 0 :
         rand_index = np.random.choice(np.arange(len(images_in_cluster)), size=min(120, len(images_in_cluster)), replace=False)    
         images_in_cluster_sample = images_in_cluster[rand_index]
         display_mini_images_by_file(sel_imgs = images_in_cluster_sample)
+
+        # display_bar_plot
+        st.text("XC files in this cluster")
+        display_bar_plot(images_in_cluster_sample)
+
+
+
+
+
+
 
 gc.collect()
 
