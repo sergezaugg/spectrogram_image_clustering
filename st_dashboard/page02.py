@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 import gc
 # streamlit need it like that:
-from utils import perform_dbscan_clusterin, update_ss
+from utils import perform_dbscan_clusterin, update_ss, display_bar_plot, select_random_image_subset
 from utils import make_sorted_df, make_scatter_plot, display_mini_images_by_file
 # streamlit does not find the module !!!
 # from st_dashboard.utils import dim_reduction_for_2D_plot, dim_reduction_for_clustering, perform_dbscan_clusterin, update_ss
@@ -35,8 +35,13 @@ if len(ss['dapar']['X_dimred']) > 0 :
         with c01:
             with st.container(border=True, height = 250): 
                 st.text("Input to DBSCAN")  
-                st.info(str(ss['dapar']['X_dimred'].shape[0]) + ' images')
-                st.info(str(ss['dapar']['X_dimred'].shape[1]) + ' features')
+                txt01 = ':red-background[' + str(ss['dapar']['X_dimred'].shape[0]) + ' images' + ']'
+                txt02 = ':red-background[' + str(ss['dapar']['X_dimred'].shape[1]) + ' features' + ']'
+                st.markdown(txt01)
+                st.markdown(txt02)
+
+
+
         with c02:
             with st.container(border=True, height = 250): 
                 eps_options = (10.0**(np.arange(-3.0, 0.50, 0.05))).round(3)
@@ -74,14 +79,23 @@ if len(ss['dapar']['X_dimred']) > 0 :
         clu_id_list = np.unique(ss['dapar']['clusters_pred_str'])
         clu_selected = st.segmented_control(label = "Select a cluster ID", options = clu_id_list, selection_mode="single", key = "k_img_clu",
                                         default = clu_id_list[-1], label_visibility="visible")        
-        st.text("Cluster content preview (up to 60 random images from cluster)")
+        st.text("Cluster content preview (up to 120 random images from cluster)")
         # select all images in a given cluster 
         sel = ss['dapar']['clusters_pred_str'] == clu_selected
         images_in_cluster = ss['dapar']['im_filenames'][sel]
         # take a smaller subsample 
-        rand_index = np.random.choice(np.arange(len(images_in_cluster)), size=min(120, len(images_in_cluster)), replace=False)    
-        images_in_cluster_sample = images_in_cluster[rand_index]
+        images_in_cluster_sample = select_random_image_subset(images_in_cluster, max_n_images = 120)
         display_mini_images_by_file(sel_imgs = images_in_cluster_sample)
+
+        # display_bar_plot
+        st.text("XC files in this cluster")
+        display_bar_plot(images_in_cluster_sample)
+
+
+
+
+
+
 
 gc.collect()
 

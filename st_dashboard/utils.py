@@ -112,7 +112,21 @@ def display_mini_images_by_file(sel_imgs):
             print('shit') 
 
 
+@st.fragment
+def display_bar_plot(x):
+    """
+    Arguments : 
+    files_counts : A 1D numpy array
+    """
+    xx = pd.Series(x).str.slice(start=0, stop=8)
+    xx = xx.value_counts().reset_index()
+    xx.columns = ["File name", "Mini-image counts per XC-file"]
+    st.bar_chart(xx, x = "File name", y = "Mini-image counts per XC-file", 
+                 horizontal = True, use_container_width = False, color = "#cccccc",
+                 y_label = '')
 
 
-
-
+@st.cache_data
+def select_random_image_subset(images_in_cluster, max_n_images = 60):
+    rand_index = np.random.choice(np.arange(len(images_in_cluster)), size=min(max_n_images, len(images_in_cluster)), replace=False)    
+    return(images_in_cluster[rand_index])

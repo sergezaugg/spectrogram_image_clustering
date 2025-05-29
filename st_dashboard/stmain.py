@@ -32,15 +32,15 @@ if 'upar' not in ss:
         'umap_n_neighbors' : 10,
         'umap_n_dims_red' : 8,
         'skip_umap' : False,
-        'dbscan_eps' : 0.501,
+        'dbscan_eps' : 0.355,
         'dbscan_min_samples' : 10,
         'exclude_non_assigned' : False
         }
 
 with st.sidebar:
     st.info('Selected: ' + ss['dapar']['dataset_name'])
-    st.header(''':primary[**CLUSTERING SPECTROGRAMS WITH FEATURES FROM PRE-TRAINED MODELS**]''')
-    st.text("v0.9.2")
+    st.header(''':primary[**Clustering spectrograms with features from pre-trained models**]''')
+    st.text("v0.9.4")
     st.markdown(''':primary[QUICK GUIDE]''')
     st.text("(1) Select a dataset")
     st.text("(2) Tune DBSCAN params")
@@ -51,7 +51,7 @@ p01 = st.Page("page01.py", title="Summary")
 p02 = st.Page("page02.py", title="Analyse")
 p03 = st.Page("page03.py", title="Select dataset")
 p04 = st.Page("page04.py", title="Data info/credits")
-pss = st.Page("page_ss.py", title="(Array diagnostics)")
+pss = st.Page("page_ss.py", title="(Dev diagnostics)")
 pg = st.navigation([p03, p02, p01, p04, pss])
 pg.run()
 

@@ -23,11 +23,6 @@ featu_path = "./extracted_features"
 batch_size = 16
 
 
-# model_tag = "Vit_b_16"
-# model_tag = "MaxVit_T"
-# model_tag = "Swin_S"
-
-
 #-------------------------
 # Step 1: Initialize model with pre-trained weights
 
@@ -60,15 +55,21 @@ batch_size = 16
 # return_nodes = {fex_tag: "feature_1"}
 # model = create_feature_extractor(model, return_nodes=return_nodes)
 
+# # -----------------
+# model_tag = "ResNet50"
+# fex_tag = "layer1.2.conv3"
+# model, weights = load_pretraind_model(model_tag)
+# freq_pool = 4
+# return_nodes = {fex_tag: "feature_1"}
+# model = create_feature_extractor(model, return_nodes=return_nodes)
+
 # -----------------
-model_tag = "ResNet50"
-fex_tag = "layer1.2.conv3"
+model_tag = "vgg16"
+fex_tag = "features.28"
 model, weights = load_pretraind_model(model_tag)
 freq_pool = 4
 return_nodes = {fex_tag: "feature_1"}
 model = create_feature_extractor(model, return_nodes=return_nodes)
-
-
 
 # # -----------------
 # model_tag = "DenseNet121"
