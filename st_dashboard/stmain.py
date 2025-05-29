@@ -32,7 +32,7 @@ if 'upar' not in ss:
         'umap_n_neighbors' : 10,
         'umap_n_dims_red' : 8,
         'skip_umap' : False,
-        'dbscan_eps' : 0.355,
+        'dbscan_eps' : 0.447,
         'dbscan_min_samples' : 20,
         'exclude_non_assigned' : False
         }
