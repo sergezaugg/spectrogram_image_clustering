@@ -126,4 +126,7 @@ def display_bar_plot(x):
                  y_label = '')
 
 
-
+@st.cache_data
+def select_random_image_subset(images_in_cluster, max_n_images = 60):
+    rand_index = np.random.choice(np.arange(len(images_in_cluster)), size=min(max_n_images, len(images_in_cluster)), replace=False)    
+    return(images_in_cluster[rand_index])
