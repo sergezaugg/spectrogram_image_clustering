@@ -73,6 +73,15 @@ else :
                 * After average pool along freq:  :red[( , 512, 7, 7)]
                 * After average pool along time:  :red[( , 512, 7)]
                 * After reshape:  :red[( , 3584)]
+                        
+                #### Model: vgg16
+                * Feature layer: :red[features.28]
+                * Input resized image: :red[(, 3, 224, 224)]
+                * Feature out of net: :red[(, 512, 14, 14)]
+                * After average pool along freq: :red[(, 512, 4, 14)]
+                * After average pool along time: :red[(, 512, 4)]
+                * After reshape: :red[(, 2048)]
+        
                 ''')
     with c02:
         with st.container(border=True) : 
