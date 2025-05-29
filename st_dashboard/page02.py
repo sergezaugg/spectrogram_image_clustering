@@ -35,8 +35,13 @@ if len(ss['dapar']['X_dimred']) > 0 :
         with c01:
             with st.container(border=True, height = 250): 
                 st.text("Input to DBSCAN")  
-                st.info(str(ss['dapar']['X_dimred'].shape[0]) + ' images')
-                st.info(str(ss['dapar']['X_dimred'].shape[1]) + ' features')
+                txt01 = ':red-background[' + str(ss['dapar']['X_dimred'].shape[0]) + ' images' + ']'
+                txt02 = ':red-background[' + str(ss['dapar']['X_dimred'].shape[1]) + ' features' + ']'
+                st.markdown(txt01)
+                st.markdown(txt02)
+
+
+
         with c02:
             with st.container(border=True, height = 250): 
                 eps_options = (10.0**(np.arange(-3.0, 0.50, 0.05))).round(3)
