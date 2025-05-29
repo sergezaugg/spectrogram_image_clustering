@@ -47,7 +47,7 @@ if len(ss['dapar']['X_dimred']) > 0 :
                 eps_options = (10.0**(np.arange(-3.0, 0.50, 0.05))).round(3)
                 _ = st.select_slider(label = "DBSCAN eps", options = eps_options, 
                     key = "k_dbscan_eps", value=ss['upar']["dbscan_eps"], on_change=update_ss, args=["k_dbscan_eps", "dbscan_eps"])
-                _ = st.select_slider(label = "DBSCAN min samples", options=np.arange(5, 31, 5), 
+                _ = st.select_slider(label = "DBSCAN min samples", options=np.arange(5, 51, 5), 
                     key = "k_dbscan_min", value=ss['upar']["dbscan_min_samples"], on_change=update_ss, args=["k_dbscan_min", "dbscan_min_samples"])
                 _ = st.checkbox("Hide dots (spectrograms) not assigned to a cluster",
                     key = "k_suppress", value=ss['upar']["exclude_non_assigned"], on_change=update_ss, args=["k_suppress", "exclude_non_assigned"])
