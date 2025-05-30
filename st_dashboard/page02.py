@@ -43,7 +43,7 @@ if len(ss['dapar']['X_dimred']) > 0 :
         with c02:
             with st.container(border=True, height = 275): 
                 eps_options = (10.0**(np.arange(-3.0, 0.50, 0.05))).round(3)
-                min_samples_options = np.arange(5, 51, 5)
+                min_samples_options = np.arange(10, 51, 5)
                 # # callback version (too fast for streamlit.app ?)
                 # _ = st.select_slider(label = "DBSCAN eps", options = eps_options, 
                 #     key = "k_dbscan_eps", value=ss['upar']["dbscan_eps"], on_change=update_ss, args=["k_dbscan_eps", "dbscan_eps"])
