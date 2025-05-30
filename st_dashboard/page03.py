@@ -35,7 +35,7 @@ else :
         with st.container(border=True):   
             with st.form("form01", border=False):
                 # npz_finame = st.selectbox("Select data with extracted features", options = ss['dapar']['li_npz'])
-                npz_finame = st.radio("Select data with extracted features", options = ss['dapar']['li_npz'])
+                npz_finame = st.radio("Select data with extracted features", options = ss['dapar']['li_npz'], index=3)
 
                 submitted_1 = st.form_submit_button("Activate dataset", type = "primary")  
                 if submitted_1:
