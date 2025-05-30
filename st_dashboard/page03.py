@@ -1,6 +1,6 @@
 #--------------------             
 # Author : Serge Zaugg
-# Description : Utility functions used by other scripts
+# Description : page to select a dataset to be loaded into session state
 #--------------------
 
 import os
@@ -26,7 +26,6 @@ if ss['dapar']['feat_path'] == 'empty' :
     ss['dapar']['li_npz'].sort()
     # load meta data 
     path_meat = os.path.join(ss['dapar']['feat_path'], 'downloaded_data_meta.pkl')
-    # st.write(path_meat)  
     ss['dapar']['df_meta'] = pd.read_pickle(path_meat)
     st.rerun()
 # Then, choose a dataset
@@ -34,16 +33,11 @@ else :
     with c00:
         with st.container(border=True):   
             with st.form("form01", border=False):
-                # npz_finame = st.selectbox("Select data with extracted features", options = ss['dapar']['li_npz'])
                 npz_finame = st.radio("Select data with extracted features", options = ss['dapar']['li_npz'], index=3)
-
                 submitted_1 = st.form_submit_button("Activate dataset", type = "primary")  
                 if submitted_1:
                     npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
                     npzfile = np.load(npzfile_full_path)
-
-                    # st.write(npzfile['X_red'].shape, npzfile['X_2D'].shape, npzfile['N'].shape)
-
                     # take a subset of data (else public streamlit.app will crash) 
                     X_red, _, X_2D, _, N, _, = train_test_split(npzfile['X_red'], npzfile['X_2D'], npzfile['N'], train_size=10000, random_state=6666, shuffle=True)
                     # put selected data into ss
@@ -52,9 +46,7 @@ else :
                     ss['dapar']['X_dimred']      = X_red.astype(np.float16)
                     ss['dapar']['im_filenames']  = N
                     del(X_red, X_2D, N, npzfile)
-                    st.rerun() # to update sidebar - 
-
-
+                    st.rerun() # to update sidebar!
 
 gc.collect() 
 

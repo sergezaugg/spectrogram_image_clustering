@@ -28,29 +28,42 @@ else :
 # main dashboard
 if len(ss['dapar']['X_dimred']) > 0 :
 
-    cols = st.columns([0.35, 0.35, 0.05])
+    cols = st.columns([0.30, 0.35, 0.15])
 
     with cols[0]:
         c01, c02 = st.columns([0.2, 0.6])    
         with c01:
-            with st.container(border=True, height = 250): 
+            with st.container(border=True, height = 275): 
                 st.text("Input to DBSCAN")  
                 txt01 = ':red-background[' + str(ss['dapar']['X_dimred'].shape[0]) + ' images' + ']'
                 txt02 = ':red-background[' + str(ss['dapar']['X_dimred'].shape[1]) + ' features' + ']'
                 st.markdown(txt01)
                 st.markdown(txt02)
 
-
-
         with c02:
-            with st.container(border=True, height = 250): 
-                eps_options = (10.0**(np.arange(-3.0, 0.50, 0.05))).round(3)
-                _ = st.select_slider(label = "DBSCAN eps", options = eps_options, 
-                    key = "k_dbscan_eps", value=ss['upar']["dbscan_eps"], on_change=update_ss, args=["k_dbscan_eps", "dbscan_eps"])
-                _ = st.select_slider(label = "DBSCAN min samples", options=np.arange(5, 51, 5), 
-                    key = "k_dbscan_min", value=ss['upar']["dbscan_min_samples"], on_change=update_ss, args=["k_dbscan_min", "dbscan_min_samples"])
-                _ = st.checkbox("Hide dots (spectrograms) not assigned to a cluster",
-                    key = "k_suppress", value=ss['upar']["exclude_non_assigned"], on_change=update_ss, args=["k_suppress", "exclude_non_assigned"])
+            with st.container(border=True, height = 275): 
+                # eps_options = (10.0**(np.arange(-3.0, 0.50, 0.05))).round(3)
+                eps_options = np.concatenate([np.arange(0.01, 0.1, 0.01), np.arange(0.1, 2.1, 0.1)]).round(2)
+                min_samples_options = np.arange(10, 51, 5)
+                # # callback version (too fast for streamlit.app ?)
+                # _ = st.select_slider(label = "DBSCAN eps", options = eps_options, 
+                #     key = "k_dbscan_eps", value=ss['upar']["dbscan_eps"], on_change=update_ss, args=["k_dbscan_eps", "dbscan_eps"])
+                # _ = st.select_slider(label = "DBSCAN min samples", options = min_samples_options, 
+                #     key = "k_dbscan_min", value=ss['upar']["dbscan_min_samples"], on_change=update_ss, args=["k_dbscan_min", "dbscan_min_samples"])
+           
+                # form-submit version
+                with st.form("form_01", border=False):
+                    eps_value = st.select_slider(label = "DBSCAN eps", options = eps_options, value=ss['upar']["dbscan_eps"])
+                    min_samples_value = st.select_slider(label = "DBSCAN min samples", options = min_samples_options, value=ss['upar']["dbscan_min_samples"])
+                    # Every form must have a submit button.
+                    submitted = st.form_submit_button("Recompute DBSCAN", type = "primary")
+                    if submitted:
+                        ss['upar']["dbscan_eps"] = eps_value
+                        ss['upar']["dbscan_min_samples"] = min_samples_value
+                        st.rerun()
+                        
+        _ = st.checkbox("Hide dots not assigned to a cluster",
+                        key = "k_suppress", value=ss['upar']["exclude_non_assigned"], on_change=update_ss, args=["k_suppress", "exclude_non_assigned"])
 
         #-------------------------------------------
         # computational block 2 (st-cached)
@@ -58,12 +71,10 @@ if len(ss['dapar']['X_dimred']) > 0 :
         num_unasigned = (clusters_pred == -1).sum()
         num_asigned = len(clusters_pred) - num_unasigned
         num_clusters = len(np.unique(clusters_pred))
-        # clusters_str = np.array([format(a, '03d') for a in clusters_pred])
-        # clusters_str[clusters_str == '-01'] = '-ua'
         ss['dapar']['clusters_pred_str'] = np.array([format(a, '03d') for a in clusters_pred])
         df_pred = make_sorted_df(cat = ss['dapar']['clusters_pred_str'], cat_name = 'Predicted cluster', X = ss['dapar']['X2D'])
         fig02 = make_scatter_plot(df = df_pred, cat_name = 'Predicted cluster', 
-                                title = "Predicted clusters      (Scatterplot from 2D UMAP mapping)", height = 900, width = 1000, b_margin = 300,
+                                title = "Predicted clusters      (Scatterplot from 2D UMAP mapping)", height = 800, width = 1000, b_margin = 300,
                                 exclude_non_assigned = ss['upar']["exclude_non_assigned"])
         #-------------------------------------------
 
@@ -87,6 +98,7 @@ if len(ss['dapar']['X_dimred']) > 0 :
         images_in_cluster_sample = select_random_image_subset(images_in_cluster, max_n_images = 120)
         display_mini_images_by_file(sel_imgs = images_in_cluster_sample)
 
+    with cols[2]:
         # display_bar_plot
         st.text("XC files of spectrograms in this cluster")
         display_bar_plot(images_in_cluster_sample)

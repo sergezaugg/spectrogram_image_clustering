@@ -32,14 +32,14 @@ if 'upar' not in ss:
         'umap_n_neighbors' : 10,
         'umap_n_dims_red' : 8,
         'skip_umap' : False,
-        'dbscan_eps' : 0.447,
+        'dbscan_eps' : 0.5,
         'dbscan_min_samples' : 25,
         'exclude_non_assigned' : False
         }
 
 with st.sidebar:
     st.info('Selected: ' + ss['dapar']['dataset_name'])
-    st.header(''':primary[**Clustering spectrograms with features from pre-trained models**]''')
+    st.header(''':primary[**Unsupervised clustering of spectrograms with features from pre-trained image models**]''')
     st.text("v0.9.6")
     st.markdown(''':primary[QUICK GUIDE]''')
     st.text("(1) Select a dataset")
