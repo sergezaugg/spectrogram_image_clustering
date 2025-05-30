@@ -39,7 +39,7 @@ if 'upar' not in ss:
 
 with st.sidebar:
     st.info('Selected: ' + ss['dapar']['dataset_name'])
-    st.header(''':primary[**Clustering spectrograms with features from pre-trained models**]''')
+    st.header(''':primary[**Unsupervised clustering spectrograms with features from pre-trained image models**]''')
     st.text("v0.9.6")
     st.markdown(''':primary[QUICK GUIDE]''')
     st.text("(1) Select a dataset")
