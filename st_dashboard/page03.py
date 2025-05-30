@@ -22,7 +22,7 @@ if ss['dapar']['feat_path'] == 'empty' :
     kgl_path = kagglehub.dataset_download(kgl_ds, force_download = False) # get local path where downloaded
     ss['dapar']['feat_path'] = kgl_path
     ss['dapar']['imgs_path'] = os.path.join(ss['dapar']['feat_path'], 'xc_spectrograms', 'xc_spectrograms')
-    ss['dapar']['li_npz'] = [a for a in os.listdir(ss['dapar']['feat_path']) if ('.npz' in a) and (('dimred_4' in a) or ('dimred_16' in a))]
+    ss['dapar']['li_npz'] = [a for a in os.listdir(ss['dapar']['feat_path']) if ('.npz' in a) and (('dimred_4' in a) or ('dimred_8' in a) or ('dimred_16' in a))]
     ss['dapar']['li_npz'].sort()
     # load meta data 
     path_meat = os.path.join(ss['dapar']['feat_path'], 'downloaded_data_meta.pkl')
@@ -55,62 +55,7 @@ else :
                     st.rerun() # to update sidebar - 
 
 
-    with c01:
-        with st.container(border=True) : 
-            st.markdown('''                
-                #### features_DenseNet121_denseblock3.npz
-                * Feature layer: :red[features.denseblock3]
-                * Input resized image: :red[(, 3, 224, 224)]
-                * Feature out of net: :red[(, 1024, 14, 14)]
-                * After average pool along freq: :red[(, 1024, 4, 14)]
-                * After average pool along time: :red[(, 1024, 4)]
-                * After reshape: :red[(, 4096)]
-                            
-                #### features_MaxVit_T_blocks.3.npz
-                * Feature layer: :red[blocks.3.layers.1.layers.MBconv.layers.conv_c]
-                * Input resized image:  :red[( , 3, 224, 224)]
-                * Feature out of net:  :red[( , 512, 7, 7)]
-                * After average pool along freq:  :red[( , 512, 7, 7)]
-                * After average pool along time:  :red[( , 512, 7)]
-                * After reshape:  :red[( , 3584)]
-                        
-                #### Model: vgg16
-                * Feature layer: :red[features.28]
-                * Input resized image: :red[(, 3, 224, 224)]
-                * Feature out of net: :red[(, 512, 14, 14)]
-                * After average pool along freq: :red[(, 512, 4, 14)]
-                * After average pool along time: :red[(, 512, 4)]
-                * After reshape: :red[(, 2048)]
-        
-                ''')
-    with c02:
-        with st.container(border=True) : 
-            st.markdown('''      
-                #### features_ResNet50_layer1.npz
-                * Feature layer: :red[layer1.2.conv3]
-                * Input resized image: :red[(, 3, 224, 224)]
-                * Feature out of net: :red[(, 256, 56, 56)]
-                * After average pool along freq: :red[(, 256, 14, 56)]
-                * After average pool along time: :red[(, 256, 14)]
-                * After reshape: :red[(, 3584)]
-                        
-                #### features_ResNet50_layer2.npz
-                * Feature layer: :red[layer2.3.conv3]
-                * Input resized image: :red[(, 3, 224, 224)]
-                * Feature out of net: :red[(, 512, 28, 28)]
-                * After average pool along freq: :red[(, 512, 7, 28)]
-                * After average pool along time: :red[(, 512, 7)]
-                * After reshape: :red[(, 3584)]
-                               
-                #### features_ResNet50_layer3.npz
-                * Feature layer: :red[layer3.5.conv3] 
-                * Input resized image: :red[(, 3, 224, 224)] 
-                * Feature out of net: :red[(, 1024, 14, 14)] 
-                * After average pool along freq: :red[(, 1024, 4, 14)] 
-                * After average pool along time: :red[(, 1024, 4)] 
-                * After reshape: :red[(, 4096)]       
-                ''')            
-    
+
 gc.collect() 
 
 
