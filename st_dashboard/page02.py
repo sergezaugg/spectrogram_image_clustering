@@ -88,7 +88,7 @@ if len(ss['dapar']['X_dimred']) > 0 :
         display_mini_images_by_file(sel_imgs = images_in_cluster_sample)
 
         # display_bar_plot
-        st.text("XC files in this cluster")
+        st.text("XC files of spectrograms in this cluster")
         display_bar_plot(images_in_cluster_sample)
 
 
