@@ -28,7 +28,7 @@ else :
 # main dashboard
 if len(ss['dapar']['X_dimred']) > 0 :
 
-    cols = st.columns([0.35, 0.35, 0.05])
+    cols = st.columns([0.30, 0.35, 0.15])
 
     with cols[0]:
         c01, c02 = st.columns([0.2, 0.6])    
@@ -97,6 +97,7 @@ if len(ss['dapar']['X_dimred']) > 0 :
         images_in_cluster_sample = select_random_image_subset(images_in_cluster, max_n_images = 120)
         display_mini_images_by_file(sel_imgs = images_in_cluster_sample)
 
+    with cols[2]:
         # display_bar_plot
         st.text("XC files of spectrograms in this cluster")
         display_bar_plot(images_in_cluster_sample)
