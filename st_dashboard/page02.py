@@ -43,7 +43,7 @@ if len(ss['dapar']['X_dimred']) > 0 :
         with c02:
             with st.container(border=True, height = 275): 
                 # eps_options = (10.0**(np.arange(-3.0, 0.50, 0.05))).round(3)
-                eps_options = np.concatenate([np.arange(0.01, 0.1, 0.01), np.arange(0.1, 2.1, 0.1)]).round(2)
+                eps_options = np.concatenate([np.arange(0.01, 0.1, 0.01), np.arange(0.1, 2.1, 0.05)]).round(2)
                 min_samples_options = np.arange(10, 51, 5)
                 # # callback version (too fast for streamlit.app ?)
                 # _ = st.select_slider(label = "DBSCAN eps", options = eps_options, 
@@ -90,7 +90,7 @@ if len(ss['dapar']['X_dimred']) > 0 :
         clu_id_list = np.unique(ss['dapar']['clusters_pred_str'])
         clu_selected = st.segmented_control(label = "Select a cluster ID", options = clu_id_list, selection_mode="single", key = "k_img_clu",
                                         default = clu_id_list[-1], label_visibility="visible")        
-        st.text("Cluster content preview (up to 120 random images from cluster)")
+        st.text("Cluster content preview (max 120 random images from cluster)")
         # select all images in a given cluster 
         sel = ss['dapar']['clusters_pred_str'] == clu_selected
         images_in_cluster = ss['dapar']['im_filenames'][sel]
@@ -98,10 +98,11 @@ if len(ss['dapar']['X_dimred']) > 0 :
         images_in_cluster_sample = select_random_image_subset(images_in_cluster, max_n_images = 120)
         display_mini_images_by_file(sel_imgs = images_in_cluster_sample)
 
+    # display_bar_plot
     with cols[2]:
-        # display_bar_plot
-        st.text("XC files of spectrograms in this cluster")
-        display_bar_plot(images_in_cluster_sample)
+        with st.container(border=True): 
+            st.text("Origin of spectrograms in cluster")
+            display_bar_plot(images_in_cluster_sample)
 
 
 
