@@ -12,6 +12,7 @@ gc.collect()
 
 st.set_page_config(layout="wide")
 
+
 # data objects
 if 'dapar' not in ss:
     ss['dapar'] = {
@@ -37,7 +38,13 @@ if 'upar' not in ss:
         'exclude_non_assigned' : False
         }
 
+
+
+
+
+
 with st.sidebar:
+    
     st.info('Selected: ' + ss['dapar']['dataset_name'])
     st.header(''':primary[**Unsupervised clustering of spectrograms with features from pre-trained image models**]''')
     st.text("v0.9.6")
@@ -46,6 +53,16 @@ with st.sidebar:
     st.text("(2) Tune DBSCAN params")
     st.text("(3) Explore scatterplot")
     st.text("(4) Check cluster contents")
+
+    # logos an links
+    st.header(""); st.header(""); st.header("")
+    c1,c2=st.columns([80,200])
+    c1.image(image='pics\z_logo_red.png', width=65)
+    c2.markdown(''':primary[Created by]  
+    :primary[[Serge Zaugg](https://github.com/sergezaugg)]''')
+    st.logo(image='pics\z_logo_red.png', size="large", link="https://github.com/sergezaugg")
+
+
 
 p01 = st.Page("page01.py", title="Summary")
 p02 = st.Page("page02.py", title="Analyse")
