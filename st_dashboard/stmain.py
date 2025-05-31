@@ -47,8 +47,8 @@ with st.sidebar:
     
     st.info('Selected: ' + ss['dapar']['dataset_name'])
     st.header(''':primary[**Unsupervised clustering of spectrograms with features from pre-trained image models**]''')
-    st.text("v0.9.6")
-    st.markdown(''':primary[QUICK GUIDE]''')
+    st.header("")
+    st.markdown('''QUICK GUIDE''')
     st.text("(1) Select a dataset")
     st.text("(2) Tune DBSCAN params")
     st.text("(3) Explore scatterplot")
@@ -58,7 +58,8 @@ with st.sidebar:
     st.header(""); st.header(""); st.header("")
     c1,c2=st.columns([80,200])
     c1.image(image='pics\z_logo_red.png', width=65)
-    c2.markdown(''':primary[Created by]  
+    c2.markdown(''':primary[v0.9.6]  
+    :primary[Created by]
     :primary[[Serge Zaugg](https://github.com/sergezaugg)]''')
     st.logo(image='pics\z_logo_red.png', size="large", link="https://github.com/sergezaugg")
 
