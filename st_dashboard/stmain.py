@@ -57,11 +57,11 @@ with st.sidebar:
     # logos an links
     st.header(""); st.header(""); st.header("")
     c1,c2=st.columns([80,200])
-    c1.image(image='pics\z_logo_red.png', width=65)
-    c2.markdown(''':primary[v0.9.6]  
+    c1.image(image='pics\z_logo_orange.png', width=65)
+    c2.markdown(''':primary[v0.9.7]  
     :primary[Created by]
     :primary[[Serge Zaugg](https://github.com/sergezaugg)]''')
-    st.logo(image='pics\z_logo_red.png', size="large", link="https://github.com/sergezaugg")
+    st.logo(image='pics\z_logo_orange.png', size="large", link="https://github.com/sergezaugg")
 
 
 
