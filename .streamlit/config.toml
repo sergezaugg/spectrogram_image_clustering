@@ -11,7 +11,7 @@ codeBackgroundColor="#000000"
 baseRadius = "1.2rem"
 #borderColor = "#440023"
 showWidgetBorder = true
-baseFontSize = 14
+baseFontSize = 16
 
 [server]
 maxUploadSize = 400

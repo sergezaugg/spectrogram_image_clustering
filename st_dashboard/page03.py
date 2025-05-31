@@ -31,9 +31,14 @@ if ss['dapar']['feat_path'] == 'empty' :
 # Then, choose a dataset
 else :
     with c00:
-        with st.container(border=True):   
+        with st.container(border=True):  
+            # first pre-select datasets based on the dim reduction 
+            ndim_sel = st.radio("Select level of UMAP dim reduction", options = ['dimred_4', 'dimred_8', 'dimred_16'], index=2, format_func=lambda x: x.split("_")[1])
+            npz_sel = [a for a in ss['dapar']['li_npz'] if ndim_sel in a]
+            npz_sel.sort()
             with st.form("form01", border=False):
-                npz_finame = st.radio("Select data with extracted features", options = ss['dapar']['li_npz'], index=3)
+                # seconf selec DNN model used for fex
+                npz_finame = st.radio("Select model used to extracted features", options = npz_sel, index=3, format_func=lambda x: "_".join(x.split("_")[3:]) )
                 submitted_1 = st.form_submit_button("Activate dataset", type = "primary")  
                 if submitted_1:
                     npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
