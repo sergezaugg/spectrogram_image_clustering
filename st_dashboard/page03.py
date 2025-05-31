@@ -60,6 +60,7 @@ else :
                     ss['dapar']['im_filenames']  = N
                     del(X_red, X_2D, N, npzfile)
                     st.rerun() # to update sidebar!
+        st.page_link("page02.py", label="Go to analysis")    
 
 gc.collect() 
 
