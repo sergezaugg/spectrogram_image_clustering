@@ -35,6 +35,14 @@ else :
             # first pre-select datasets based on the dim reduction 
             ndim_sel = st.radio("Select level of UMAP dim reduction", options = ['dimred_4', 'dimred_8', 'dimred_16'], index=2, format_func=lambda x: x.split("_")[1])
             npz_sel = [a for a in ss['dapar']['li_npz'] if ndim_sel in a]
+            # pre select good default for the selected dim
+            if ndim_sel == 'dimred_4':
+                ss['upar']['dbscan_eps'] =  0.20
+            if ndim_sel == 'dimred_8':
+                ss['upar']['dbscan_eps'] =  0.36
+            if ndim_sel == 'dimred_16':
+                ss['upar']['dbscan_eps'] =  0.46
+
             npz_sel.sort()
             with st.form("form01", border=False):
                 # seconf selec DNN model used for fex
