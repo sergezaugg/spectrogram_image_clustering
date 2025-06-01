@@ -37,20 +37,20 @@ n_batches = 800 # prod
 # fe.create("layer3.5.conv3")
 # fe.extract(image_path, freq_pool = 4, batch_size = 16, n_batches = n_batches)
 
-fe = FeatureExtractor(model_tag = "vgg16")
-fe.eval_nodes
-fe.create("features.28")
-fe.extract(image_path, freq_pool = 4, batch_size = 16, n_batches = n_batches)
+# fe = FeatureExtractor(model_tag = "vgg16")
+# fe.eval_nodes
+# fe.create("features.28")
+# fe.extract(image_path, freq_pool = 4, batch_size = 16, n_batches = n_batches)
 
 # fe = FeatureExtractor(model_tag = "DenseNet121")
 # fe.eval_nodes
 # fe.create("features.denseblock3")
 # fe.extract(image_path, freq_pool = 4, batch_size = 16, n_batches = n_batches)
 
-# fe = FeatureExtractor(model_tag = "MaxVit_T")
-# fe.eval_nodes
-# fe.create("blocks.3.layers.1.layers.MBconv.layers.conv_c")
-# fe.extract(image_path, freq_pool = 1, batch_size = 16, n_batches = n_batches)
+fe = FeatureExtractor(model_tag = "MaxVit_T")
+fe.eval_nodes
+fe.create("blocks.3.layers.1.layers.MBconv.layers.conv_c")
+fe.extract(image_path, freq_pool = 1, batch_size = 16, n_batches = n_batches)
 
 
 #-------------------------
