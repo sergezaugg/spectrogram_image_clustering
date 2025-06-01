@@ -21,15 +21,15 @@ featu_path = "./extracted_features"
 #-------------------------
 # fex
 
-fe = FeatureExtractor(model_tag = "ResNet50")
-fe.eval_nodes
-fe.create("layer1.2.conv3")
-fe.extract(image_path, freq_pool = 4, batch_size = 16, n_batches = 800)
-
 # fe = FeatureExtractor(model_tag = "ResNet50")
 # fe.eval_nodes
-# fe.create("layer2.3.conv3")
+# fe.create("layer1.2.conv3")
 # fe.extract(image_path, freq_pool = 4, batch_size = 16, n_batches = 800)
+
+fe = FeatureExtractor(model_tag = "ResNet50")
+fe.eval_nodes
+fe.create("layer2.3.conv3")
+fe.extract(image_path, freq_pool = 4, batch_size = 16, n_batches = 800)
 
 # fe = FeatureExtractor(model_tag = "ResNet50")
 # fe.eval_nodes

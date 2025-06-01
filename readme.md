@@ -1,8 +1,15 @@
 # CLUSTER IMAGES WITH DNN FEATURES AND DIM REDUCTION
 
-### Overview
+
+### Overview - backend code
+* Backend code for pre-computing feature extraction and dim-reduction 
+* ideally with a GPU manchine
+* Code is in subdir ```./pt_extract_features```
+* Short example in ```./pt_extract_features/main.py```
+
+### Overview - dashboard
 * This is a Streamlit dashboard to cluster-analyse images of spectrograms
-* Features were pre-extracted from images offline with a script ```extract_features.py```
+* Features were pre-extracted from images offline with a script ```01_extract.py```
 * The resulting npz file(a) must be loaded to a Kaggle dataset [Examlpe Kaggle Dataset](https://www.kaggle.com/datasets/sezaugg/food-classification-features-v01)
 * Third, the Streamlit process in started ```streamlit run st_dashboard/stmain.py``` (e.g. locally of on https://share.streamlit.io)
 * The path to Kaggle dataset must be adjusted in the Streamlit code.
