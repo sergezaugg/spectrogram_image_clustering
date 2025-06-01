@@ -111,8 +111,8 @@ class FeatureExtractor:
     def extract(self, image_path, freq_pool, batch_size, n_batches = 2):
         dataset = ImageDataset(image_path, self.preprocessor)
         loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size,  shuffle=False, drop_last=False)
-        X_li = [] # features
-        N_li = [] # file Nanes
+        self.X_li = [] # features
+        self.N_li = [] # file Nanes
         for ii, (batch, finam) in enumerate(loader, 0):
             print('Model:', self.model_tag )
             print('Feature layer:', self.fex_tag )
@@ -131,13 +131,13 @@ class FeatureExtractor:
             print('After reshape:', pred.shape)
             print("")
             # do it dirty
-            X_li.append(pred)
-            N_li.append(np.array(finam))
+            self.X_li.append(pred)
+            self.N_li.append(np.array(finam))
             # dev
             if ii > n_batches:
                 break   
-        self.X = np.concatenate(X_li)
-        self.N = np.concatenate(N_li)
+        self.X = np.concatenate(self.X_li)
+        self.N = np.concatenate(self.N_li)
 
         
             
