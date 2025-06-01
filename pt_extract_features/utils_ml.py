@@ -12,9 +12,7 @@ from torchvision.io import decode_image
 from sklearn.preprocessing import StandardScaler
 import umap.umap_ as umap
 import skimage.measure
-
 from torchvision.models.feature_extraction import create_feature_extractor
-# from pt_extract_features.utils_ml import ImageDataset, load_pretraind_model
 from torchvision.models.feature_extraction import get_graph_node_names
 
 class ImageDataset(Dataset):
@@ -110,11 +108,9 @@ class FeatureExtractor:
         self.fex_tag = fex_tag
         _ = self.extractor.eval()
 
-    def extract(self, image_path, batch_size, freq_pool, n_batches = 5):  
- 
+    def extract(self, image_path, freq_pool, batch_size, n_batches = 2):
         dataset = ImageDataset(image_path, self.preprocessor)
         loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size,  shuffle=False, drop_last=False)
-
         X_li = [] # features
         N_li = [] # file Nanes
         for ii, (batch, finam) in enumerate(loader, 0):
@@ -139,15 +135,12 @@ class FeatureExtractor:
             N_li.append(np.array(finam))
             # dev
             if ii > n_batches:
-                break
-            
+                break   
         self.X = np.concatenate(X_li)
         self.N = np.concatenate(N_li)
 
         
             
-      
-
 
 
 def dim_reduce(X, n_neigh, n_dims_red):
