@@ -8,7 +8,8 @@ import os
 import numpy as np
 from pt_extract_features.utils_ml import dim_reduce
 
-featu_path = "./extracted_features"
+# featu_path = "./extracted_features"
+featu_path = "./extracted_features_parus"
 
 # get list of all available full feature arrays
 li = [a for a in os.listdir(featu_path) if 'full_features_' in a]
