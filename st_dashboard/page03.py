@@ -22,7 +22,7 @@ if ss['dapar']['feat_path'] == 'empty' :
     kgl_path = kagglehub.dataset_download(kgl_ds, force_download = False) # get local path where downloaded
     ss['dapar']['feat_path'] = kgl_path
     ss['dapar']['imgs_path'] = os.path.join(ss['dapar']['feat_path'], 'xc_spectrograms', 'xc_spectrograms')
-    ss['dapar']['li_npz'] = [a for a in os.listdir(ss['dapar']['feat_path']) if ('.npz' in a) and (('dimred_4' in a) or ('dimred_8' in a) or ('dimred_16' in a))]
+    ss['dapar']['li_npz'] = [a for a in os.listdir(ss['dapar']['feat_path']) if ('.npz' in a) and (('dimred_' in a) or ('dimred_' in a) or ('dimred_' in a))]
     ss['dapar']['li_npz'].sort()
     # load meta data 
     path_meat = os.path.join(ss['dapar']['feat_path'], 'downloaded_data_meta.pkl')
@@ -33,7 +33,7 @@ else :
     with c00:
         with st.container(border=True):  
             # first pre-select datasets based on the dim reduction 
-            ndim_sel = st.radio("Select level of UMAP dim reduction", options = ['dimred_4', 'dimred_4', 'dimred_8', 'dimred_16'], index=2, format_func=lambda x: x.split("_")[1])
+            ndim_sel = st.radio("Select level of UMAP dim reduction", options = ['dimred_2', 'dimred_4', 'dimred_8', 'dimred_16'], index=2, format_func=lambda x: x.split("_")[1])
             npz_sel = [a for a in ss['dapar']['li_npz'] if ndim_sel in a]
             # pre select good default for the selected dim
             if ndim_sel == 'dimred_4':

@@ -53,7 +53,7 @@ with st.sidebar:
     st.header(""); st.header(""); st.header("")
     c1,c2=st.columns([80,200])
     c1.image(image='pics/z_logo_orange.png', width=65)
-    c2.markdown(''':primary[v0.9.8]  
+    c2.markdown(''':primary[v0.9.9]  
     :primary[Created by]
     :primary[[Serge Zaugg](https://github.com/sergezaugg)]
     :primary[Pollito-ML-Applications]''')
