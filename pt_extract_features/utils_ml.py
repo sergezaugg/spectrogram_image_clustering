@@ -6,10 +6,16 @@
 import os
 import pandas as pd
 import numpy as np
+import torch
 from torch.utils.data import Dataset
 from torchvision.io import decode_image
 from sklearn.preprocessing import StandardScaler
 import umap.umap_ as umap
+import skimage.measure
+
+from torchvision.models.feature_extraction import create_feature_extractor
+# from pt_extract_features.utils_ml import ImageDataset, load_pretraind_model
+from torchvision.models.feature_extraction import get_graph_node_names
 
 class ImageDataset(Dataset):
     """
@@ -78,6 +84,70 @@ def load_pretraind_model(model_tag):
     else:
         print("not a valid model_tag")
     return(model, weights)    
+
+
+
+
+class FeatureExtractor:
+    """
+    Description: Create a PyTorch feature extractor from a pretrained model 
+    """
+    def __init__(self, model_tag):
+        """
+        model_tag (str) : A model name as accepted by load_pretraind_model()
+        """
+        self.model_tag = model_tag
+        self.model, weights = load_pretraind_model(model_tag)
+        self.preprocessor = weights.transforms()
+        self.train_nodes, self.eval_nodes = get_graph_node_names( self.model)
+
+    def create(self, fex_tag):  
+        """
+        fex_tag (str) : the name of a layer foud in self.train_nodes
+        """   
+        return_nodes = {fex_tag: "feature_1"}
+        self.extractor = create_feature_extractor(self.model, return_nodes=return_nodes)
+        self.fex_tag = fex_tag
+        _ = self.extractor.eval()
+
+    def extract(self, image_path, batch_size, freq_pool, n_batches = 5):  
+ 
+        dataset = ImageDataset(image_path, self.preprocessor)
+        loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size,  shuffle=False, drop_last=False)
+
+        X_li = [] # features
+        N_li = [] # file Nanes
+        for ii, (batch, finam) in enumerate(loader, 0):
+            print('Model:', self.model_tag )
+            print('Feature layer:', self.fex_tag )
+            print('Input resized image:', batch.shape)
+            # batch = batch.to(torch.float)
+            pred = self.extractor(batch)['feature_1'].detach().numpy() 
+            print('Feature out of net:', pred.shape)
+            # blockwise pooling along frequency axe 
+            pred = skimage.measure.block_reduce(pred, (1,1,freq_pool,1), np.mean)
+            print('After average pool along freq:', pred.shape)
+            # full average pool over time (do asap to avoid memory issues later)
+            pred = pred.mean(axis=3)
+            print('After average pool along time:', pred.shape)
+            # unwrap freq int feature dim
+            pred = np.reshape(pred, shape=(pred.shape[0], pred.shape[1]*pred.shape[2]))
+            print('After reshape:', pred.shape)
+            print("")
+            # do it dirty
+            X_li.append(pred)
+            N_li.append(np.array(finam))
+            # dev
+            if ii > n_batches:
+                break
+            
+        self.X = np.concatenate(X_li)
+        self.N = np.concatenate(N_li)
+
+        
+            
+      
+
 
 
 def dim_reduce(X, n_neigh, n_dims_red):
