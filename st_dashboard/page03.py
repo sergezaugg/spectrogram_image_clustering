@@ -15,10 +15,13 @@ gc.collect()
 
 c00, c01, c02  = st.columns([0.1, 0.10, 0.10])
 
+kgl_dataset = "spectrogram-clustering-parus-major"
+# kgl_dataset = 'spectrogram-clustering-01' 
+
 # First, get data into ss
 if ss['dapar']['feat_path'] == 'empty' :
     st.text("Preparing data ...")
-    kgl_ds = "sezaugg/" + 'spectrogram-clustering-01' 
+    kgl_ds = "sezaugg/" + kgl_dataset 
     kgl_path = kagglehub.dataset_download(kgl_ds, force_download = False) # get local path where downloaded
     ss['dapar']['feat_path'] = kgl_path
     ss['dapar']['imgs_path'] = os.path.join(ss['dapar']['feat_path'], 'xc_spectrograms', 'xc_spectrograms')
@@ -48,7 +51,7 @@ else :
             npz_sel.sort()
             with st.form("form01", border=False):
                 # seconf selec DNN model used for fex
-                npz_finame = st.radio("Select model used to extracted features", options = npz_sel, index=3, format_func=lambda x: "_".join(x.split("_")[4:]) )
+                npz_finame = st.radio("Select model used to extracted features", options = npz_sel, index=1, format_func=lambda x: "_".join(x.split("_")[4:]) )
                 submitted_1 = st.form_submit_button("Activate dataset", type = "primary")  
                 if submitted_1:
                     npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
