@@ -22,7 +22,7 @@ if ss['dapar']['feat_path'] == 'empty' :
     kgl_path = kagglehub.dataset_download(kgl_ds, force_download = False) # get local path where downloaded
     ss['dapar']['feat_path'] = kgl_path
     ss['dapar']['imgs_path'] = os.path.join(ss['dapar']['feat_path'], 'xc_spectrograms', 'xc_spectrograms')
-    ss['dapar']['li_npz'] = [a for a in os.listdir(ss['dapar']['feat_path']) if ('.npz' in a) and (('dimred_4' in a) or ('dimred_8' in a) or ('dimred_16' in a))]
+    ss['dapar']['li_npz'] = [a for a in os.listdir(ss['dapar']['feat_path']) if ('.npz' in a) and (('dimred_' in a) or ('dimred_' in a) or ('dimred_' in a))]
     ss['dapar']['li_npz'].sort()
     # load meta data 
     path_meat = os.path.join(ss['dapar']['feat_path'], 'downloaded_data_meta.pkl')
@@ -33,9 +33,11 @@ else :
     with c00:
         with st.container(border=True):  
             # first pre-select datasets based on the dim reduction 
-            ndim_sel = st.radio("Select level of UMAP dim reduction", options = ['dimred_4', 'dimred_8', 'dimred_16'], index=2, format_func=lambda x: x.split("_")[1])
+            ndim_sel = st.radio("Select level of UMAP dim reduction", options = ['dimred_2', 'dimred_4', 'dimred_8', 'dimred_16'], index=2, format_func=lambda x: x.split("_")[1])
             npz_sel = [a for a in ss['dapar']['li_npz'] if ndim_sel in a]
             # pre select good default for the selected dim
+            if ndim_sel == 'dimred_2':
+                ss['upar']['dbscan_eps'] =  0.06
             if ndim_sel == 'dimred_4':
                 ss['upar']['dbscan_eps'] =  0.20
             if ndim_sel == 'dimred_8':
@@ -46,7 +48,7 @@ else :
             npz_sel.sort()
             with st.form("form01", border=False):
                 # seconf selec DNN model used for fex
-                npz_finame = st.radio("Select model used to extracted features", options = npz_sel, index=3, format_func=lambda x: "_".join(x.split("_")[3:]) )
+                npz_finame = st.radio("Select model used to extracted features", options = npz_sel, index=3, format_func=lambda x: "_".join(x.split("_")[4:]) )
                 submitted_1 = st.form_submit_button("Activate dataset", type = "primary")  
                 if submitted_1:
                     npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
