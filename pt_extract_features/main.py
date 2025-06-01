@@ -3,8 +3,6 @@
 # Description : 
 #--------------------
 
-# import os 
-# import numpy as np
 import torch
 from pt_extract_features.utils_ml import FeatureExtractor, dim_reduce
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
