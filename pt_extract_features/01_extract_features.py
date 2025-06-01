@@ -8,10 +8,8 @@ import numpy as np
 import datetime
 import torch
 import skimage.measure
-from sklearn.decomposition import PCA
-from torchvision.models.feature_extraction import create_feature_extractor
-from pt_extract_features.utils_ml import ImageDataset, load_pretraind_model
-from torchvision.models.feature_extraction import get_graph_node_names
+from utils_ml import FeatureExtractor
+from pt_extract_features.utils_ml import ImageDataset
 
 torch.cuda.is_available()
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -23,92 +21,76 @@ featu_path = "./extracted_features"
 batch_size = 16
 
 
+
+
+
 #-------------------------
 # Step 1: Initialize model with pre-trained weights
 
-# model = torch.nn.Sequential(*(list(model.children())[:-3]))
 
-# model_tag = "MobileNet_V3_Large"
-# model, weights = load_pretraind_model(model_tag)
-# model = torch.nn.Sequential(*(list(model.children())[:-2]))
-# freq_pool = 2
-
-# model_tag = "vgg16"
-# model, weights = load_pretraind_model(model_tag)
-# model = torch.nn.Sequential(*(list(model.children())[:-2]))
-# freq_pool = 1
-
-
-# # -----------------
-# model_tag = "ResNet50"
-# fex_tag = "layer3.5.conv3"
-# model, weights = load_pretraind_model(model_tag)
-# freq_pool = 4
-# return_nodes = {fex_tag: "feature_1"}
-# model = create_feature_extractor(model, return_nodes=return_nodes)
-
-# # -----------------
-# model_tag = "ResNet50"
-# fex_tag = "layer2.3.conv3"
-# model, weights = load_pretraind_model(model_tag)
-# freq_pool = 4
-# return_nodes = {fex_tag: "feature_1"}
-# model = create_feature_extractor(model, return_nodes=return_nodes)
-
-# # -----------------
-# model_tag = "ResNet50"
-# fex_tag = "layer1.2.conv3"
-# model, weights = load_pretraind_model(model_tag)
-# freq_pool = 4
-# return_nodes = {fex_tag: "feature_1"}
-# model = create_feature_extractor(model, return_nodes=return_nodes)
-
-# -----------------
-model_tag = "vgg16"
-fex_tag = "features.28"
-model, weights = load_pretraind_model(model_tag)
+fe = FeatureExtractor(model_tag = "ResNet50")
+fe.eval_nodes
+fe.create("layer3.5.conv3")
 freq_pool = 4
-return_nodes = {fex_tag: "feature_1"}
-model = create_feature_extractor(model, return_nodes=return_nodes)
 
-# # -----------------
-# model_tag = "DenseNet121"
-# fex_tag = "features.denseblock3"
-# model, weights = load_pretraind_model(model_tag)
-# freq_pool = 4
-# return_nodes = {fex_tag: "feature_1"}
-# model = create_feature_extractor(model, return_nodes=return_nodes)
+fe = FeatureExtractor(model_tag = "ResNet50")
+fe.eval_nodes
+fe.create("layer2.3.conv3")
+freq_pool = 4
+
+fe = FeatureExtractor(model_tag = "ResNet50")
+fe.eval_nodes
+fe.create("layer1.2.conv3")
+freq_pool = 4
 
 
-# # -----------------
-# model_tag = "MaxVit_T"
-# fex_tag = "blocks.3.layers.1.layers.MBconv.layers.conv_c"
-# model, weights = load_pretraind_model(model_tag)
-# freq_pool = 1
-# return_nodes = {fex_tag: "feature_1"}
-# model = create_feature_extractor(model, return_nodes=return_nodes)
+fe = FeatureExtractor(model_tag = "vgg16")
+fe.eval_nodes
+fe.create("features.28")
+freq_pool = 4
 
 
 
-# train_nodes, eval_nodes = get_graph_node_names(model)
+fe = FeatureExtractor(model_tag = "DenseNet121")
+fe.eval_nodes
+fe.create("features.denseblock3")
+freq_pool = 4
+
+
+fe = FeatureExtractor(model_tag = "MaxVit_T")
+fe.eval_nodes
+fe.create("blocks.3.layers.1.layers.MBconv.layers.conv_c")
+freq_pool = 1
+
+
+
 
 
 
 #-------------------------
-# Step 2: Extract features 
-_ = model.eval()
-preprocess = weights.transforms()
-dataset = ImageDataset(image_path, preprocess)
+#-------------------------
+#-------------------------
+#-------------------------
+#-------------------------
+
+
+
+
+
+freq_pool = 4
+
+
+dataset = ImageDataset(image_path, fe.preprocessor)
 loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size,  shuffle=False, drop_last=False)
 
 X_li = [] # features
 N_li = [] # file Nanes
 for ii, (batch, finam) in enumerate(loader, 0):
-    print('Model:', model_tag )
-    print('Feature layer:', fex_tag )
+    print('Model:', fe.model_tag )
+    print('Feature layer:', fe.fex_tag )
     print('Input resized image:', batch.shape)
     # batch = batch.to(torch.float)
-    pred = model(batch)['feature_1'].detach().numpy() 
+    pred = fe.extractor(batch)['feature_1'].detach().numpy() 
     print('Feature out of net:', pred.shape)
     # blockwise pooling along frequency axe 
     pred = skimage.measure.block_reduce(pred, (1,1,freq_pool,1), np.mean)
@@ -139,7 +121,7 @@ print(X.shape, N.shape)
 tstmp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S_")
 
 # save as npz
-out_name = os.path.join(featu_path, tstmp + 'features_' + model_tag + fex_tag + '.npz')
+out_name = os.path.join(featu_path, tstmp + 'features_' + fe.model_tag + fe.fex_tag + '.npz')
 np.savez(file = out_name, X = X, N = N)
 
 
