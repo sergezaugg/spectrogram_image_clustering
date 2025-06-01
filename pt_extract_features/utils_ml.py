@@ -84,8 +84,6 @@ def load_pretraind_model(model_tag):
     return(model, weights)    
 
 
-
-
 class FeatureExtractor:
     """
     Description: Create a PyTorch feature extractor from a pretrained model 
@@ -138,9 +136,6 @@ class FeatureExtractor:
                 break   
         self.X = np.concatenate(self.X_li)
         self.N = np.concatenate(self.N_li)
-
-        
-            
 
 
 def dim_reduce(X, n_neigh, n_dims_red):

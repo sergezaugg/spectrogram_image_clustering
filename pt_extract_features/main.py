@@ -1,6 +1,6 @@
 #--------------------             
 # Author : Serge Zaugg
-# Description : 
+# Description : A short script to illustrate usage of pt_extract_features.utils_ml.FeatureExtractor and dim_reduce
 #--------------------
 
 import torch
@@ -10,7 +10,6 @@ torch.cuda.is_available()
 
 # set paths   
 image_path = "D:/xc_real_projects/xc_sw_europe/xc_spectrograms"
-featu_path = "./extracted_features"
 # feature extraction
 fe = FeatureExtractor(model_tag = "ResNet50")
 fe.eval_nodes
@@ -19,8 +18,3 @@ fe.extract(image_path, freq_pool = 4, batch_size = 16, n_batches = 10)
 # dim-reduction
 X_red = dim_reduce(fe.X, n_neigh = 10, n_dims_red = 8)
 print(fe.N.shape, fe.X.shape, X_red.shape)
-
-
-
-
-
