@@ -8,6 +8,7 @@ import streamlit as st
 from streamlit import session_state as ss
 import numpy as np
 import gc
+from utils import data_source_format
 gc.collect()
 
 st.set_page_config(layout="wide")
@@ -38,9 +39,10 @@ if 'upar' not in ss:
         'exclude_non_assigned' : False
         }
 
-with st.sidebar:   
-    st.info('Selected: ' + ss['dapar']['dataset_name'])
+with st.sidebar:  
     st.header(''':primary[**Unsupervised clustering of spectrograms with features from pre-trained image models**]''')
+    st.info('Data source: ' + data_source_format(ss['dapar']['kgl_dataset']))
+    st.info('Data set: ' + ss['dapar']['dataset_name'])
     st.header("")
     st.markdown('''QUICK GUIDE''')
     st.text("(1) Select a dataset")

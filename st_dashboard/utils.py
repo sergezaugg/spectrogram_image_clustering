@@ -27,6 +27,15 @@ def get_short_class_name(a):
     """ a : a string"""
     return("-".join(a.split("-")[0:2]))
 
+def data_source_format(s):
+    """ helper finction for st.segmented_control below"""
+    if s == "spectrogram-clustering-01":
+        return("Crows & tits SW-Eur")
+    elif s == "spectrogram-clustering-parus-major":
+        return("Parus major Eur")
+    else:
+        return("error")
+
 @st.cache_data
 def perform_dbscan_clusterin(X, eps, min_samples):
     """ 

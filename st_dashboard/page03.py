@@ -11,18 +11,11 @@ import pandas as pd
 import kagglehub
 import gc
 from sklearn.model_selection import train_test_split
+from utils import data_source_format
 gc.collect()
 
 # kgl_dataset = "spectrogram-clustering-parus-major"
 # kgl_dataset = "spectrogram-clustering-01"
-def data_source_format(s):
-    """ helper finction for st.segmented_control below"""
-    if s == "spectrogram-clustering-01":
-        return("Crows and tits - SW Europe")
-    elif s == "spectrogram-clustering-parus-major":
-        return("Parus major - Europe")
-    else:
-        return("error")
 
 c00, c01, c02  = st.columns([0.20, 0.10, 0.10])
 # very first select a data source 

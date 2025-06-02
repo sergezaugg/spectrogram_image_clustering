@@ -29,15 +29,15 @@ n_batches = 800 # prod
 # fe.create("layer1.2.conv3")
 # fe.extract(image_path, freq_pool = 4, batch_size = 16, n_batches = n_batches)
 
-fe = FeatureExtractor(model_tag = "ResNet50")
-fe.eval_nodes
-fe.create("layer2.3.conv3")
-fe.extract(image_path, freq_pool = 4, batch_size = 16, n_batches = n_batches)
-
 # fe = FeatureExtractor(model_tag = "ResNet50")
 # fe.eval_nodes
-# fe.create("layer3.5.conv3")
+# fe.create("layer2.3.conv3")
 # fe.extract(image_path, freq_pool = 4, batch_size = 16, n_batches = n_batches)
+
+fe = FeatureExtractor(model_tag = "ResNet50")
+fe.eval_nodes
+fe.create("layer3.5.conv3")
+fe.extract(image_path, freq_pool = 4, batch_size = 16, n_batches = n_batches)
 
 # fe = FeatureExtractor(model_tag = "vgg16")
 # fe.eval_nodes
