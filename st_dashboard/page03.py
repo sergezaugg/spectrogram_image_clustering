@@ -14,14 +14,11 @@ from sklearn.model_selection import train_test_split
 from utils import data_source_format
 gc.collect()
 
-# kgl_datasource = "spectrogram-clustering-parus-major"
-# kgl_datasource = "spectrogram-clustering-01"
-
 c00, c01, c02  = st.columns([0.20, 0.10, 0.10])
 # very first select a data source 
 with c00:    
     with st.container(border=True):  
-        data_source_options = ["spectrogram-clustering-01", "spectrogram-clustering-parus-major"]
+        data_source_options = ["spectrogram-clustering-01", "spectrogram-clustering-parus-major", "spectrogram-clustering-bengalese-finches"]
         kgl_datasource = st.segmented_control("Select data source based on primary focus species of recordings", 
                                 options = data_source_options, format_func=data_source_format, default=ss['upar']["datsou"], # default=data_source_options[0], 
                                 )
@@ -29,7 +26,9 @@ with c00:
         if kgl_datasource == "spectrogram-clustering-01":
             model_index = 3        
         if kgl_datasource == "spectrogram-clustering-parus-major":
-            model_index = 1    
+            model_index = 1  
+        if kgl_datasource == "spectrogram-clustering-bengalese-finches":
+            model_index = 1      
 # First, get data into ss
 if ss['dapar']['feat_path'] == 'empty' or kgl_datasource != ss['dapar']['kgl_datasource']:
     st.text("Preparing data ...")
