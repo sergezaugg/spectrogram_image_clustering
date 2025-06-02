@@ -13,14 +13,23 @@ import gc
 from sklearn.model_selection import train_test_split
 gc.collect()
 
+
+
+# kgl_dataset = "spectrogram-clustering-parus-major"
+# kgl_dataset = "spectrogram-clustering-01"
+
+data_source_options = ["spectrogram-clustering-01", "spectrogram-clustering-parus-major"]
+kgl_dataset = st.segmented_control("Select data source", options = data_source_options, default=data_source_options[0])
+
+
+
 c00, c01, c02  = st.columns([0.1, 0.10, 0.10])
 
-kgl_dataset = "spectrogram-clustering-parus-major"
-# kgl_dataset = 'spectrogram-clustering-01' 
 
 # First, get data into ss
-if ss['dapar']['feat_path'] == 'empty' :
+if ss['dapar']['feat_path'] == 'empty' or kgl_dataset != ss['dapar']['kgl_dataset']:
     st.text("Preparing data ...")
+    ss['dapar']['kgl_dataset'] = kgl_dataset
     kgl_ds = "sezaugg/" + kgl_dataset 
     kgl_path = kagglehub.dataset_download(kgl_ds, force_download = False) # get local path where downloaded
     ss['dapar']['feat_path'] = kgl_path
@@ -68,6 +77,4 @@ else :
         st.page_link("page02.py", label="Go to analysis")    
 
 gc.collect() 
-
-
 

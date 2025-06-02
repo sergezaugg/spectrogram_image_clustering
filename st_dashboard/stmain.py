@@ -25,6 +25,7 @@ if 'dapar' not in ss:
         'X2D' : np.array([]),
         'X_dimred' : np.array([]),
         'df_meta' : np.array([]),
+        'kgl_dataset' : 'empty',
         }
 
 # user provided parameters
