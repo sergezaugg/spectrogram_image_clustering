@@ -28,7 +28,7 @@ with c00:
         if kgl_datasource == "spectrogram-clustering-parus-major":
             model_index = 1  
         if kgl_datasource == "spectrogram-clustering-bengalese-finches":
-            model_index = 1      
+            model_index = 0      
 # First, get data into ss
 if ss['dapar']['feat_path'] == 'empty' or kgl_datasource != ss['dapar']['kgl_datasource']:
     st.text("Preparing data ...")
@@ -45,7 +45,7 @@ else :
     with c00:
         with st.container(border=True):  
             # first pre-select datasets based on the dim reduction 
-            ndim_sel = st.radio("Select level of UMAP dim reduction", options = ['dimred_2', 'dimred_4', 'dimred_8', 'dimred_16'], index=2, format_func=lambda x: x.split("_")[1])
+            ndim_sel = st.radio("Select level of UMAP dim reduction", options = ['dimred_2', 'dimred_4', 'dimred_8', 'dimred_16'], index=0, format_func=lambda x: x.split("_")[1])
             npz_sel = [a for a in ss['dapar']['li_npz'] if ndim_sel in a]
             # pre select good default for the selected dim
             if ndim_sel == 'dimred_2':
