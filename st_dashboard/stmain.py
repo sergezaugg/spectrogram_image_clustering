@@ -12,7 +12,6 @@ gc.collect()
 
 st.set_page_config(layout="wide")
 
-
 # data objects
 if 'dapar' not in ss:
     ss['dapar'] = {
@@ -39,8 +38,7 @@ if 'upar' not in ss:
         'exclude_non_assigned' : False
         }
 
-with st.sidebar:
-    
+with st.sidebar:   
     st.info('Selected: ' + ss['dapar']['dataset_name'])
     st.header(''':primary[**Unsupervised clustering of spectrograms with features from pre-trained image models**]''')
     st.header("")
@@ -56,18 +54,17 @@ with st.sidebar:
     c1.image(image='pics/z_logo_orange.png', width=65)
     c2.markdown(''':primary[v0.9.9]  
     :primary[Created by]
-    :primary[[Serge Zaugg](https://github.com/sergezaugg)]
-    :primary[Pollito-ML-Applications]''')
+    :primary[[Serge Zaugg](https://www.linkedin.com/in/dkifh34rtn345eb5fhrthdbgf45/)]
+    :primary[[Pollito-ML](https://github.com/sergezaugg)]
+    ''')
     st.logo(image='pics/z_logo_orange.png', size="large", link="https://github.com/sergezaugg")
-
-
 
 p01 = st.Page("page01.py", title="Summary")
 p02 = st.Page("page02.py", title="Analyse")
 p03 = st.Page("page03.py", title="Select dataset")
 p04 = st.Page("page04.py", title="Data info/credits")
 pss = st.Page("page_ss.py", title="(Dev diagnostics)")
-pg = st.navigation([p03, p02, p01, p04, 
+pg = st.navigation([p03, p04, p02, p01,  
                     # pss
                     ])
 pg.run()

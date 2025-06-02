@@ -12,7 +12,6 @@ from streamlit import session_state as ss
 if len(ss['dapar']['df_meta']) == 0 :
     st.text("First activate data (navigation bar left)")
 else :
-
     # rename to keep code below readable 
     df_meta = ss['dapar']['df_meta']
 
@@ -23,15 +22,9 @@ else :
             st.text('''For a detailed list of recordists see the field "rec" in the table below. Each files has a Creative Commons license, see field "lic" in the table below.''')
             st.dataframe(df_meta, hide_index = True, height=300)
             st.page_link("https://xeno-canto.org/", label=":gray[Link to xeno-canto web]")
-            # st.divider()
-
-            # st.write("Tot numb of mini-images: " , ss['dapar']['filnam'].shape[0], " from " , ss['dapar']['df_meta'].shape[0], "files") 
-
+        with st.container(border=True) :  
             c1, c2, c3, c4 = st.columns([0.2, 0.2, 0.2, 0.2])
-        
             with c1:
-                # st.text("Files: Country vs primary species")
-                # st.dataframe(pd.crosstab( df_meta['full_spec_name'], df_meta['cnt']),  use_container_width = True) 
                 st.text("File primary species")
                 dfsp = df_meta['full_spec_name'].value_counts().reset_index()
                 dfsp = dfsp.sort_values(by = 'full_spec_name')
