@@ -26,6 +26,7 @@ if 'dapar' not in ss:
         'X_dimred' : np.array([]),
         'df_meta' : np.array([]),
         'kgl_datasource' : 'empty',
+        'saved_clusterd' : list()
         }
 
 # user provided parameters

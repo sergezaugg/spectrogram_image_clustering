@@ -14,8 +14,8 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 #-------------------------
 # set paths   
-# image_path = "D:/xc_real_projects/xc_sw_europe/xc_spectrograms"
-image_path = "D:/xc_real_projects/xc_parus_01/xc_spectrograms"
+image_path = "D:/xc_real_projects/xc_sw_europe/xc_spectrograms"
+# image_path = "D:/xc_real_projects/xc_parus_01/xc_spectrograms"
 featu_path = "./extracted_features"
 # n_batches = 10 # dev
 n_batches = 800 # prod
@@ -33,20 +33,20 @@ n_batches = 800 # prod
 # fe.create("layer2.3.conv3")
 # fe.extract(image_path, freq_pool = 4, batch_size = 16, n_batches = n_batches)
 
-fe = FeatureExtractor(model_tag = "ResNet50")
-fe.eval_nodes
-fe.create("layer3.5.conv3")
-fe.extract(image_path, freq_pool = 4, batch_size = 16, n_batches = n_batches)
+# fe = FeatureExtractor(model_tag = "ResNet50")
+# fe.eval_nodes
+# fe.create("layer3.5.conv3")
+# fe.extract(image_path, freq_pool = 4, batch_size = 16, n_batches = n_batches)
 
 # fe = FeatureExtractor(model_tag = "vgg16")
 # fe.eval_nodes
 # fe.create("features.28")
 # fe.extract(image_path, freq_pool = 4, batch_size = 16, n_batches = n_batches)
 
-# fe = FeatureExtractor(model_tag = "DenseNet121")
-# fe.eval_nodes
-# fe.create("features.denseblock3")
-# fe.extract(image_path, freq_pool = 4, batch_size = 16, n_batches = n_batches)
+fe = FeatureExtractor(model_tag = "DenseNet121")
+fe.eval_nodes
+fe.create("features.denseblock3")
+fe.extract(image_path, freq_pool = 4, batch_size = 16, n_batches = n_batches)
 
 # fe = FeatureExtractor(model_tag = "MaxVit_T")
 # fe.eval_nodes

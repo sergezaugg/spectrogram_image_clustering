@@ -97,7 +97,33 @@ if len(ss['dapar']['X_dimred']) > 0 :
         images_in_cluster = ss['dapar']['im_filenames'][sel]
         # take a smaller subsample 
         images_in_cluster_sample = select_random_image_subset(images_in_cluster, max_n_images = 120)
+        # st.write(images_in_cluster_sample)
         display_mini_images_by_file(sel_imgs = images_in_cluster_sample)
+
+
+
+
+
+
+
+        do_save = st.button("Save cluster", type="primary")
+        if do_save:
+            ss['dapar']['saved_clusterd'].extend(images_in_cluster)
+            st.write(len(list(set(ss['dapar']['saved_clusterd']))))
+          
+        do_reset = st.button("Reset", type="primary")
+        if do_reset:
+            ss['dapar']['saved_clusterd'] = list()
+         
+
+        do_show = st.button("show", type="primary")
+        if do_show:
+            display_mini_images_by_file(sel_imgs = np.array(ss['dapar']['saved_clusterd']))
+
+
+
+
+
 
     # display_bar_plot
     with cols[2]:
