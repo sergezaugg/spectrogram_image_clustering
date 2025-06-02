@@ -105,8 +105,8 @@ def make_scatter_plot(df, cat_name, title = "not set", height = 900, width = 100
     return(fig)
 
 @st.fragment
-def display_mini_images_by_file(sel_imgs):
-    num_cols = 5
+def display_mini_images_by_file(sel_imgs, num_cols = 5):
+    # num_cols = 5
     grid = st.columns(num_cols)
     col = 0
     for ii, im_filname in enumerate(sel_imgs):

@@ -67,8 +67,9 @@ p01 = st.Page("page01.py", title="Summary")
 p02 = st.Page("page02.py", title="Analyse")
 p03 = st.Page("page03.py", title="Select dataset")
 p04 = st.Page("page04.py", title="Data info/credits")
+p05 = st.Page("page05.py", title="Show selected images")
 pss = st.Page("page_ss.py", title="(Dev diagnostics)")
-pg = st.navigation([p03, p04, p02, p01,  
+pg = st.navigation([p03, p04, p02, p01, p05,  
                     # pss
                     ])
 pg.run()
