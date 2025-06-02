@@ -11,22 +11,35 @@ import pandas as pd
 import kagglehub
 import gc
 from sklearn.model_selection import train_test_split
+from utils import data_source_format
 gc.collect()
 
-c00, c01, c02  = st.columns([0.1, 0.10, 0.10])
+# kgl_datasource = "spectrogram-clustering-parus-major"
+# kgl_datasource = "spectrogram-clustering-01"
 
+c00, c01, c02  = st.columns([0.20, 0.10, 0.10])
+# very first select a data source 
+with c00:    
+    with st.container(border=True):  
+        data_source_options = ["spectrogram-clustering-01", "spectrogram-clustering-parus-major"]
+        kgl_datasource = st.segmented_control("Select data source based on primary focus species of recordings", 
+                                options = data_source_options, format_func=data_source_format, default=ss['upar']["datsou"], # default=data_source_options[0], 
+                                )
+        # temp construct to handle default in radio button below
+        if kgl_datasource == "spectrogram-clustering-01":
+            model_index = 3        
+        if kgl_datasource == "spectrogram-clustering-parus-major":
+            model_index = 1    
 # First, get data into ss
-if ss['dapar']['feat_path'] == 'empty' :
+if ss['dapar']['feat_path'] == 'empty' or kgl_datasource != ss['dapar']['kgl_datasource']:
     st.text("Preparing data ...")
-    kgl_ds = "sezaugg/" + 'spectrogram-clustering-01' 
+    ss['dapar']['kgl_datasource'] = kgl_datasource
+    kgl_ds = "sezaugg/" + kgl_datasource 
     kgl_path = kagglehub.dataset_download(kgl_ds, force_download = False) # get local path where downloaded
     ss['dapar']['feat_path'] = kgl_path
     ss['dapar']['imgs_path'] = os.path.join(ss['dapar']['feat_path'], 'xc_spectrograms', 'xc_spectrograms')
-    ss['dapar']['li_npz'] = [a for a in os.listdir(ss['dapar']['feat_path']) if ('.npz' in a) and (('dimred_' in a) or ('dimred_' in a) or ('dimred_' in a))]
+    ss['dapar']['li_npz'] = [a for a in os.listdir(ss['dapar']['feat_path']) if ('.npz' in a) and (('dimred_' in a))]
     ss['dapar']['li_npz'].sort()
-    # load meta data 
-    path_meat = os.path.join(ss['dapar']['feat_path'], 'downloaded_data_meta.pkl')
-    ss['dapar']['df_meta'] = pd.read_pickle(path_meat)
     st.rerun()
 # Then, choose a dataset
 else :
@@ -44,11 +57,10 @@ else :
                 ss['upar']['dbscan_eps'] =  0.36
             if ndim_sel == 'dimred_16':
                 ss['upar']['dbscan_eps'] =  0.46
-
             npz_sel.sort()
             with st.form("form01", border=False):
                 # seconf selec DNN model used for fex
-                npz_finame = st.radio("Select model used to extracted features", options = npz_sel, index=3, format_func=lambda x: "_".join(x.split("_")[4:]) )
+                npz_finame = st.radio("Select model used to extracted features", options = npz_sel, index=model_index, format_func=lambda x: "_".join(x.split("_")[4:]) )
                 submitted_1 = st.form_submit_button("Activate dataset", type = "primary")  
                 if submitted_1:
                     npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
@@ -57,14 +69,18 @@ else :
                     X_red, _, X_2D, _, N, _, = train_test_split(npzfile['X_red'], npzfile['X_2D'], npzfile['N'], train_size=10000, random_state=6666, shuffle=True)
                     # put selected data into ss
                     ss['dapar']['dataset_name']  = npz_finame 
+                    ss['upar']["datsou"] = kgl_datasource
                     ss['dapar']['X2D']           = X_2D.astype(np.float16)
                     ss['dapar']['X_dimred']      = X_red.astype(np.float16)
                     ss['dapar']['im_filenames']  = N
                     del(X_red, X_2D, N, npzfile)
+                    # load meta-data 
+                    path_meat = os.path.join(ss['dapar']['feat_path'], 'downloaded_data_meta.pkl')
+                    ss['dapar']['df_meta'] = pd.read_pickle(path_meat)
                     st.rerun() # to update sidebar!
-        st.page_link("page02.py", label="Go to analysis")    
+        
+        with st.container(border=True):              
+            st.page_link("page02.py", label="Go to analysis")    
 
 gc.collect() 
-
-
 
