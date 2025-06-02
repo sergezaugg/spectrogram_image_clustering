@@ -14,26 +14,27 @@ from sklearn.model_selection import train_test_split
 from utils import data_source_format
 gc.collect()
 
-# kgl_dataset = "spectrogram-clustering-parus-major"
-# kgl_dataset = "spectrogram-clustering-01"
+# kgl_datasource = "spectrogram-clustering-parus-major"
+# kgl_datasource = "spectrogram-clustering-01"
 
 c00, c01, c02  = st.columns([0.20, 0.10, 0.10])
 # very first select a data source 
 with c00:    
     with st.container(border=True):  
         data_source_options = ["spectrogram-clustering-01", "spectrogram-clustering-parus-major"]
-        kgl_dataset = st.segmented_control("Select data source based on primary focus species of recordings", 
-                                           options = data_source_options, default=data_source_options[0], format_func=data_source_format)
+        kgl_datasource = st.segmented_control("Select data source based on primary focus species of recordings", 
+                                options = data_source_options, format_func=data_source_format, default=ss['upar']["datsou"], # default=data_source_options[0], 
+                                )
         # temp construct to handle default in radio button below
-        if kgl_dataset == "spectrogram-clustering-01":
+        if kgl_datasource == "spectrogram-clustering-01":
             model_index = 3        
-        if kgl_dataset == "spectrogram-clustering-parus-major":
+        if kgl_datasource == "spectrogram-clustering-parus-major":
             model_index = 1    
 # First, get data into ss
-if ss['dapar']['feat_path'] == 'empty' or kgl_dataset != ss['dapar']['kgl_dataset']:
+if ss['dapar']['feat_path'] == 'empty' or kgl_datasource != ss['dapar']['kgl_datasource']:
     st.text("Preparing data ...")
-    ss['dapar']['kgl_dataset'] = kgl_dataset
-    kgl_ds = "sezaugg/" + kgl_dataset 
+    ss['dapar']['kgl_datasource'] = kgl_datasource
+    kgl_ds = "sezaugg/" + kgl_datasource 
     kgl_path = kagglehub.dataset_download(kgl_ds, force_download = False) # get local path where downloaded
     ss['dapar']['feat_path'] = kgl_path
     ss['dapar']['imgs_path'] = os.path.join(ss['dapar']['feat_path'], 'xc_spectrograms', 'xc_spectrograms')
@@ -71,6 +72,7 @@ else :
                     X_red, _, X_2D, _, N, _, = train_test_split(npzfile['X_red'], npzfile['X_2D'], npzfile['N'], train_size=10000, random_state=6666, shuffle=True)
                     # put selected data into ss
                     ss['dapar']['dataset_name']  = npz_finame 
+                    ss['upar']["datsou"] = kgl_datasource
                     ss['dapar']['X2D']           = X_2D.astype(np.float16)
                     ss['dapar']['X_dimred']      = X_red.astype(np.float16)
                     ss['dapar']['im_filenames']  = N

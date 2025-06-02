@@ -25,7 +25,7 @@ if 'dapar' not in ss:
         'X2D' : np.array([]),
         'X_dimred' : np.array([]),
         'df_meta' : np.array([]),
-        'kgl_dataset' : 'empty',
+        'kgl_datasource' : 'empty',
         }
 
 # user provided parameters
@@ -36,12 +36,13 @@ if 'upar' not in ss:
         'skip_umap' : False,
         'dbscan_eps' : 0.46,
         'dbscan_min_samples' : 20,
-        'exclude_non_assigned' : False
+        'exclude_non_assigned' : False,
+        'datsou' : "spectrogram-clustering-01",
         }
 
 with st.sidebar:  
     st.header(''':primary[**Unsupervised clustering of spectrograms with features from pre-trained image models**]''')
-    st.info('Data source: ' + data_source_format(ss['dapar']['kgl_dataset']))
+    st.info('Data source: ' + data_source_format(ss['upar']['datsou']))
     st.info('Data set: ' + ss['dapar']['dataset_name'])
     st.header("")
     st.markdown('''QUICK GUIDE''')
