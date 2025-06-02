@@ -40,9 +40,6 @@ if ss['dapar']['feat_path'] == 'empty' or kgl_datasource != ss['dapar']['kgl_dat
     ss['dapar']['imgs_path'] = os.path.join(ss['dapar']['feat_path'], 'xc_spectrograms', 'xc_spectrograms')
     ss['dapar']['li_npz'] = [a for a in os.listdir(ss['dapar']['feat_path']) if ('.npz' in a) and (('dimred_' in a))]
     ss['dapar']['li_npz'].sort()
-    # load meta-data 
-    path_meat = os.path.join(ss['dapar']['feat_path'], 'downloaded_data_meta.pkl')
-    ss['dapar']['df_meta'] = pd.read_pickle(path_meat)
     st.rerun()
 # Then, choose a dataset
 else :
@@ -77,6 +74,9 @@ else :
                     ss['dapar']['X_dimred']      = X_red.astype(np.float16)
                     ss['dapar']['im_filenames']  = N
                     del(X_red, X_2D, N, npzfile)
+                    # load meta-data 
+                    path_meat = os.path.join(ss['dapar']['feat_path'], 'downloaded_data_meta.pkl')
+                    ss['dapar']['df_meta'] = pd.read_pickle(path_meat)
                     st.rerun() # to update sidebar!
         
         with st.container(border=True):              

@@ -52,12 +52,12 @@ with st.sidebar:
     st.text("(4) Check cluster contents")
 
     # logos an links
-    st.header(""); st.header(""); st.header("")
+    st.header(""); st.header("")
     c1,c2=st.columns([80,200])
     c1.image(image='pics/z_logo_orange.png', width=65)
     c2.markdown(''':primary[v0.9.10]  
     :primary[Created by]
-    :primary[[Serge Zaugg](https://www.linkedin.com/in/dkifh34rtn345eb5fhrthdbgf45/)]
+    :primary[[Serge Zaugg](https://www.linkedin.com/in/dkifh34rtn345eb5fhrthdbgf45/)]    
     :primary[[Pollito-ML](https://github.com/sergezaugg)]
     ''')
     st.logo(image='pics/z_logo_orange.png', size="large", link="https://github.com/sergezaugg")
