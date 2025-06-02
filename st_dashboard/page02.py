@@ -88,6 +88,7 @@ if len(ss['dapar']['X_dimred']) > 0 :
             c02.metric("N clusters", num_clusters)
 
         clu_id_list = np.unique(ss['dapar']['clusters_pred_str'])
+        clu_id_list = clu_id_list[clu_id_list != '-01'] # remove -01 from options
         clu_selected = st.segmented_control(label = "Select a cluster ID", options = clu_id_list, selection_mode="single", key = "k_img_clu",
                                         default = clu_id_list[-1], label_visibility="visible")        
         st.text("Cluster content preview (max 120 random images from cluster)")
