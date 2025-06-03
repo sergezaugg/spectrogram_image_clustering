@@ -162,6 +162,7 @@ def update_label_data_frame(cluster_list):
     dft[var_name] = dft[var_name].mask(cond = dft['filename'].isin(cluster_list), other=1)
     # merge the new label indicators into the main df (in ss) 
     ss['dapar']['df_prelim_labels'] = ss['dapar']['df_prelim_labels'].merge(right= dft, how='left', on='filename')
+    return(var_name)
     
 
 

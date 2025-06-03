@@ -14,22 +14,18 @@ from sklearn.model_selection import train_test_split
 from utils import data_source_format
 gc.collect()
 
-# kgl_datasource = "spectrogram-clustering-parus-major"
-# kgl_datasource = "spectrogram-clustering-01"
-
 c00, c01, c02  = st.columns([0.20, 0.10, 0.10])
 # very first select a data source 
 with c00:    
-    with st.container(border=True):  
-        data_source_options = ["spectrogram-clustering-01", "spectrogram-clustering-parus-major"]
-        kgl_datasource = st.segmented_control("Select data source based on primary focus species of recordings", 
-                                options = data_source_options, format_func=data_source_format, default=ss['upar']["datsou"], # default=data_source_options[0], 
-                                )
-        # temp construct to handle default in radio button below
-        if kgl_datasource == "spectrogram-clustering-01":
-            model_index = 3        
-        if kgl_datasource == "spectrogram-clustering-parus-major":
-            model_index = 1    
+    with st.container(border=True): 
+        with st.form("form00", border=False):
+            data_source_options = ["spectrogram-clustering-01", "spectrogram-clustering-parus-major"]
+            kgl_datasource = st.segmented_control("Select data source based on primary focus species of recordings", 
+                                    options = data_source_options, format_func=data_source_format, default=ss['upar']["datsou"])
+            submitted_0 = st.form_submit_button("Activate data source", type = "primary")
+            st.text("Activating a new data source will reset 'Image pool' and 'Preliminary labels'")  
+            if submitted_0:
+                print("a")
 # First, get data into ss
 if ss['dapar']['feat_path'] == 'empty' or kgl_datasource != ss['dapar']['kgl_datasource']:
     st.text("Preparing data ...")
@@ -40,6 +36,9 @@ if ss['dapar']['feat_path'] == 'empty' or kgl_datasource != ss['dapar']['kgl_dat
     ss['dapar']['imgs_path'] = os.path.join(ss['dapar']['feat_path'], 'xc_spectrograms', 'xc_spectrograms')
     ss['dapar']['li_npz'] = [a for a in os.listdir(ss['dapar']['feat_path']) if ('.npz' in a) and (('dimred_' in a))]
     ss['dapar']['li_npz'].sort()
+    # prelim labels dfs not supported over multiple data sources, thus must be re-initialized
+    ss['dapar']['image_pool'] = list()
+    ss['dapar']['df_prelim_labels'] = np.array([])
     st.rerun()
 # Then, choose a dataset
 else :
@@ -60,7 +59,7 @@ else :
             npz_sel.sort()
             with st.form("form01", border=False):
                 # seconf selec DNN model used for fex
-                npz_finame = st.radio("Select model used to extracted features", options = npz_sel, index=model_index, format_func=lambda x: "_".join(x.split("_")[4:]) )
+                npz_finame = st.radio("Select model used to extracted features", options = npz_sel, index=0, format_func=lambda x: "_".join(x.split("_")[4:]) )
                 submitted_1 = st.form_submit_button("Activate dataset", type = "primary")  
                 if submitted_1:
                     npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)

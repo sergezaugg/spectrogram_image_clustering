@@ -26,7 +26,7 @@ if 'dapar' not in ss:
         'X_dimred' : np.array([]),
         'df_meta' : np.array([]),
         'kgl_datasource' : 'empty',
-        'saved_clusterd' : list(),
+        'image_pool' : list(),
         'df_prelim_labels' : np.array([]),
         }
 
@@ -54,7 +54,7 @@ with st.sidebar:
     st.text("(4) Check cluster contents")
 
     # logos an links
-    st.header(""); st.header("")
+    st.text("")
     c1,c2=st.columns([80,200])
     c1.image(image='pics/z_logo_orange.png', width=65)
     c2.markdown(''':primary[v0.9.10]  

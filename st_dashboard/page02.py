@@ -99,17 +99,17 @@ if len(ss['dapar']['X_dimred']) > 0 :
         images_in_cluster_sample = select_random_image_subset(images_in_cluster, max_n_images = 120)
         # st.write(images_in_cluster_sample)
 
-        c01, c02, c03 = st.columns([0.2, 0.3, 0.6]) 
-        do_save = c01.button("Add to pool", type="primary")
-        do_reset = c02.button("Reset pool", type="primary")
+        c01, c02, c03 = st.columns([0.3, 0.3, 0.6]) 
+        do_save = c01.button("Add to image pool", type="primary")
+        do_reset = c02.button("Reset image pool", type="primary")
         if do_save: 
-            ss['dapar']['saved_clusterd'].extend(images_in_cluster)
-            ss['dapar']['saved_clusterd'] = list(set(ss['dapar']['saved_clusterd'])) # remove dups 
-            ss['dapar']['saved_clusterd'].sort()
+            ss['dapar']['image_pool'].extend(images_in_cluster)
+            ss['dapar']['image_pool'] = list(set(ss['dapar']['image_pool'])) # remove dups 
+            ss['dapar']['image_pool'].sort()
         if do_reset: 
-            ss['dapar']['saved_clusterd'] = list()
+            ss['dapar']['image_pool'] = list()
         with c03:  
-            st.info('Images in pool: ' + str(len(ss['dapar']['saved_clusterd'])))      
+            st.info('Images in pool: ' + str(len(ss['dapar']['image_pool'])))      
         display_mini_images_by_file(sel_imgs = images_in_cluster_sample)
 
          
