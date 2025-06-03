@@ -26,7 +26,8 @@ if 'dapar' not in ss:
         'X_dimred' : np.array([]),
         'df_meta' : np.array([]),
         'kgl_datasource' : 'empty',
-        'saved_clusterd' : list()
+        'saved_clusterd' : list(),
+        'df_prelim_labels' : np.array([]),
         }
 
 # user provided parameters
@@ -67,9 +68,10 @@ p01 = st.Page("page01.py", title="Summary")
 p02 = st.Page("page02.py", title="Analyse")
 p03 = st.Page("page03.py", title="Select dataset")
 p04 = st.Page("page04.py", title="Data info/credits")
-p05 = st.Page("page05.py", title="Show selected images")
+p05 = st.Page("page05.py", title="Image pool")
+p06 = st.Page("page06.py", title="Preliminary labels")
 pss = st.Page("page_ss.py", title="(Dev diagnostics)")
-pg = st.navigation([p03, p04, p02, p01, p05,  
+pg = st.navigation([p01, p03, p04, p02, p05, p06,  
                     # pss
                     ])
 pg.run()

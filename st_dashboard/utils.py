@@ -106,13 +106,13 @@ def make_scatter_plot(df, cat_name, title = "not set", height = 900, width = 100
 
 @st.fragment
 def display_mini_images_by_file(sel_imgs, num_cols = 5):
-    # num_cols = 5
     grid = st.columns(num_cols)
     col = 0
     for ii, im_filname in enumerate(sel_imgs):
         try:
             with grid[col]:
                 st.image(os.path.join(ss['dapar']['imgs_path'], im_filname), use_container_width=True)
+                # st.image(os.path.join(ss['dapar']['imgs_path'], im_filname), use_container_width=True, caption = im_filname)
             col += 1
             if ii % num_cols == (num_cols-1):
                 col = 0
@@ -139,3 +139,29 @@ def display_bar_plot(x):
 def select_random_image_subset(images_in_cluster, max_n_images = 60):
     rand_index = np.random.choice(np.arange(len(images_in_cluster)), size=min(max_n_images, len(images_in_cluster)), replace=False)    
     return(images_in_cluster[rand_index])
+
+
+@st.cache_data
+def update_label_data_frame(cluster_list):
+    """
+    Description : get list of files in the pool of clusters and make a dummy-coded class-indicator dataframe 
+    cluster_list (list) : list of filenames that were added to the pool 
+    """
+    # if necessary, initialize df and set the list of files as first column 
+    if ss['dapar']['df_prelim_labels'].shape[0] == 0:
+        ss['dapar']['df_prelim_labels'] = pd.DataFrame({'filename' : ss['dapar']['im_filenames']})
+        ss['dapar']['df_prelim_labels'] = ss['dapar']['df_prelim_labels'].sort_values(by = 'filename')
+    # get sequentially numberd names for the label indicator variable 
+    ii = ss['dapar']['df_prelim_labels'].shape[1]
+    var_name = 'class'+ str(ii)
+    # create a temp df with label indicators 
+    dft = pd.DataFrame({
+        'filename' : ss['dapar']['im_filenames'], 
+        var_name : np.zeros(ss['dapar']['im_filenames'].shape[0])
+        })
+    dft[var_name] = dft[var_name].mask(cond = dft['filename'].isin(cluster_list), other=1)
+    # merge the new label indicators into the main df (in ss) 
+    ss['dapar']['df_prelim_labels'] = ss['dapar']['df_prelim_labels'].merge(right= dft, how='left', on='filename')
+    
+
+
