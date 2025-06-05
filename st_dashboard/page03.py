@@ -17,15 +17,16 @@ gc.collect()
 c00, c01, c02  = st.columns([0.20, 0.10, 0.10])
 # very first select a data source 
 with c00:    
-    with st.container(border=True): 
-        with st.form("form00", border=False):
-            data_source_options = ["spectrogram-clustering-01", "spectrogram-clustering-parus-major"]
-            kgl_datasource = st.segmented_control("Select data source based on primary focus species of recordings", 
-                                    options = data_source_options, format_func=data_source_format, default=ss['upar']["datsou"])
-            submitted_0 = st.form_submit_button("Activate data source", type = "primary")
-            st.text("Activating a new data source will reset 'Image pool' and 'Preliminary labels'")  
-            if submitted_0:
-                print("a")
+    with st.container(border=True):  
+        data_source_options = ["spectrogram-clustering-01", "spectrogram-clustering-parus-major"]
+        kgl_datasource = st.segmented_control("Select data source based on primary focus species of recordings", 
+                                options = data_source_options, format_func=data_source_format, default=ss['upar']["datsou"], 
+                                )
+        # temp construct to handle default in radio button below
+        if kgl_datasource == "spectrogram-clustering-01":
+            model_index = 2        
+        if kgl_datasource == "spectrogram-clustering-parus-major":
+            model_index = 2    
 # First, get data into ss
 if ss['dapar']['feat_path'] == 'empty' or kgl_datasource != ss['dapar']['kgl_datasource']:
     st.text("Preparing data ...")
