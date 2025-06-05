@@ -19,7 +19,7 @@ def convert_for_download(df):
 c1,c2=st.columns([0.3, 0.5])
 c1.subheader("Spectrograms of all clusters that were pooled")
 c2.text("")
-c2.text("Check the consistency of spectrograms and then add them to labels data frame")
+# c2.text("Check the consistency of spectrograms and then add them to labels data frame")
 
 if len(ss['dapar']['image_pool']) == 0:
     c1.info("Image pool is empty, got to 'Cluster spectrograms' to assign clusters to the pool")
@@ -40,13 +40,13 @@ c2.text("")
 if (len(ss['dapar']['df_prelim_labels'])==0):
     c1.info("Data frame is empty")
 else:    
-    c2.text("N rows: " +  str(ss['dapar']['df_prelim_labels'].shape[0]) + "   N cols: " +  str(ss['dapar']['df_prelim_labels'].shape[1]))
+    # c2.text("N rows: " +  str(ss['dapar']['df_prelim_labels'].shape[0]) + "   N cols: " +  str(ss['dapar']['df_prelim_labels'].shape[1]))
+    c1.download_button(label="Download CSV", type="primary", file_name="data.csv",mime="text/csv",icon=":material/download:", 
+                            data=convert_for_download(ss['dapar']['df_prelim_labels'])) 
+    c2.write("Plese download spectrogram images directly here:")
+    c2.write("https://www.kaggle.com/datasets/sezaugg/" + ss['dapar']['kgl_datasource'])
 
-    st.download_button(label="Download CSV", type="primary", file_name="data.csv",mime="text/csv",icon=":material/download:", 
-                            data=convert_for_download(ss['dapar']['df_prelim_labels']))
     st.dataframe(ss['dapar']['df_prelim_labels'], width=1000)
-
-
 
 
 
