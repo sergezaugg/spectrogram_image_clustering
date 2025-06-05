@@ -36,13 +36,67 @@ def data_source_format(s):
     else:
         return("error")
 
+
+
+
+# @st.cache_data
+# def perform_clustering(X, eps, min_samples):
+#     """ 
+#     """
+#     clu = DBSCAN(eps = eps, min_samples = min_samples, metric='euclidean', n_jobs = -1) 
+#     clusters_pred = clu.fit_predict(X)
+#     return(clusters_pred)
+
+
+from sklearn.model_selection import KFold
+
+
 @st.cache_data
-def perform_dbscan_clusterin(X, eps, min_samples):
+def perform_clustering(X, eps, min_samples):
     """ 
+    sequential application (experimental)
     """
     clu = DBSCAN(eps = eps, min_samples = min_samples, metric='euclidean', n_jobs = -1) 
-    clusters_pred = clu.fit_predict(X)
+    # K-fold cv used to partition data ins smaller chunk that will not kill app's memory
+    target_n = 10000
+    n_splits = int(np.ceil(X.shape[0]/target_n))
+    kf = KFold(n_splits=n_splits, shuffle=False)
+    clusters_pred = []
+    id_max = 0
+    for _, sub_index in kf.split(X):
+        print(sub_index.shape)
+        clu_ids = clu.fit_predict(X[sub_index])
+        # make sure cluster ids are unique across all folds
+        clu_ids[clu_ids > -1] = clu_ids[clu_ids > -1] + id_max
+        clusters_pred.append(clu_ids)
+        id_max = max(clu_ids)
+    clusters_pred = np.concatenate(clusters_pred)
+    # print('clusters_pred.shape', clusters_pred.shape)
     return(clusters_pred)
+
+
+
+
+
+# from sklearn.cluster import MiniBatchKMeans
+# from sklearn.cluster import KMeans
+# from sklearn.cluster import OPTICS
+# from sklearn.cluster import HDBSCAN
+
+# @st.cache_data
+# def perform_clustering(X, eps, min_samples):
+#     """ 
+#     """
+#     # clu = DBSCAN(eps = eps, min_samples = min_samples, metric='euclidean', n_jobs = -1) 
+#     clu = OPTICS(min_samples = min_samples, max_eps = eps, cluster_method = 'dbscan')
+#     # clu = HDBSCAN(min_cluster_size=min_samples, min_samples=min_samples)
+#     # clu = MiniBatchKMeans(n_clusters=min_samples)
+#     # clu = KMeans(n_clusters=min_samples)
+#     clusters_pred = clu.fit_predict(X)
+#     return(clusters_pred)
+
+
+
 
 @st.cache_data
 def make_sorted_df(cat, cat_name, X):

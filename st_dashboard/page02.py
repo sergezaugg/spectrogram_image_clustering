@@ -10,10 +10,10 @@ import numpy as np
 import pandas as pd
 import gc
 # streamlit need it like that:
-from utils import perform_dbscan_clusterin, update_ss, display_bar_plot, select_random_image_subset
+from utils import perform_clustering, update_ss, display_bar_plot, select_random_image_subset
 from utils import make_sorted_df, make_scatter_plot, display_mini_images_by_file
 # streamlit does not find the module !!!
-# from st_dashboard.utils import dim_reduction_for_2D_plot, dim_reduction_for_clustering, perform_dbscan_clusterin, update_ss
+# from st_dashboard.utils import dim_reduction_for_2D_plot, dim_reduction_for_clustering, perform_clustering, update_ss
 # from st_dashboard.utils import make_sorted_df, make_scatter_plot, display_mini_images_by_file
 gc.collect()
 
@@ -67,7 +67,7 @@ if len(ss['dapar']['X_dimred']) > 0 :
 
         #-------------------------------------------
         # computational block 2 (st-cached)
-        clusters_pred = perform_dbscan_clusterin(X = ss['dapar']['X_dimred'] , eps = ss['upar']['dbscan_eps'], min_samples = ss['upar']['dbscan_min_samples']) 
+        clusters_pred = perform_clustering(X = ss['dapar']['X_dimred'] , eps = ss['upar']['dbscan_eps'], min_samples = ss['upar']['dbscan_min_samples']) 
         num_unasigned = (clusters_pred == -1).sum()
         num_asigned = len(clusters_pred) - num_unasigned
         num_clusters = len(np.unique(clusters_pred))
