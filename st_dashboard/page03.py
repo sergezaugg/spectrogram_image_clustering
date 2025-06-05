@@ -60,7 +60,7 @@ else :
             with st.form("form01", border=False):
                 # seconf selec DNN model used for fex
                 npz_finame = st.radio("Select model used to extracted features", options = npz_sel, index=0, format_func=lambda x: "_".join(x.split("_")[4:]) )
-                submitted_1 = st.form_submit_button("Activate dataset", type = "primary")  
+                submitted_1 = st.form_submit_button("Select dataset", type = "primary")  
                 if submitted_1:
                     npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
                     npzfile = np.load(npzfile_full_path)

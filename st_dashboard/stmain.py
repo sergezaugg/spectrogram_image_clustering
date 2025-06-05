@@ -46,13 +46,18 @@ with st.sidebar:
     st.header(''':primary[**Unsupervised clustering of spectrograms with features from pre-trained image models**]''')
     st.info('Data source: ' + data_source_format(ss['upar']['datsou']))
     st.info('Data set: ' + ss['dapar']['dataset_name'])
-    st.header("")
-    st.markdown('''QUICK GUIDE''')
-    st.text("(1) Select a dataset")
-    st.text("(2) Tune DBSCAN params")
-    st.text("(3) Explore scatterplot")
-    st.text("(4) Check cluster contents")
-
+    st.text("")
+    st.markdown('''QUICK GUIDE  
+                (1) Select a data source    
+                (2) Select a dataset     
+                (3) Tune DBSCAN params    
+                (4) Get adequate Nb clusters*  
+                (4) Search consistent clusters   
+                (5) Assign clusters to pool     
+                (7) Save pool as a class variable    
+                (8) Repeat 2-7 to make more variables      
+                ''')
+   
     # logos an links
     st.text("")
     c1,c2=st.columns([80,200])
@@ -64,13 +69,13 @@ with st.sidebar:
     ''')
     st.logo(image='pics/z_logo_orange.png', size="large", link="https://github.com/sergezaugg")
 
-p01 = st.Page("page01.py", title="Summary")
-p02 = st.Page("page02.py", title="Analyse")
-p03 = st.Page("page03.py", title="Select dataset")
-p04 = st.Page("page04.py", title="Data info/credits")
+p01 = st.Page("page01.py", title="ML-summary")
+p02 = st.Page("page02.py", title="Cluster spectrograms")
+p03 = st.Page("page03.py", title="Select data")
+p04 = st.Page("page04.py", title="Data info and credits")
 p05 = st.Page("page05.py", title="Image pool")
 pss = st.Page("page_ss.py", title="(Dev diagnostics)")
-pg = st.navigation([p01, p03, p04, p02, p05,  
+pg = st.navigation([p03, p02, p05, p01, p04,   
                     # pss
                     ])
 pg.run()
