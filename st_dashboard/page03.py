@@ -65,7 +65,7 @@ else :
                     npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
                     npzfile = np.load(npzfile_full_path)
                     # take a subset of data (else public streamlit.app will crash) 
-                    X_red, _, X_2D, _, N, _, = train_test_split(npzfile['X_red'], npzfile['X_2D'], npzfile['N'], train_size=10000, random_state=6666, shuffle=True)
+                    X_red, _, X_2D, _, N, _, = train_test_split(npzfile['X_red'], npzfile['X_2D'], npzfile['N'], train_size=0.999999, random_state=6666, shuffle=True)
                     # put selected data into ss
                     ss['dapar']['dataset_name']  = npz_finame 
                     ss['upar']["datsou"] = kgl_datasource
