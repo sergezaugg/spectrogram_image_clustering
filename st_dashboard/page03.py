@@ -27,9 +27,9 @@ with c00:
                                 )
         # temp construct to handle default in radio button below
         if kgl_datasource == "spectrogram-clustering-01":
-            model_index = 3        
+            model_index = 2        
         if kgl_datasource == "spectrogram-clustering-parus-major":
-            model_index = 1    
+            model_index = 2    
 # First, get data into ss
 if ss['dapar']['feat_path'] == 'empty' or kgl_datasource != ss['dapar']['kgl_datasource']:
     st.text("Preparing data ...")
