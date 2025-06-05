@@ -14,8 +14,8 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 #-------------------------
 # set paths   
-# image_path = "D:/xc_real_projects/xc_sw_europe/xc_spectrograms"
-image_path = "D:/xc_real_projects/xc_parus_01/xc_spectrograms"
+image_path = "D:/xc_real_projects/xc_sw_europe/xc_spectrograms"
+# image_path = "D:/xc_real_projects/xc_parus_01/xc_spectrograms"
 featu_path = "./extracted_features"
 # n_batches = 10 # dev
 n_batches = 800000 # prod
