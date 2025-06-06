@@ -106,6 +106,15 @@ class FeatureExtractor:
         self.fex_tag = fex_tag
         _ = self.extractor.eval()
 
+
+
+
+  
+  
+
+
+
+
     def extract(self, image_path, freq_pool, batch_size, n_batches = 2):
         dataset = ImageDataset(image_path, self.preprocessor)
         loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size,  shuffle=False, drop_last=False)
@@ -121,6 +130,13 @@ class FeatureExtractor:
             # blockwise pooling along frequency axe 
             pred = skimage.measure.block_reduce(pred, (1,1,freq_pool,1), np.mean)
             print('After average pool along freq:', pred.shape)
+
+            # cutting time edges (currently hard coded to 20% on each side)
+            ecut = np.ceil(0.20 * pred.shape[3]).astype(int)
+            # print('ecut', ecut)
+            pred = pred[:, :, :, ecut:(-1*ecut)] 
+            print('NEW - After cutting time edges:', pred.shape)
+            
             # full average pool over time (do asap to avoid memory issues later)
             pred = pred.mean(axis=3)
             print('After average pool along time:', pred.shape)

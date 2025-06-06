@@ -31,8 +31,18 @@
 
 ### Dependencies / Intallation
 * Developed under Python 3.12.8
-* For feature extraction with PyTorch (and GPU) ```pip install -r req_torchcuda.txt```
-* For Streamlit deployment ```pip install -r requirements.txt```
+* Make a fresh venv!
+* For Streamlit deployment only
+```bash 
+pip install -r requirements.txt
+```
+* For feature extraction you also need to install **torch** and **torchvision**
+* This code was developed under Windows with CUDA 12.6 and Python 3.12.8 
+```bash 
+pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126
+```
+* If other CUDA version needed, check instructions here https://pytorch.org/get-started/locally
+
 
 ### Machine Learning
 * Please find detes [here](https://spectrogram-image-clustering.streamlit.app/page01)

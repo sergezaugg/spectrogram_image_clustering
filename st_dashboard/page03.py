@@ -14,17 +14,14 @@ from sklearn.model_selection import train_test_split
 from utils import data_source_format
 gc.collect()
 
-# kgl_datasource = "spectrogram-clustering-parus-major"
-# kgl_datasource = "spectrogram-clustering-01"
-
 c00, c01, c02  = st.columns([0.20, 0.10, 0.10])
 # very first select a data source 
 with c00:    
-    with st.container(border=True):  
+    with st.container(border=True): 
+        st.subheader("Select data source")  
         data_source_options = ["spectrogram-clustering-01", "spectrogram-clustering-parus-major"]
-        kgl_datasource = st.segmented_control("Select data source based on primary focus species of recordings", 
-                                options = data_source_options, format_func=data_source_format, default=ss['upar']["datsou"], # default=data_source_options[0], 
-                                )
+        kgl_datasource = st.segmented_control("(Changing data source will erase the image pool)", 
+                                              options = data_source_options, format_func=data_source_format, default=ss['upar']["datsou"], label_visibility="visible")
         # temp construct to handle default in radio button below
         if kgl_datasource == "spectrogram-clustering-01":
             model_index = 2        
@@ -40,13 +37,17 @@ if ss['dapar']['feat_path'] == 'empty' or kgl_datasource != ss['dapar']['kgl_dat
     ss['dapar']['imgs_path'] = os.path.join(ss['dapar']['feat_path'], 'xc_spectrograms', 'xc_spectrograms')
     ss['dapar']['li_npz'] = [a for a in os.listdir(ss['dapar']['feat_path']) if ('.npz' in a) and (('dimred_' in a))]
     ss['dapar']['li_npz'].sort()
+    # prelim labels dfs not supported over multiple data sources, thus must be re-initialized
+    ss['dapar']['image_pool'] = list()
+    ss['dapar']['df_prelim_labels'] = np.array([])
     st.rerun()
 # Then, choose a dataset
 else :
     with c00:
-        with st.container(border=True):  
+        with st.container(border=True): 
+            st.subheader("Select features used for clustering") 
             # first pre-select datasets based on the dim reduction 
-            ndim_sel = st.radio("Select level of UMAP dim reduction", options = ['dimred_2', 'dimred_4', 'dimred_8', 'dimred_16'], index=2, format_func=lambda x: x.split("_")[1])
+            ndim_sel = st.radio("Level of UMAP dim reduction", options = ['dimred_2', 'dimred_4', 'dimred_8', 'dimred_16'], index=2, format_func=lambda x: x.split("_")[1])
             npz_sel = [a for a in ss['dapar']['li_npz'] if ndim_sel in a]
             # pre select good default for the selected dim
             if ndim_sel == 'dimred_2':
@@ -60,13 +61,13 @@ else :
             npz_sel.sort()
             with st.form("form01", border=False):
                 # seconf selec DNN model used for fex
-                npz_finame = st.radio("Select model used to extracted features", options = npz_sel, index=model_index, format_func=lambda x: "_".join(x.split("_")[4:]) )
-                submitted_1 = st.form_submit_button("Activate dataset", type = "primary")  
+                npz_finame = st.radio("Model used to extracted features", options = npz_sel, index=model_index, format_func=lambda x: "_".join(x.split("_")[4:]) )
+                submitted_1 = st.form_submit_button("Activate features dataset", type = "primary")  
                 if submitted_1:
                     npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
                     npzfile = np.load(npzfile_full_path)
                     # take a subset of data (else public streamlit.app will crash) 
-                    X_red, _, X_2D, _, N, _, = train_test_split(npzfile['X_red'], npzfile['X_2D'], npzfile['N'], train_size=10000, random_state=6666, shuffle=True)
+                    X_red, _, X_2D, _, N, _, = train_test_split(npzfile['X_red'], npzfile['X_2D'], npzfile['N'], train_size=0.999999, random_state=6666, shuffle=True)
                     # put selected data into ss
                     ss['dapar']['dataset_name']  = npz_finame 
                     ss['upar']["datsou"] = kgl_datasource

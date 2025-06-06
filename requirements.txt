@@ -4,6 +4,7 @@ pandas
 pillow
 plotly
 scikit-learn
+scikit-image
 scipy
 streamlit
 umap-learn

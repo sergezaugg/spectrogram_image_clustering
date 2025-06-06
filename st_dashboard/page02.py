@@ -9,12 +9,9 @@ from streamlit import session_state as ss
 import numpy as np
 import pandas as pd
 import gc
-# streamlit need it like that:
-from utils import perform_dbscan_clusterin, update_ss, display_bar_plot, select_random_image_subset
-from utils import make_sorted_df, make_scatter_plot, display_mini_images_by_file
-# streamlit does not find the module !!!
-# from st_dashboard.utils import dim_reduction_for_2D_plot, dim_reduction_for_clustering, perform_dbscan_clusterin, update_ss
-# from st_dashboard.utils import make_sorted_df, make_scatter_plot, display_mini_images_by_file
+# streamlit need import like that:
+from utils import perform_sequential_dbscan_clustering, update_ss, display_bar_plot, select_random_image_subset
+from utils import make_sorted_df, make_scatter_plot, display_mini_images_by_file, merge_closeby_clusters, pooling_pannel
 gc.collect()
 
 
@@ -44,13 +41,7 @@ if len(ss['dapar']['X_dimred']) > 0 :
             with st.container(border=True, height = 275): 
                 # eps_options = (10.0**(np.arange(-3.0, 0.50, 0.05))).round(3)
                 eps_options = np.concatenate([np.arange(0.01, 0.1, 0.01), np.arange(0.1, 2.1, 0.02)]).round(2)
-                min_samples_options = np.arange(10, 51, 5)
-                # # callback version (too fast for streamlit.app ?)
-                # _ = st.select_slider(label = "DBSCAN eps", options = eps_options, 
-                #     key = "k_dbscan_eps", value=ss['upar']["dbscan_eps"], on_change=update_ss, args=["k_dbscan_eps", "dbscan_eps"])
-                # _ = st.select_slider(label = "DBSCAN min samples", options = min_samples_options, 
-                #     key = "k_dbscan_min", value=ss['upar']["dbscan_min_samples"], on_change=update_ss, args=["k_dbscan_min", "dbscan_min_samples"])
-           
+                min_samples_options = np.arange(10, 51, 5)          
                 # form-submit version
                 with st.form("form_01", border=False):
                     eps_value = st.select_slider(label = "DBSCAN eps", options = eps_options, value=ss['upar']["dbscan_eps"])
@@ -67,10 +58,14 @@ if len(ss['dapar']['X_dimred']) > 0 :
 
         #-------------------------------------------
         # computational block 2 (st-cached)
-        clusters_pred = perform_dbscan_clusterin(X = ss['dapar']['X_dimred'] , eps = ss['upar']['dbscan_eps'], min_samples = ss['upar']['dbscan_min_samples']) 
+        clusters_pred = perform_sequential_dbscan_clustering(X = ss['dapar']['X_dimred'], eps = ss['upar']['dbscan_eps'], min_samples = ss['upar']['dbscan_min_samples']) 
+        # merge very similar cluster to have same id (experimental)
+        clusters_pred = merge_closeby_clusters(clusters_pred, eps = 0.10)
+        # get some metrics
         num_unasigned = (clusters_pred == -1).sum()
         num_asigned = len(clusters_pred) - num_unasigned
         num_clusters = len(np.unique(clusters_pred))
+        # store in ss and make plot
         ss['dapar']['clusters_pred_str'] = np.array([format(a, '03d') for a in clusters_pred])
         df_pred = make_sorted_df(cat = ss['dapar']['clusters_pred_str'], cat_name = 'Predicted cluster', X = ss['dapar']['X2D'])
         fig02 = make_scatter_plot(df = df_pred, cat_name = 'Predicted cluster', 
@@ -88,27 +83,23 @@ if len(ss['dapar']['X_dimred']) > 0 :
             c02.metric("N clusters", num_clusters)
 
         clu_id_list = np.unique(ss['dapar']['clusters_pred_str'])
+        clu_id_list = clu_id_list[clu_id_list != '-01'] # remove -01 from options
         clu_selected = st.segmented_control(label = "Select a cluster ID", options = clu_id_list, selection_mode="single", key = "k_img_clu",
                                         default = clu_id_list[-1], label_visibility="visible")        
-        st.text("Cluster content preview (max 120 random images from cluster)")
+        st.text("Cluster content preview (max 50 random images from cluster)")
         # select all images in a given cluster 
         sel = ss['dapar']['clusters_pred_str'] == clu_selected
         images_in_cluster = ss['dapar']['im_filenames'][sel]
         # take a smaller subsample 
-        images_in_cluster_sample = select_random_image_subset(images_in_cluster, max_n_images = 120)
+        images_in_cluster_sample = select_random_image_subset(images_in_cluster, max_n_images = 50)
+        # display ui elements 
+        pooling_pannel(images_in_cluster)        
         display_mini_images_by_file(sel_imgs = images_in_cluster_sample)
 
     # display_bar_plot
     with cols[2]:
-        with st.container(border=True): 
-            st.text("Origin of spectrograms in cluster")
+        with st.expander("File origin of spectrograms "): 
             display_bar_plot(images_in_cluster_sample)
-
-
-
-
-
-
 
 gc.collect()
 
