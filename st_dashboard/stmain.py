@@ -43,7 +43,7 @@ if 'upar' not in ss:
         }
 
 with st.sidebar:  
-    st.header(''':primary[**Unsupervised clustering of for pre-annotation of spectrogram datasets**]''')
+    st.header(''':primary[**Unsupervised clustering for pre-annotation of spectrogram datasets**]''')
     st.info('Data source: ' + data_source_format(ss['upar']['datsou']))
     st.info('Features from: ' + ("_".join(ss['dapar']['dataset_name'].split("_")[4:])[0:22] )) # yes, APITA
     st.text("")
