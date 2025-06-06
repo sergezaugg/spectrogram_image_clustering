@@ -10,7 +10,8 @@ import pandas as pd
 import plotly.express as px
 import umap.umap_ as umap
 # from sklearn.preprocessing import StandardScaler
-from sklearn.cluster import DBSCAN, OPTICS, k_means
+from sklearn.model_selection import KFold
+from sklearn.cluster import DBSCAN, OPTICS, k_means, MiniBatchKMeans
 import numpy as np
 
 
@@ -39,22 +40,15 @@ def data_source_format(s):
 
 
 
-# @st.cache_data
-# def perform_clustering(X, eps, min_samples):
-#     """ 
-#     """
-#     clu = DBSCAN(eps = eps, min_samples = min_samples, metric='euclidean', n_jobs = -1) 
-#     clusters_pred = clu.fit_predict(X)
-#     return(clusters_pred)
 
 
-from sklearn.model_selection import KFold
 
 
 @st.cache_data
-def perform_clustering(X, eps, min_samples):
+def perform_sequential_dbscan_clustering(X, eps, min_samples):
     """ 
-    sequential application (experimental)
+    Sequential application of DBSCAN (experimental) - slower but more memory efficient
+    merge_closeby_clusters() shoul be used after
     """
     clu = DBSCAN(eps = eps, min_samples = min_samples, metric='euclidean', n_jobs = -1) 
     # K-fold cv used to partition data ins smaller chunk that will not kill app's memory
@@ -75,27 +69,58 @@ def perform_clustering(X, eps, min_samples):
     return(clusters_pred)
 
 
+@st.cache_data
+def perform_basic_clustering(X, eps, min_samples):
+    """ 
+    Vanilla DBSCAN - will use lots of memory! do not apply to data  with > 10000 items
+    """
+    clu = DBSCAN(eps = eps, min_samples = min_samples, metric='euclidean', n_jobs = -1) 
+    clusters_pred = clu.fit_predict(X)
+    return(clusters_pred)
+
+
+@st.cache_data
+def merge_closeby_clusters(primary_clu_id, eps = 0.1):
+    """
+    Description: Use 2D data for secondary aggregation of clusters with very close-by centers (mean vector)
+    """
+    X2d = ss['dapar']['X2D']
+    df_temp = pd.DataFrame({ 'clu_orig' : primary_clu_id, 'Dim-1' : X2d[:,0] , 'Dim-2' : X2d[:,1]})
+    df = df_temp.groupby('clu_orig').agg("mean") 
+    clu_spec = perform_basic_clustering(X = df[['Dim-1', 'Dim-2']], eps = eps, min_samples = 2)
+    df['clu_spec'] = clu_spec 
+    df = df.reset_index()
+    
+    # make a variable "clu_orig_inc" that has no overlap with "clu_orig"
+    df["clu_orig_inc"] = df["clu_orig"] + df["clu_spec"].max()
+    # if sec cluster assigns -1 then use the original clustering
+    sel = df['clu_spec'] == -1
+    df.loc[sel, "clu_spec"] = df.loc[sel, "clu_orig_inc"]
+
+    # remove vars not needed anymore
+    _ = df.pop('Dim-1')
+    _ = df.pop('Dim-2')
+    # merge in secondary cluster id by keeping original order 
+    df_temp = df_temp.merge(right = df, how = 'left', on = 'clu_orig')
+    # items that were originally -1 should stay -1
+    df_temp.loc[primary_clu_id==-1, "clu_spec"] = -1
+    return(df_temp['clu_spec'].values)
 
 
 
-# from sklearn.cluster import MiniBatchKMeans
-# from sklearn.cluster import KMeans
-# from sklearn.cluster import OPTICS
-# from sklearn.cluster import HDBSCAN
 
-# @st.cache_data
-# def perform_clustering(X, eps, min_samples):
-#     """ 
-#     """
-#     # clu = DBSCAN(eps = eps, min_samples = min_samples, metric='euclidean', n_jobs = -1) 
-#     clu = OPTICS(min_samples = min_samples, max_eps = eps, cluster_method = 'dbscan')
-#     # clu = HDBSCAN(min_cluster_size=min_samples, min_samples=min_samples)
-#     # clu = MiniBatchKMeans(n_clusters=min_samples)
-#     # clu = KMeans(n_clusters=min_samples)
-#     clusters_pred = clu.fit_predict(X)
-#     return(clusters_pred)
+@st.cache_data
+def perform_optics_clustering(X, eps, min_samples):
+    clu = OPTICS(min_samples = min_samples, max_eps = eps, cluster_method = 'dbscan')
+    clusters_pred = clu.fit_predict(X)
+    return(clusters_pred)
 
 
+@st.cache_data
+def perform_kmeans_clustering(X, n_clusters):
+    clu = MiniBatchKMeans(n_clusters=n_clusters)
+    clusters_pred = clu.fit_predict(X)
+    return(clusters_pred)
 
 
 @st.cache_data
@@ -107,7 +132,7 @@ def make_sorted_df(cat, cat_name, X):
     df = df.sort_values(by=cat_name)
     return(df)
 
-# @st.cache_data
+
 @st.fragment
 def make_scatter_plot(df, cat_name, title = "not set", height = 900, width = 1000, b_margin=300, exclude_non_assigned = False):
 
@@ -173,6 +198,23 @@ def display_mini_images_by_file(sel_imgs, num_cols = 5):
             print('OK')    
         except:
             print('shit') 
+
+
+
+@st.fragment
+def pooling_pannel(images_in_cluster):
+    c01, c02, c03 = st.columns([0.3, 0.3, 0.6]) 
+    do_save = c01.button("Add to image pool", type="primary")
+    do_reset = c02.button("Reset image pool", type="primary")
+    if do_save: 
+        ss['dapar']['image_pool'].extend(images_in_cluster)
+        ss['dapar']['image_pool'] = list(set(ss['dapar']['image_pool'])) # remove dups 
+        ss['dapar']['image_pool'].sort()
+    if do_reset: 
+        ss['dapar']['image_pool'] = list()
+    with c03:  
+        st.info('Images in pool: ' + str(len(ss['dapar']['image_pool'])))
+
 
 
 @st.fragment
