@@ -43,7 +43,7 @@ if (len(ss['dapar']['df_prelim_labels'])==0):
     c1.info("Data frame is empty")
 else:    
     # c2.text("N rows: " +  str(ss['dapar']['df_prelim_labels'].shape[0]) + "   N cols: " +  str(ss['dapar']['df_prelim_labels'].shape[1]))
-    c1.download_button(label="Download CSV", type="primary", file_name="clusterin_based_labels.csv",mime="text/csv",icon=":material/download:", 
+    c1.download_button(label="Download CSV", type="primary", file_name="clustering_based_labels.csv",mime="text/csv",icon=":material/download:", 
                             data=convert_for_download(ss['dapar']['df_prelim_labels'])) 
     c2.write("Please download spectrogram images directly here:")
     c2.write("https://www.kaggle.com/datasets/sezaugg/" + ss['dapar']['kgl_datasource'])
