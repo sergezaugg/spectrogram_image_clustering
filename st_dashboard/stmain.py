@@ -43,13 +43,13 @@ if 'upar' not in ss:
         }
 
 with st.sidebar:  
-    st.header(''':primary[**Unsupervised clustering of spectrograms with features from pre-trained image models**]''')
+    st.header(''':primary[**Unsupervised clustering of for pre-annotation of spectrogram datasets**]''')
     st.info('Data source: ' + data_source_format(ss['upar']['datsou']))
-    st.info('Data set: ' + ss['dapar']['dataset_name'])
+    st.info('Features from: ' + ("_".join(ss['dapar']['dataset_name'].split("_")[4:])[0:22] )) # yes, APITA
     st.text("")
     st.markdown('''QUICK GUIDE  
                 (1) Select a data source    
-                (2) Select a dataset     
+                (2) Activate features     
                 (3) Tune DBSCAN params    
                 (4) Get adequate Nb clusters*  
                 (4) Search consistent clusters   

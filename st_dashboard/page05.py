@@ -8,7 +8,7 @@ import streamlit as st
 from streamlit import session_state as ss
 import numpy as np
 import gc
-from utils import display_mini_images_by_file, update_label_data_frame
+from utils import display_mini_images_by_file, update_label_data_frame, select_random_image_subset
 gc.collect()
 
 
@@ -30,7 +30,9 @@ else:
         # reset the list to empty
         ss['dapar']['image_pool'] = list()
         st.text('Saved in data frame "Preliminary labels" as ' + varname)
-    display_mini_images_by_file(sel_imgs = np.array(ss['dapar']['image_pool']),  num_cols = 10)
+    # safeguard to prevent plotting of thousans of images 
+    images_in_pool_sample = select_random_image_subset(np.array(ss['dapar']['image_pool']), max_n_images = 300)  
+    display_mini_images_by_file(sel_imgs = images_in_pool_sample ,  num_cols = 10)
 
 st.divider()
 
@@ -41,9 +43,9 @@ if (len(ss['dapar']['df_prelim_labels'])==0):
     c1.info("Data frame is empty")
 else:    
     # c2.text("N rows: " +  str(ss['dapar']['df_prelim_labels'].shape[0]) + "   N cols: " +  str(ss['dapar']['df_prelim_labels'].shape[1]))
-    c1.download_button(label="Download CSV", type="primary", file_name="data.csv",mime="text/csv",icon=":material/download:", 
+    c1.download_button(label="Download CSV", type="primary", file_name="clusterin_based_labels.csv",mime="text/csv",icon=":material/download:", 
                             data=convert_for_download(ss['dapar']['df_prelim_labels'])) 
-    c2.write("Plese download spectrogram images directly here:")
+    c2.write("Please download spectrogram images directly here:")
     c2.write("https://www.kaggle.com/datasets/sezaugg/" + ss['dapar']['kgl_datasource'])
 
     st.dataframe(ss['dapar']['df_prelim_labels'], width=1000)

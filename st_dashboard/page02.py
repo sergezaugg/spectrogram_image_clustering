@@ -86,7 +86,7 @@ if len(ss['dapar']['X_dimred']) > 0 :
         clu_id_list = clu_id_list[clu_id_list != '-01'] # remove -01 from options
         clu_selected = st.segmented_control(label = "Select a cluster ID", options = clu_id_list, selection_mode="single", key = "k_img_clu",
                                         default = clu_id_list[-1], label_visibility="visible")        
-        st.text("Cluster content preview (max 120 random images from cluster)")
+        st.text("Cluster content preview (max 50 random images from cluster)")
         # select all images in a given cluster 
         sel = ss['dapar']['clusters_pred_str'] == clu_selected
         images_in_cluster = ss['dapar']['im_filenames'][sel]
@@ -98,8 +98,7 @@ if len(ss['dapar']['X_dimred']) > 0 :
 
     # display_bar_plot
     with cols[2]:
-        with st.container(border=True): 
-            st.text("Origin of spectrograms in cluster")
+        with st.expander("File origin of spectrograms "): 
             display_bar_plot(images_in_cluster_sample)
 
 gc.collect()
