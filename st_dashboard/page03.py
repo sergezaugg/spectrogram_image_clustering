@@ -47,7 +47,7 @@ else :
         with st.container(border=True): 
             st.subheader("Select features used for clustering") 
             # first pre-select datasets based on the dim reduction 
-            ndim_sel = st.radio("Level of UMAP dim reduction", options = ['dimred_2', 'dimred_4', 'dimred_8', 'dimred_16'], index=2, format_func=lambda x: x.split("_")[1])
+            ndim_sel = st.radio("Level of UMAP dim reduction", options = ['dimred_2', 'dimred_4', 'dimred_8', 'dimred_16', 'dimred_32', 'dimred_64'], index=2, format_func=lambda x: x.split("_")[1])
             npz_sel = [a for a in ss['dapar']['li_npz'] if ndim_sel in a]
             # pre select good default for the selected dim
             if ndim_sel == 'dimred_2':
