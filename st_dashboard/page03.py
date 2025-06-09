@@ -11,11 +11,11 @@ import pandas as pd
 import kagglehub
 import gc
 from sklearn.model_selection import train_test_split
-from utils import data_source_format
+from utils import data_source_format, set_default_eps
 gc.collect()
 
-c00, c01, c02  = st.columns([0.20, 0.10, 0.10])
-# very first select a data source 
+c00, _, _  = st.columns([0.20, 0.10, 0.10])
+# first, user selects a data source 
 with c00:    
     with st.container(border=True): 
         st.subheader("Select data source")  
@@ -27,47 +27,41 @@ with c00:
             model_index = 2        
         if kgl_datasource == "spectrogram-clustering-parus-major":
             model_index = 2    
-# First, get data into ss
-if ss['dapar']['feat_path'] == 'empty' or kgl_datasource != ss['dapar']['kgl_datasource']:
-    st.text("Preparing data ...")
-    ss['dapar']['kgl_datasource'] = kgl_datasource
-    kgl_ds = "sezaugg/" + kgl_datasource 
-    kgl_path = kagglehub.dataset_download(kgl_ds, force_download = False) # get local path where downloaded
-    ss['dapar']['feat_path'] = kgl_path
-    ss['dapar']['imgs_path'] = os.path.join(ss['dapar']['feat_path'], 'xc_spectrograms', 'xc_spectrograms')
-    ss['dapar']['li_npz'] = [a for a in os.listdir(ss['dapar']['feat_path']) if ('.npz' in a) and (('dimred_' in a))]
-    ss['dapar']['li_npz'].sort()
-    # prelim labels dfs not supported over multiple data sources, thus must be re-initialized
-    ss['dapar']['image_pool'] = list()
-    ss['dapar']['df_prelim_labels'] = np.array([])
-    st.rerun()
-# Then, choose a dataset
-else :
-    with c00:
+    # (download) and put data source data into ss
+    if ss['dapar']['feat_path'] == 'empty' or kgl_datasource != ss['dapar']['kgl_datasource']:
+        st.text("Preparing data ...")
+        ss['dapar']['kgl_datasource'] = kgl_datasource
+        kgl_ds = "sezaugg/" + kgl_datasource 
+        kgl_path = kagglehub.dataset_download(kgl_ds, force_download = False) # get local path where downloaded
+        ss['dapar']['feat_path'] = kgl_path
+        ss['dapar']['imgs_path'] = os.path.join(ss['dapar']['feat_path'], 'xc_spectrograms', 'xc_spectrograms')
+        ss['dapar']['li_npz'] = [a for a in os.listdir(ss['dapar']['feat_path']) if ('.npz' in a) and (('dimred_' in a))]
+        ss['dapar']['li_npz'].sort()
+        # prelim labels dfs not supported over multiple data sources, thus must be re-initialized
+        ss['dapar']['image_pool'] = list()
+        ss['dapar']['df_prelim_labels'] = np.array([])
+        st.rerun()
+    # Then, choose a dataset
+    else :
         with st.container(border=True): 
             st.subheader("Select features used for clustering") 
-            # first pre-select datasets based on the dim reduction 
-            ndim_sel = st.radio("Level of UMAP dim reduction", options = ['dimred_2', 'dimred_4', 'dimred_8', 'dimred_16', 'dimred_32', 'dimred_64'], index=2, format_func=lambda x: x.split("_")[1])
-            npz_sel = [a for a in ss['dapar']['li_npz'] if ndim_sel in a]
-            # pre select good default for the selected dim
-            if ndim_sel == 'dimred_2':
-                ss['upar']['dbscan_eps'] =  0.06
-            if ndim_sel == 'dimred_4':
-                ss['upar']['dbscan_eps'] =  0.20
-            if ndim_sel == 'dimred_8':
-                ss['upar']['dbscan_eps'] =  0.36
-            if ndim_sel == 'dimred_16':
-                ss['upar']['dbscan_eps'] =  0.46
-            if ndim_sel == 'dimred_32':
-                ss['upar']['dbscan_eps'] =  0.50
-            if ndim_sel == 'dimred_64':
-                ss['upar']['dbscan_eps'] =  0.54
-            npz_sel.sort()
-            with st.form("form01", border=False):
-                # seconf selec DNN model used for fex
-                npz_finame = st.radio("Model used to extracted features", options = npz_sel, index=model_index, format_func=lambda x: "_".join(x.split("_")[4:]) )
-                submitted_1 = st.form_submit_button("Activate features dataset", type = "primary")  
-                if submitted_1:
+            # select a model type
+            mod_sel_short = list(set(["_".join(x.split("_")[4:])  for x in ss['dapar']['li_npz']]))
+            selected_model = st.radio("Model used to extracted features", options = mod_sel_short, index=model_index )
+            npz_sub_finame = [a for a in ss['dapar']['li_npz'] if selected_model in a]
+            # get dimred options that are available for this model    
+            dimred_options = ["_".join(x.split("_")[0:2])  for x in npz_sub_finame]
+            # dirty trick to get dimred_options sorted logically for user
+            dimred_full_sorted = ['dimred_2', 'dimred_4', 'dimred_8', 'dimred_16', 'dimred_32', 'dimred_64']
+            dimred_options = [a for a in dimred_full_sorted if a in dimred_options]
+            #  select dim reduction 
+            with st.form("form02", border=False):
+                ndim_sel = st.radio("Level of UMAP dim reduction", options = dimred_options, index=2, format_func=lambda x: x.split("_")[1])
+                set_default_eps(ndim_sel)
+                submitted_2 = st.form_submit_button("Activate features dataset", type = "primary")  
+                if submitted_2:      
+                    npz_finame = [a for a in ss['dapar']['li_npz'] if ndim_sel in a and selected_model in a]
+                    npz_finame = npz_finame[0]
                     npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
                     npzfile = np.load(npzfile_full_path)
                     # take a subset of data (else public streamlit.app will crash) 

@@ -261,4 +261,20 @@ def update_label_data_frame(cluster_list):
     return(var_name)
     
 
+@st.cache_data
+def set_default_eps(ndim_sel):
+    if ndim_sel == 'dimred_2':
+        ss['upar']['dbscan_eps'] =  0.06
+    if ndim_sel == 'dimred_4':
+        ss['upar']['dbscan_eps'] =  0.20
+    if ndim_sel == 'dimred_8':
+        ss['upar']['dbscan_eps'] =  0.36
+    if ndim_sel == 'dimred_16':
+        ss['upar']['dbscan_eps'] =  0.46
+    if ndim_sel == 'dimred_32':
+        ss['upar']['dbscan_eps'] =  0.70
+    if ndim_sel == 'dimred_64':
+        ss['upar']['dbscan_eps'] =  0.92
+
+
 
