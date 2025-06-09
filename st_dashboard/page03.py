@@ -58,6 +58,10 @@ else :
                 ss['upar']['dbscan_eps'] =  0.36
             if ndim_sel == 'dimred_16':
                 ss['upar']['dbscan_eps'] =  0.46
+            if ndim_sel == 'dimred_32':
+                ss['upar']['dbscan_eps'] =  0.50
+            if ndim_sel == 'dimred_64':
+                ss['upar']['dbscan_eps'] =  0.54
             npz_sel.sort()
             with st.form("form01", border=False):
                 # seconf selec DNN model used for fex
