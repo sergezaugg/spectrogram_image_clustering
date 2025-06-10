@@ -60,7 +60,7 @@ if len(ss['dapar']['X_dimred']) > 0 :
         # computational block 2 (st-cached)
         clusters_pred = perform_sequential_dbscan_clustering(X = ss['dapar']['X_dimred'], eps = ss['upar']['dbscan_eps'], min_samples = ss['upar']['dbscan_min_samples']) 
         # merge very similar cluster to have same id (experimental)
-        clusters_pred = merge_closeby_clusters(clusters_pred, eps = 0.10)
+        clusters_pred = merge_closeby_clusters(clusters_pred, eps = 0.15) # 0.10
         # get some metrics
         num_unasigned = (clusters_pred == -1).sum()
         num_asigned = len(clusters_pred) - num_unasigned
