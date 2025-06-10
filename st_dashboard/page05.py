@@ -1,7 +1,7 @@
 
 #--------------------             
 # Author : Serge Zaugg
-# Description : 
+# Description : Show content of image pool
 #--------------------
 
 import streamlit as st

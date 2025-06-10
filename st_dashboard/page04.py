@@ -1,6 +1,6 @@
 #--------------------             
 # Author : Serge Zaugg
-# Description : some info 
+# Description : display tabular info on active data source 
 #--------------------
 
 import os

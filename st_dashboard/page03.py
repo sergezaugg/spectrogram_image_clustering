@@ -1,6 +1,6 @@
 #--------------------             
 # Author : Serge Zaugg
-# Description : page to select a dataset to be loaded into session state
+# Description : select a dataset to be loaded into session state
 #--------------------
 
 import os
