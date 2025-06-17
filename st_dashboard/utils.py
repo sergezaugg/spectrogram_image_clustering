@@ -34,6 +34,8 @@ def data_source_format(s):
         return("Crows & tits SW-Eur")
     elif s == "spectrogram-clustering-parus-major":
         return("Parus major Eur")
+    elif s == "xc-sw-europe-square":
+        return("Crows, tits Square")
     else:
         return("error")
 

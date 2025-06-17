@@ -27,6 +27,8 @@ with c00:
             model_index = 2        
         if kgl_datasource == "spectrogram-clustering-parus-major":
             model_index = 2    
+        if kgl_datasource == "xc-sw-europe-square":
+            model_index = 0    
     # (download) and put data source data into ss
     if ss['dapar']['feat_path'] == 'empty' or kgl_datasource != ss['dapar']['kgl_datasource']:
         st.text("Preparing data ...")
