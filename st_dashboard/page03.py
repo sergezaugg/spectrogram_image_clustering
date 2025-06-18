@@ -19,7 +19,7 @@ c00, _, _  = st.columns([0.20, 0.10, 0.10])
 with c00:    
     with st.container(border=True): 
         st.subheader("Select data source")  
-        data_source_options = ["spectrogram-clustering-01", "spectrogram-clustering-parus-major", "xc-sw-europe-square"]
+        data_source_options = ["spectrogram-clustering-01", "spectrogram-clustering-parus-major"]
         kgl_datasource = st.segmented_control("(Changing data source will erase the image pool)", 
                                               options = data_source_options, format_func=data_source_format, default=ss['upar']["datsou"], label_visibility="visible")
     # (download) and put data source data into ss
