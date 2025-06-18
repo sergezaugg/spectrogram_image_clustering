@@ -22,13 +22,6 @@ with c00:
         data_source_options = ["spectrogram-clustering-01", "spectrogram-clustering-parus-major", "xc-sw-europe-square"]
         kgl_datasource = st.segmented_control("(Changing data source will erase the image pool)", 
                                               options = data_source_options, format_func=data_source_format, default=ss['upar']["datsou"], label_visibility="visible")
-        # temp construct to handle default in radio button below
-        if kgl_datasource == "spectrogram-clustering-01":
-            model_index = 2        
-        if kgl_datasource == "spectrogram-clustering-parus-major":
-            model_index = 2    
-        if kgl_datasource == "xc-sw-europe-square":
-            model_index = 0    
     # (download) and put data source data into ss
     if ss['dapar']['feat_path'] == 'empty' or kgl_datasource != ss['dapar']['kgl_datasource']:
         st.text("Preparing data ...")
@@ -49,7 +42,7 @@ with c00:
             st.subheader("Select features used for clustering") 
             # select a model type
             mod_sel_short = list(set(["_".join(x.split("_")[4:])  for x in ss['dapar']['li_npz']]))
-            selected_model = st.radio("Model used to extracted features", options = mod_sel_short, index=model_index )
+            selected_model = st.radio("Model used to extracted features", options = mod_sel_short, index=0)
             npz_sub_finame = [a for a in ss['dapar']['li_npz'] if selected_model in a]
             # get dimred options that are available for this model    
             dimred_options = ["_".join(x.split("_")[0:2])  for x in npz_sub_finame]

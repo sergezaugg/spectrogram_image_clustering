@@ -8,12 +8,9 @@ import streamlit as st
 from streamlit import session_state as ss
 import pandas as pd 
 import plotly.express as px
-import umap.umap_ as umap
-# from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import KFold
 from sklearn.cluster import DBSCAN, OPTICS, k_means, MiniBatchKMeans
 import numpy as np
-
 
 def update_ss(kname, ssname):
     """
@@ -23,28 +20,18 @@ def update_ss(kname, ssname):
     """
     ss["upar"][ssname] = ss[kname]      
 
-
 def get_short_class_name(a):
     """ a : a string"""
     return("-".join(a.split("-")[0:2]))
 
 def data_source_format(s):
-    """ helper finction for st.segmented_control below"""
+    """ helper function for st.segmented_control"""
     if s == "spectrogram-clustering-01":
         return("Crows & tits SW-Eur")
     elif s == "spectrogram-clustering-parus-major":
         return("Parus major Eur")
-    elif s == "xc-sw-europe-square":
-        return("Crows, tits Square")
     else:
-        return("error")
-
-
-
-
-
-
-
+        return(s)
 
 @st.cache_data
 def perform_sequential_dbscan_clustering(X, eps, min_samples):
