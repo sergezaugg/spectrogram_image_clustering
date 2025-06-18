@@ -46,7 +46,6 @@ if len(ss['dapar']['X_dimred']) > 0 :
                 with st.form("form_01", border=False):
                     eps_value = st.select_slider(label = "DBSCAN eps", options = eps_options, value=ss['upar']["dbscan_eps"])
                     min_samples_value = st.select_slider(label = "DBSCAN min samples", options = min_samples_options, value=ss['upar']["dbscan_min_samples"])
-                    # Every form must have a submit button.
                     submitted = st.form_submit_button("Recompute DBSCAN", type = "primary")
                     if submitted:
                         ss['upar']["dbscan_eps"] = eps_value
@@ -59,13 +58,14 @@ if len(ss['dapar']['X_dimred']) > 0 :
         #-------------------------------------------
         # computational block 2 (st-cached)
         clusters_pred = perform_kmeans_initialized_dbscan_clustering(X = ss['dapar']['X_dimred'], eps = ss['upar']['dbscan_eps'], 
-                                                                     min_samples = ss['upar']['dbscan_min_samples'], target_n = 7000)
+                                                                     min_samples = ss['upar']['dbscan_min_samples'], target_n = 9000)
         # get some metrics
         num_unasigned = (clusters_pred == -1).sum()
         num_asigned = len(clusters_pred) - num_unasigned
         num_clusters = len(np.unique(clusters_pred))
         # store in ss and make plot
         ss['dapar']['clusters_pred_str'] = np.array([format(a, '03d') for a in clusters_pred])
+        # ss['dapar']['clusters_pred_str'] = clusters_pred
         df_pred = make_sorted_df(cat = ss['dapar']['clusters_pred_str'], cat_name = 'Predicted cluster', X = ss['dapar']['X2D'])
         fig02 = make_scatter_plot(df = df_pred, cat_name = 'Predicted cluster', 
                                 title = "Predicted clusters      (Scatterplot from 2D UMAP mapping)", height = 800, width = 1000, b_margin = 300,

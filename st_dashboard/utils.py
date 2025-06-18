@@ -62,15 +62,19 @@ def perform_kmeans_initialized_dbscan_clustering(X, eps, min_samples, target_n =
     n_splits = int(np.ceil(X.shape[0]/target_n))
     print('n_splits', n_splits)
     km_id = perform_kmeans_clustering(X = X, n_clusters = n_splits)
-    id_max = 0
+    print('np.unique(km_id)', np.unique(km_id))
     clusters_pred = km_id.copy()
-    for sub_index in np.unique(km_id):
-        clu_ids = clu.fit_predict(X[sub_index==km_id])
+    clusters_pred[:] = -99
+    id_max = 0
+    for ii, sub_index in enumerate(np.unique(km_id)):
+        clu_ids = clu.fit_predict(X[km_id==sub_index])
         print('clu_ids.shape', clu_ids.shape)
         # make sure cluster ids are unique across all folds
         clu_ids[clu_ids > -1] = clu_ids[clu_ids > -1] + id_max
-        clusters_pred[sub_index==km_id] = clu_ids
-        id_max = max(clu_ids)
+        id_max = max(0,max(clu_ids)) + 1
+        print('id_max', id_max) 
+        # assign without loosing original order
+        clusters_pred[km_id==sub_index] = clu_ids
     return(clusters_pred)
 
 @st.cache_data
