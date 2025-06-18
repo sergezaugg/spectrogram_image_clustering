@@ -14,7 +14,7 @@ from sklearn.model_selection import train_test_split
 from utils import data_source_format, set_default_eps
 gc.collect()
 
-c00, _, _  = st.columns([0.20, 0.10, 0.10])
+c00, c01, _  = st.columns([0.20, 0.10, 0.10])
 # first, user selects a data source 
 with c00:    
     with st.container(border=True): 
@@ -75,6 +75,20 @@ with c00:
         
         with st.container(border=True):              
             st.page_link("page02.py", label="Go to analysis")    
+
+with c01:    
+    with st.container(border=True): 
+        st.text("Recomended models:")  
+        st.text("ResNet50_layer3.5.conv3.npz")  
+        st.text("saec_20250617_150956.npz")  
+
+
+        
+
+
+
+
+
 
 gc.collect() 
 
