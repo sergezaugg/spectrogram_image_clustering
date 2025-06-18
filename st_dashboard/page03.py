@@ -64,7 +64,7 @@ with c00:
                     X_red = npzfile['X_red'] 
                     X_2D  = npzfile['X_2D']
                     N     = npzfile['N']
-
+                    
                     # put selected data into ss
                     ss['dapar']['dataset_name']  = npz_finame 
                     ss['upar']["datsou"] = kgl_datasource
@@ -72,18 +72,23 @@ with c00:
                     ss['dapar']['X_dimred']      = X_red.astype(np.float16)
                     ss['dapar']['im_filenames']  = N
                     del(X_red, X_2D, N, npzfile)
+
+                    # Get the sorting indices for the first array
+                    sorted_indices = np.argsort(ss['dapar']['im_filenames'])
+                    # Sort  arrays using these indices
+                    ss['dapar']['X2D']          = ss['dapar']['X2D'][sorted_indices]
+                    ss['dapar']['X_dimred']     = ss['dapar']['X_dimred'][sorted_indices]
+                    ss['dapar']['im_filenames'] = ss['dapar']['im_filenames'][sorted_indices]
+
                     # load meta-data 
                     path_meat = os.path.join(ss['dapar']['feat_path'], 'downloaded_data_meta.pkl')
                     ss['dapar']['df_meta'] = pd.read_pickle(path_meat)
                     st.rerun() # to update sidebar!
         
-        with st.container(border=True):              
-            st.page_link("page02.py", label="Go to analysis")   
 
+     
 
-
-
-        # experimental - 
+        # Experimental
         with st.container(border=True): 
             selected_model_b = st.radio("Secondary Model used to extracted features", options = mod_sel_short, index=0, key = "spec01")
             with st.form("form02_b", border=False):
@@ -94,17 +99,21 @@ with c00:
                     npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
                     npzfile = np.load(npzfile_full_path)
                     X_red = npzfile['X_red']
+                    N     = npzfile['N']
+                    ss['dapar']['im_filenames_b']  = N
                     ss['dapar']['X_dimred_b'] = X_red.astype(np.float16)
+                    # Sort arrays using these indices
+                    sorted_indices = np.argsort(ss['dapar']['im_filenames_b'])
+                    ss['dapar']['im_filenames_b'] = ss['dapar']['im_filenames_b'][sorted_indices]
+                    ss['dapar']['X_dimred_b']     = ss['dapar']['X_dimred_b'][sorted_indices]
+                    # concatenate featue spaces 
                     ss['dapar']['X_dimred'] = np.concatenate([ss['dapar']['X_dimred'], ss['dapar']['X_dimred_b']], axis = 1)
                     st.rerun() # to update sidebar!
-          
-st.write(ss['dapar']['X_dimred'] .shape)
-# st.write(ss['dapar']['X_dimred_b'] .shape)
-# aa = np.concatenate([ss['dapar']['X_dimred'], ss['dapar']['X_dimred_b']], axis = 1)
-# st.write(aa.shape)
 
+        with st.container(border=True):              
+                    st.page_link("page02.py", label="Go to analysis")   
 
-
+                    
 with c01:    
     with st.container(border=True): 
         st.text("Recomended models:")  
@@ -113,6 +122,10 @@ with c01:
 
 
         
+
+st.write(ss['dapar']['X_dimred'].shape)
+# st.write(pd.DataFrame({"aa": ss['dapar']['im_filenames'],   "bb": ss['dapar']['im_filenames_b']})  )            
+
 
 
 

@@ -21,6 +21,7 @@ if 'dapar' not in ss:
         'dataset_name' :  'empty',
         'clusters_pred_str' : np.array([]),
         'im_filenames' : np.array([]),
+        'im_filenames_b' : np.array([]),
         'li_npz' : 'empty', # list of available files
         'X2D' : np.array([]),
         'X_dimred' : np.array([]),
@@ -29,6 +30,7 @@ if 'dapar' not in ss:
         'kgl_datasource' : 'empty',
         'image_pool' : list(),
         'df_prelim_labels' : np.array([]),
+        'sorted_indices' : np.array([]),
         }
 
 # user provided parameters
