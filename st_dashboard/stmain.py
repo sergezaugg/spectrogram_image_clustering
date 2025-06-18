@@ -24,6 +24,7 @@ if 'dapar' not in ss:
         'li_npz' : 'empty', # list of available files
         'X2D' : np.array([]),
         'X_dimred' : np.array([]),
+        'X_dimred_b' : np.array([]),
         'df_meta' : np.array([]),
         'kgl_datasource' : 'empty',
         'image_pool' : list(),

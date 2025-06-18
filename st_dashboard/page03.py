@@ -74,7 +74,34 @@ with c00:
                     st.rerun() # to update sidebar!
         
         with st.container(border=True):              
-            st.page_link("page02.py", label="Go to analysis")    
+            st.page_link("page02.py", label="Go to analysis")   
+
+
+
+
+        # experimental - 
+        with st.container(border=True): 
+            mod_sel_short = list(set(["_".join(x.split("_")[4:])  for x in ss['dapar']['li_npz']]))
+            selected_model = st.radio("Secondary Model used to extracted features", options = mod_sel_short, index=0, key = "spec01")
+            with st.form("form02_b", border=False):
+                submitted_3 = st.form_submit_button("Activate secondary features dataset", type = "primary")  
+                if submitted_3:      
+                    npz_finame = [a for a in ss['dapar']['li_npz'] if ndim_sel in a and selected_model in a]
+                    npz_finame = npz_finame[0]
+                    npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
+                    npzfile = np.load(npzfile_full_path)
+                    X_red, _, _, _, _, _, = train_test_split(npzfile['X_red'], npzfile['X_2D'], npzfile['N'], train_size=0.999999, random_state=6666, shuffle=True)
+                    ss['dapar']['X_dimred_b'] = X_red.astype(np.float16)
+                    del(X_red, npzfile)
+
+                    ss['dapar']['X_dimred'] = np.concatenate([ss['dapar']['X_dimred'], ss['dapar']['X_dimred_b']], axis = 1)
+          
+st.write(ss['dapar']['X_dimred'] .shape)
+# st.write(ss['dapar']['X_dimred_b'] .shape)
+# aa = np.concatenate([ss['dapar']['X_dimred'], ss['dapar']['X_dimred_b']], axis = 1)
+# st.write(aa.shape)
+
+
 
 with c01:    
     with st.container(border=True): 
