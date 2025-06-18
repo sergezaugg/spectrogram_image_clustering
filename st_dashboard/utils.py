@@ -8,66 +8,30 @@ import streamlit as st
 from streamlit import session_state as ss
 import pandas as pd 
 import plotly.express as px
-import umap.umap_ as umap
-# from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import KFold
-from sklearn.cluster import DBSCAN, OPTICS, k_means, MiniBatchKMeans
+from sklearn.cluster import DBSCAN, OPTICS, MiniBatchKMeans
 import numpy as np
-
 
 def update_ss(kname, ssname):
     """
-    description : helper callback fun to implement statefull apps
+    description : helper callback fun to implement stateful apps
     kname : key name of widget
     ssname : key name of variable in session state (ss)
     """
     ss["upar"][ssname] = ss[kname]      
-
 
 def get_short_class_name(a):
     """ a : a string"""
     return("-".join(a.split("-")[0:2]))
 
 def data_source_format(s):
-    """ helper finction for st.segmented_control below"""
+    """ helper function for st.segmented_control"""
     if s == "spectrogram-clustering-01":
         return("Crows & tits SW-Eur")
     elif s == "spectrogram-clustering-parus-major":
         return("Parus major Eur")
     else:
-        return("error")
-
-
-
-
-
-
-
-
-@st.cache_data
-def perform_sequential_dbscan_clustering(X, eps, min_samples):
-    """ 
-    Sequential application of DBSCAN (experimental) - slower but more memory efficient
-    merge_closeby_clusters() shoul be used after
-    """
-    clu = DBSCAN(eps = eps, min_samples = min_samples, metric='euclidean', n_jobs = -1) 
-    # K-fold cv used to partition data ins smaller chunk that will not kill app's memory
-    target_n = 10000
-    n_splits = int(np.ceil(X.shape[0]/target_n))
-    kf = KFold(n_splits=n_splits, shuffle=False)
-    clusters_pred = []
-    id_max = 0
-    for _, sub_index in kf.split(X):
-        print(sub_index.shape)
-        clu_ids = clu.fit_predict(X[sub_index])
-        # make sure cluster ids are unique across all folds
-        clu_ids[clu_ids > -1] = clu_ids[clu_ids > -1] + id_max
-        clusters_pred.append(clu_ids)
-        id_max = max(clu_ids)
-    clusters_pred = np.concatenate(clusters_pred)
-    # print('clusters_pred.shape', clusters_pred.shape)
-    return(clusters_pred)
-
+        return(s)
 
 @st.cache_data
 def perform_basic_clustering(X, eps, min_samples):
@@ -78,50 +42,36 @@ def perform_basic_clustering(X, eps, min_samples):
     clusters_pred = clu.fit_predict(X)
     return(clusters_pred)
 
-
-@st.cache_data
-def merge_closeby_clusters(primary_clu_id, eps = 0.1):
-    """
-    Description: Use 2D data for secondary aggregation of clusters with very close-by centers (mean vector)
-    """
-    X2d = ss['dapar']['X2D']
-    df_temp = pd.DataFrame({ 'clu_orig' : primary_clu_id, 'Dim-1' : X2d[:,0] , 'Dim-2' : X2d[:,1]})
-    df = df_temp.groupby('clu_orig').agg("mean") 
-    clu_spec = perform_basic_clustering(X = df[['Dim-1', 'Dim-2']], eps = eps, min_samples = 2)
-    df['clu_spec'] = clu_spec 
-    df = df.reset_index()
-    
-    # make a variable "clu_orig_inc" that has no overlap with "clu_orig"
-    df["clu_orig_inc"] = df["clu_orig"] + df["clu_spec"].max()
-    # if sec cluster assigns -1 then use the original clustering
-    sel = df['clu_spec'] == -1
-    df.loc[sel, "clu_spec"] = df.loc[sel, "clu_orig_inc"]
-
-    # remove vars not needed anymore
-    _ = df.pop('Dim-1')
-    _ = df.pop('Dim-2')
-    # merge in secondary cluster id by keeping original order 
-    df_temp = df_temp.merge(right = df, how = 'left', on = 'clu_orig')
-    # items that were originally -1 should stay -1
-    df_temp.loc[primary_clu_id==-1, "clu_spec"] = -1
-    return(df_temp['clu_spec'].values)
-
-
-
-
 @st.cache_data
 def perform_optics_clustering(X, eps, min_samples):
     clu = OPTICS(min_samples = min_samples, max_eps = eps, cluster_method = 'dbscan')
     clusters_pred = clu.fit_predict(X)
     return(clusters_pred)
 
-
-@st.cache_data
+# @st.cache_data
 def perform_kmeans_clustering(X, n_clusters):
     clu = MiniBatchKMeans(n_clusters=n_clusters)
     clusters_pred = clu.fit_predict(X)
     return(clusters_pred)
 
+@st.cache_data
+def perform_kmeans_initialized_dbscan_clustering(X, eps, min_samples, target_n = 10000):
+    """ 
+    """
+    clu = DBSCAN(eps = eps, min_samples = min_samples, metric='euclidean', n_jobs = -1) 
+    n_splits = int(np.ceil(X.shape[0]/target_n))
+    print('n_splits', n_splits)
+    km_id = perform_kmeans_clustering(X = X, n_clusters = n_splits)
+    id_max = 0
+    clusters_pred = km_id.copy()
+    for sub_index in np.unique(km_id):
+        clu_ids = clu.fit_predict(X[sub_index==km_id])
+        print('clu_ids.shape', clu_ids.shape)
+        # make sure cluster ids are unique across all folds
+        clu_ids[clu_ids > -1] = clu_ids[clu_ids > -1] + id_max
+        clusters_pred[sub_index==km_id] = clu_ids
+        id_max = max(clu_ids)
+    return(clusters_pred)
 
 @st.cache_data
 def make_sorted_df(cat, cat_name, X):
@@ -278,3 +228,57 @@ def set_default_eps(ndim_sel):
 
 
 
+
+# old functions dump
+if False:
+
+    @st.cache_data
+    def perform_sequential_dbscan_clustering(X, eps, min_samples):
+        """ 
+        Sequential application of DBSCAN (experimental) - slower but more memory efficient
+        merge_closeby_clusters() shoul be used after
+        """
+        clu = DBSCAN(eps = eps, min_samples = min_samples, metric='euclidean', n_jobs = -1) 
+        # K-fold cv used to partition data ins smaller chunk that will not kill app's memory
+        target_n = 10000
+        n_splits = int(np.ceil(X.shape[0]/target_n))
+        kf = KFold(n_splits=n_splits, shuffle=False)
+        clusters_pred = []
+        id_max = 0
+        for _, sub_index in kf.split(X):
+            print(sub_index.shape)
+            clu_ids = clu.fit_predict(X[sub_index])
+            # make sure cluster ids are unique across all folds
+            clu_ids[clu_ids > -1] = clu_ids[clu_ids > -1] + id_max
+            clusters_pred.append(clu_ids)
+            id_max = max(clu_ids)
+        clusters_pred = np.concatenate(clusters_pred)
+        # print('clusters_pred.shape', clusters_pred.shape)
+        return(clusters_pred)
+
+    @st.cache_data
+    def merge_closeby_clusters(primary_clu_id, eps = 0.1):
+        """
+        Description: Use 2D data for secondary aggregation of clusters with very close-by centers (mean vector)
+        """
+        X2d = ss['dapar']['X2D']
+        df_temp = pd.DataFrame({ 'clu_orig' : primary_clu_id, 'Dim-1' : X2d[:,0] , 'Dim-2' : X2d[:,1]})
+        df = df_temp.groupby('clu_orig').agg("mean") 
+        clu_spec = perform_basic_clustering(X = df[['Dim-1', 'Dim-2']], eps = eps, min_samples = 2)
+        df['clu_spec'] = clu_spec 
+        df = df.reset_index()
+        
+        # make a variable "clu_orig_inc" that has no overlap with "clu_orig"
+        df["clu_orig_inc"] = df["clu_orig"] + df["clu_spec"].max()
+        # if sec cluster assigns -1 then use the original clustering
+        sel = df['clu_spec'] == -1
+        df.loc[sel, "clu_spec"] = df.loc[sel, "clu_orig_inc"]
+
+        # remove vars not needed anymore
+        _ = df.pop('Dim-1')
+        _ = df.pop('Dim-2')
+        # merge in secondary cluster id by keeping original order 
+        df_temp = df_temp.merge(right = df, how = 'left', on = 'clu_orig')
+        # items that were originally -1 should stay -1
+        df_temp.loc[primary_clu_id==-1, "clu_spec"] = -1
+        return(df_temp['clu_spec'].values)

@@ -43,7 +43,8 @@ if 'upar' not in ss:
         }
 
 with st.sidebar:  
-    st.header(''':primary[**Unsupervised clustering for pre-annotation of spectrogram datasets**]''')
+    st.header(''':primary[**Unsupervised clustering for pre-annotation of spectrogram datasets (beta)**]''')
+    # st.header('''(beta)''')
     st.info('Data source: ' + data_source_format(ss['upar']['datsou']))
     st.info('Features from: ' + ("_".join(ss['dapar']['dataset_name'].split("_")[4:])[0:22] )) # yes, APITA
     st.text("")
@@ -62,7 +63,7 @@ with st.sidebar:
     st.text("")
     c1,c2=st.columns([80,200])
     c1.image(image='pics/z_logo_orange.png', width=65)
-    c2.markdown(''':primary[v0.9.12]  
+    c2.markdown(''':primary[v0.9.13 (beta)]  
     :primary[Created by]
     :primary[[Serge Zaugg](https://www.linkedin.com/in/dkifh34rtn345eb5fhrthdbgf45/)]    
     :primary[[Pollito-ML](https://github.com/sergezaugg)]

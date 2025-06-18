@@ -10,8 +10,8 @@ import numpy as np
 import pandas as pd
 import gc
 # streamlit need import like that:
-from utils import perform_sequential_dbscan_clustering, update_ss, display_bar_plot, select_random_image_subset
-from utils import make_sorted_df, make_scatter_plot, display_mini_images_by_file, merge_closeby_clusters, pooling_pannel
+from utils import update_ss, display_bar_plot, select_random_image_subset, perform_kmeans_initialized_dbscan_clustering
+from utils import make_sorted_df, make_scatter_plot, display_mini_images_by_file, pooling_pannel
 gc.collect()
 
 
@@ -58,9 +58,8 @@ if len(ss['dapar']['X_dimred']) > 0 :
 
         #-------------------------------------------
         # computational block 2 (st-cached)
-        clusters_pred = perform_sequential_dbscan_clustering(X = ss['dapar']['X_dimred'], eps = ss['upar']['dbscan_eps'], min_samples = ss['upar']['dbscan_min_samples']) 
-        # merge very similar cluster to have same id (experimental)
-        clusters_pred = merge_closeby_clusters(clusters_pred, eps = 0.15) # 0.10
+        clusters_pred = perform_kmeans_initialized_dbscan_clustering(X = ss['dapar']['X_dimred'], eps = ss['upar']['dbscan_eps'], 
+                                                                     min_samples = ss['upar']['dbscan_min_samples'], target_n = 7000)
         # get some metrics
         num_unasigned = (clusters_pred == -1).sum()
         num_asigned = len(clusters_pred) - num_unasigned

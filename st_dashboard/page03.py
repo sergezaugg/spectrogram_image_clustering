@@ -14,7 +14,7 @@ from sklearn.model_selection import train_test_split
 from utils import data_source_format, set_default_eps
 gc.collect()
 
-c00, _, _  = st.columns([0.20, 0.10, 0.10])
+c00, c01, _  = st.columns([0.20, 0.10, 0.10])
 # first, user selects a data source 
 with c00:    
     with st.container(border=True): 
@@ -22,11 +22,6 @@ with c00:
         data_source_options = ["spectrogram-clustering-01", "spectrogram-clustering-parus-major"]
         kgl_datasource = st.segmented_control("(Changing data source will erase the image pool)", 
                                               options = data_source_options, format_func=data_source_format, default=ss['upar']["datsou"], label_visibility="visible")
-        # temp construct to handle default in radio button below
-        if kgl_datasource == "spectrogram-clustering-01":
-            model_index = 2        
-        if kgl_datasource == "spectrogram-clustering-parus-major":
-            model_index = 2    
     # (download) and put data source data into ss
     if ss['dapar']['feat_path'] == 'empty' or kgl_datasource != ss['dapar']['kgl_datasource']:
         st.text("Preparing data ...")
@@ -47,7 +42,7 @@ with c00:
             st.subheader("Select features used for clustering") 
             # select a model type
             mod_sel_short = list(set(["_".join(x.split("_")[4:])  for x in ss['dapar']['li_npz']]))
-            selected_model = st.radio("Model used to extracted features", options = mod_sel_short, index=model_index )
+            selected_model = st.radio("Model used to extracted features", options = mod_sel_short, index=0)
             npz_sub_finame = [a for a in ss['dapar']['li_npz'] if selected_model in a]
             # get dimred options that are available for this model    
             dimred_options = ["_".join(x.split("_")[0:2])  for x in npz_sub_finame]
@@ -80,6 +75,20 @@ with c00:
         
         with st.container(border=True):              
             st.page_link("page02.py", label="Go to analysis")    
+
+with c01:    
+    with st.container(border=True): 
+        st.text("Recomended models:")  
+        st.text("ResNet50_layer3.5.conv3.npz")  
+        st.text("saec_20250617_150956.npz")  
+
+
+        
+
+
+
+
+
 
 gc.collect() 
 
