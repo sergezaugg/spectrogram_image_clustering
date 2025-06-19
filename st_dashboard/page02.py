@@ -19,11 +19,11 @@ gc.collect()
 if ss['dapar']['dataset_name'] == 'empty' :
     st.page_link("page03.py", label="Click to select a dataset")
 else :
-    if len(ss['dapar']['X_dimred']) <= 0:
+    if len(ss['dapar']['X_dimred_conc']) <= 0:
         st.text("haha")
       
 # main dashboard
-if len(ss['dapar']['X_dimred']) > 0 :
+if len(ss['dapar']['X_dimred_conc']) > 0 :
 
     cols = st.columns([0.30, 0.35, 0.15])
 
@@ -32,8 +32,8 @@ if len(ss['dapar']['X_dimred']) > 0 :
         with c01:
             with st.container(border=True, height = 275): 
                 st.text("Input to DBSCAN")  
-                txt01 = ':red-background[' + str(ss['dapar']['X_dimred'].shape[0]) + ' images' + ']'
-                txt02 = ':red-background[' + str(ss['dapar']['X_dimred'].shape[1]) + ' features' + ']'
+                txt01 = ':red-background[' + str(ss['dapar']['X_dimred_conc'].shape[0]) + ' images' + ']'
+                txt02 = ':red-background[' + str(ss['dapar']['X_dimred_conc'].shape[1]) + ' features' + ']'
                 st.markdown(txt01)
                 st.markdown(txt02)
 
@@ -57,7 +57,7 @@ if len(ss['dapar']['X_dimred']) > 0 :
 
         #-------------------------------------------
         # computational block 2 (st-cached)
-        clusters_pred = perform_kmeans_initialized_dbscan_clustering(X = ss['dapar']['X_dimred'], eps = ss['upar']['dbscan_eps'], 
+        clusters_pred = perform_kmeans_initialized_dbscan_clustering(X = ss['dapar']['X_dimred_conc'], eps = ss['upar']['dbscan_eps'], 
                                                                      min_samples = ss['upar']['dbscan_min_samples'], target_n = 9000)
         # get some metrics
         num_unasigned = (clusters_pred == -1).sum()
@@ -104,7 +104,6 @@ gc.collect()
 
         
      
-        
   
 
    
