@@ -154,7 +154,6 @@ def display_mini_images_by_file(sel_imgs, num_cols = 5):
             print('shit') 
 
 
-
 @st.fragment
 def pooling_pannel(images_in_cluster):
     c01, c02, c03 = st.columns([0.3, 0.3, 0.6]) 
@@ -168,7 +167,6 @@ def pooling_pannel(images_in_cluster):
         ss['dapar']['image_pool'] = list()
     with c03:  
         st.info('Images in pool: ' + str(len(ss['dapar']['image_pool'])))
-
 
 
 @st.fragment
@@ -213,23 +211,22 @@ def update_label_data_frame(cluster_list):
     # merge the new label indicators into the main df (in ss) 
     ss['dapar']['df_prelim_labels'] = ss['dapar']['df_prelim_labels'].merge(right= dft, how='left', on='filename')
     return(var_name)
+
     
-
-@st.cache_data
-def set_default_eps(ndim_sel):
-    if ndim_sel == 'dimred_2':
-        ss['upar']['dbscan_eps'] =  0.06
-    if ndim_sel == 'dimred_4':
+# do not cache this one!
+def set_default_eps():
+    if ss['dapar']['X_dimred_conc'].shape[1] >= 2:
+        ss['upar']['dbscan_eps'] =  0.04
+    if ss['dapar']['X_dimred_conc'].shape[1] >= 4:
         ss['upar']['dbscan_eps'] =  0.20
-    if ndim_sel == 'dimred_8':
-        ss['upar']['dbscan_eps'] =  0.36
-    if ndim_sel == 'dimred_16':
-        ss['upar']['dbscan_eps'] =  0.46
-    if ndim_sel == 'dimred_32':
-        ss['upar']['dbscan_eps'] =  0.70
-    if ndim_sel == 'dimred_64':
-        ss['upar']['dbscan_eps'] =  0.92
-
+    if ss['dapar']['X_dimred_conc'].shape[1] >= 8:
+        ss['upar']['dbscan_eps'] =  0.40
+    if ss['dapar']['X_dimred_conc'].shape[1] >= 16:
+        ss['upar']['dbscan_eps'] =  0.60
+    if ss['dapar']['X_dimred_conc'].shape[1] >= 32:
+        ss['upar']['dbscan_eps'] =  0.90
+    if ss['dapar']['X_dimred_conc'].shape[1] >= 64:
+        ss['upar']['dbscan_eps'] =  1.00    
 
 
 

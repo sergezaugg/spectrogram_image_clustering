@@ -11,7 +11,7 @@ import gc
 from utils import data_source_format
 gc.collect()
 
-st.set_page_config(layout="wide")
+st.set_page_config(layout = "wide", initial_sidebar_state = "expanded")
 
 # data objects
 if 'dapar' not in ss:
@@ -19,11 +19,15 @@ if 'dapar' not in ss:
         'feat_path' : 'empty',
         'imgs_path' : 'empty',
         'dataset_name' :  'empty',
+        'dataset_name_b' :  'empty',
         'clusters_pred_str' : np.array([]),
         'im_filenames' : np.array([]),
+        'im_filenames_b' : np.array([]),
         'li_npz' : 'empty', # list of available files
         'X2D' : np.array([]),
         'X_dimred' : np.array([]),
+        'X_dimred_b' : np.array([]),
+        'X_dimred_conc' : np.array([]),
         'df_meta' : np.array([]),
         'kgl_datasource' : 'empty',
         'image_pool' : list(),
@@ -46,7 +50,9 @@ with st.sidebar:
     st.header(''':primary[**Unsupervised clustering for pre-annotation of spectrogram datasets (beta)**]''')
     # st.header('''(beta)''')
     st.info('Data source: ' + data_source_format(ss['upar']['datsou']))
-    st.info('Features from: ' + ("_".join(ss['dapar']['dataset_name'].split("_")[4:])[0:22] )) # yes, APITA
+    st.info('Features 1: ' + ("_".join(ss['dapar']['dataset_name'].split("_")[4:])[0:22] )) # yes, APITA
+    st.info('Features 2: ' + ("_".join(ss['dapar']['dataset_name_b'].split("_")[4:])[0:22] )) # yes, APITA
+    st.text("")
     st.text("")
     st.markdown('''QUICK GUIDE  
                 (1) Select a data source    
@@ -63,7 +69,7 @@ with st.sidebar:
     st.text("")
     c1,c2=st.columns([80,200])
     c1.image(image='pics/z_logo_orange.png', width=65)
-    c2.markdown(''':primary[v0.9.13 (beta)]  
+    c2.markdown(''':primary[v0.9.14 (beta)]  
     :primary[Created by]
     :primary[[Serge Zaugg](https://www.linkedin.com/in/dkifh34rtn345eb5fhrthdbgf45/)]    
     :primary[[Pollito-ML](https://github.com/sergezaugg)]
