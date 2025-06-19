@@ -86,6 +86,7 @@ else :
 
                     # temp 
                     ss['dapar']['X_dimred_conc'] = ss['dapar']['X_dimred']
+                    set_default_eps()
                     # ugly temp construct to re-initialise second feat
                     ss['dapar']['dataset_name_b']  = 'empty'
                     ss['dapar']['im_filenames_b']  = np.array([]),
@@ -122,6 +123,7 @@ else :
                         ss['dapar']['X_dimred_b']     = ss['dapar']['X_dimred_b'][sorted_indices]
                         # concatenate feature spaces 
                         ss['dapar']['X_dimred_conc'] = np.concatenate([ss['dapar']['X_dimred'], ss['dapar']['X_dimred_b']], axis = 1)
+                        set_default_eps()
                         
                         st.rerun() # to update sidebar!
                 st.text("Dim reduction value taken from left")
@@ -133,8 +135,6 @@ else :
             st.page_link("page02.py", label="Go to analysis")   
 
 # st.write(pd.DataFrame({"aa": ss['dapar']['im_filenames'],   "bb": ss['dapar']['im_filenames_b']})  ) 
-#            
-set_default_eps()
-
+           
 gc.collect() 
 
