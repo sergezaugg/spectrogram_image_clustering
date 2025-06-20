@@ -25,8 +25,8 @@
   - [xeno_canto_organizer](https://github.com/sergezaugg/xeno_canto_organizer)
   - In a nutshell: MP3 converted to WAVE, resampled, transformed to spectrograms, stored as RGB images.
 - Feature extraction performed in two modalities:
-  - [Features from Image DNNs (IDNN)](https://github.com/sergezaugg/feature_extraction_saec)
-  - [Features from Spectrogram AutoEnCoders (SAEC)](https://github.com/sergezaugg/feature_extraction_idnn)
+  - [Features from Image DNNs (IDNN)](https://github.com/sergezaugg/feature_extraction_idnn)
+  - [Features from Spectrogram AutoEnCoders (SAEC)](https://github.com/sergezaugg/feature_extraction_saec)
   - Please find the ML detes [here](https://spectrogram-image-clustering.streamlit.app/page01)
 - Spectrograms and features are stored on Kaggle datasets, accessed directly by the app.
 
