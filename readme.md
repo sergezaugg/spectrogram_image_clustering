@@ -1,33 +1,67 @@
-
 # Interactive app for pre-annotation of spectrogram images aided by deep-leaning based clustering
 
-### Overview 
-* This is a Streamlit dashboard to cluster-analyse images of spectrograms
-* Large collection of short spectrogram images are processed with unsupervised clustering
-* The user can tune a few parameters to find consistent clusters
-* Consistent clusters can be pooled and then downloaded as a dummy-coded data frame
+## Overview
 
-### Source data preparation
-* Acoustic recordings are from [xeno-canto](https://xeno-canto.org/)
-* Standardized acoustic data preparation was performed with [this tool](https://github.com/sergezaugg/xeno_canto_organizer)  
-* Feature extraction was performed with [this tool](https://github.com/sergezaugg/spectro_aec_clust) and [this tool](https://github.com/sergezaugg/spectro_image_feature_extract) 
-* In a nutshell: MP3 converted to WAVE, resampled, transformed to spectrograms, stored as RGB images, features extracted.
-* Images and extracted features are stored on a kaggle datasets used by this dashboard.
+- An interactive [Streamlit](https://streamlit.io/) dashboard for pre-annotation of spectrogram images using deep learning features.
+- Built for exploration and semi-automated labeling of acoustic datasets.
+- Explore large collections of unselected spectrogram images.
+- Tune clustering parameters to find consistent groups.
+- Pool and download these groups as dummy-coded data frames for downstream annotation or machine learning.
+- See the deployed version [here](https://spectrogram-image-clustering.streamlit.app)
 
-### Usage
-* The Streamlit process in started ```streamlit run st_dashboard/stmain.py``` (e.g. locally of on https://share.streamlit.io)
-* The path to Kaggle dataset must be adjusted in the Streamlit code.
-* See the deployed version [here](https://spectrogram-image-clustering.streamlit.app)
+## Features
 
-### Dependencies / Intallation
-* Developed under Python 3.12.8
-* Make a fresh venv!
-```bash 
-pip install -r requirements.txt
-```
+- **Data Source Selection:** Choose from pre-extracted datasets with spectrograms features.
+- **Feature Extraction:** Uses features from Image DNNs (IDNN) and Spectrogram AutoEnCoders (SAEC).
+- **Interactive Clustering:** Intuitive DBSCAN-based clustering with adjustable parameters in 2 to 16 dims.
+- **Pre-partition:** Data pre-partitionning with K-means to reduce memory consumption by DBSCAN  
+- **Visualization:** UMAP-based 2D scatterplots for cluster previews.
+- **Image Pooling:** Assign several consistent clusters to a class and export as CSV for annotation.
 
-### Machine Learning
-* Please find detes [here](https://spectrogram-image-clustering.streamlit.app/page01)
+## Data Preparation to feed this app
 
+- Acoustic recordings sourced from [xeno-canto](https://xeno-canto.org/).
+- Preprocessing of acoustic data:
+  - [xeno_canto_organizer](https://github.com/sergezaugg/xeno_canto_organizer)
+  - In a nutshell: MP3 converted to WAVE, resampled, transformed to spectrograms, stored as RGB images.
+- Feature extraction performed in two modalities:
+  - [Features from Image DNNs (IDNN)](https://github.com/sergezaugg/feature_extraction_idnn)
+  - [Features from Spectrogram AutoEnCoders (SAEC)](https://github.com/sergezaugg/feature_extraction_saec)
+  - Please find the ML detes [here](https://spectrogram-image-clustering.streamlit.app/page01)
+- Spectrograms and features are stored on Kaggle datasets, accessed directly by the app.
 
+## Usage
 
+1. **Install dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+2. **Run the app:**
+    ```bash
+    streamlit run st_dashboard/stmain.py
+    ```
+3. **Follow the sidebar instructions:**
+    - Select a data source and feature sets.
+    - Adjust clustering parameters.
+    - Explore, pool, and export clusters.
+
+## File Structure
+
+- `st_dashboard/` — Main Streamlit app and utility modules.
+- `pics/` — Images for the UI.
+- `.streamlit/` — Streamlit configuration.
+- `requirements.txt` — Python dependencies.
+
+## License
+
+MIT License. See [LICENSE](LICENSE).
+
+## Acknowledgements
+
+- Recordings: [xeno-canto](https://xeno-canto.org/)
+- Feature extraction and clustering: See linked GitHub projects above.
+- Created by [Serge Zaugg](https://www.linkedin.com/in/dkifh34rtn345eb5fhrthdbgf45/).
+
+---
+
+For more details and a live demo, see the [deployed app](https://spectrogram-image-clustering.streamlit.app)
