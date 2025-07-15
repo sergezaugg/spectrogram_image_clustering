@@ -69,7 +69,7 @@ with st.sidebar:
     st.text("")
     c1,c2=st.columns([80,200])
     c1.image(image='pics/z_logo_orange.png', width=65)
-    c2.markdown(''':primary[v0.9.14-exp (beta)]  
+    c2.markdown(''':primary[v0.9.14-exp1 (beta)]  
     :primary[Created by]
     :primary[[Serge Zaugg](https://www.linkedin.com/in/dkifh34rtn345eb5fhrthdbgf45/)]    
     :primary[[Pollito-ML](https://github.com/sergezaugg)]
