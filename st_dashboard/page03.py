@@ -66,7 +66,7 @@ else :
                     npz_finame = [a for a in ss['dapar']['li_npz'] if ndim_sel in a and selected_model in a]
                     npz_finame = npz_finame[0]
                     npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
-                    npzfile = np.load(npzfile_full_path)
+                    npzfile = np.load(npzfile_full_path, allow_pickle=True)
                     X_red = npzfile['X_red'] 
                     X_2D  = npzfile['X_2D']
                     N     = npzfile['N']
@@ -110,7 +110,7 @@ else :
                         npz_finame = [a for a in ss['dapar']['li_npz'] if ndim_sel in a and selected_model_b in a]
                         npz_finame = npz_finame[0]
                         npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
-                        npzfile = np.load(npzfile_full_path)
+                        npzfile = np.load(npzfile_full_path, allow_pickle=True)
                         X_red = npzfile['X_red']
                         N     = npzfile['N']
                         # put selected data into ss
