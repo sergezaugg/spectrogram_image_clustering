@@ -59,8 +59,8 @@ with st.sidebar:
                 (2) Activate features     
                 (3) Tune DBSCAN params    
                 (4) Get adequate Nb clusters*  
-                (4) Search consistent clusters   
-                (5) Assign clusters to pool     
+                (5) Search consistent clusters   
+                (6) Assign clusters to pool     
                 (7) Save pool as a class variable    
                 (8) Repeat 2-7 to make more variables      
                 ''')
