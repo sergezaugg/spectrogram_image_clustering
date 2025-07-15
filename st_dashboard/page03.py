@@ -18,7 +18,7 @@ c0x, c1x, _  = st.columns([0.20, 0.20, 0.10])
 with c0x:  
     with st.container(border=True, height = 170): 
         st.subheader("Select data source")  
-        data_source_options = ["spectrogram-clustering-01", "spectrogram-clustering-parus-major"]
+        data_source_options = ["spectrogram-clustering-01", "spectrogram-clustering-parus-major", "xc-data-02-corvidae"]
         kgl_datasource = st.segmented_control("(Changing data source will erase the image pool)", 
                                             options = data_source_options, format_func=data_source_format, default=ss['upar']["datsou"], label_visibility="visible")                 
 with c1x:    

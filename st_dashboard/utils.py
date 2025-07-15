@@ -30,6 +30,8 @@ def data_source_format(s):
         return("Crows & tits SW-Eur")
     elif s == "spectrogram-clustering-parus-major":
         return("Parus major Eur")
+    elif s == "xc-data-02-corvidae":
+        return("Corvidae-Experiment")
     else:
         return(s)
 
