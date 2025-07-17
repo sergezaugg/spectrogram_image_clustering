@@ -47,7 +47,7 @@ else :
     c00, c01, _  = st.columns([0.20, 0.20, 0.10])
     with c00:   
         with st.container(border=True, height = 500): 
-            st.subheader("Select 1st features") 
+            st.subheader("Select feature set 1") 
             # select a model type
             mod_sel_short = list(set(["_".join(x.split("_")[4:])  for x in ss['dapar']['li_npz']]))
             mod_sel_short.sort()
@@ -100,13 +100,13 @@ else :
         # concatenate a second feature array (Experimental)
         with c01: 
             with st.container(border=True, height = 500): 
-                st.subheader("Select 2nd features") 
+                st.subheader("Select feature set 2") 
 
                 # exclude already selected model
                 mod_sel_short_b = [a for a in mod_sel_short if a != selected_model]
                 mod_sel_short_b.sort()
                 selected_model_b = st.radio("Model used to extracted features", options = mod_sel_short_b, index=0, key = "spec01")
-                st.text(selected_model_b)
+                # st.text(selected_model_b)
                 with st.form("form02_b", border=False):
                     submitted_3 = st.form_submit_button("Add features dataset", type = "primary")  
                     if submitted_3:      
