@@ -18,7 +18,7 @@ c0x, c1x, _  = st.columns([0.20, 0.20, 0.10])
 with c0x:  
     with st.container(border=True, height = 170): 
         st.subheader("Select data source")  
-        data_source_options = ["spectrogram-clustering-01", "spectrogram-clustering-parus-major"]
+        data_source_options = ["spectrogram-clustering-01", "spectrogram-clustering-parus-major", "xc-data-02-corvidae", "xc-data-03-parus-major"]
         kgl_datasource = st.segmented_control("(Changing data source will erase the image pool)", 
                                             options = data_source_options, format_func=data_source_format, default=ss['upar']["datsou"], label_visibility="visible")                 
 with c1x:    
@@ -47,9 +47,10 @@ else :
     c00, c01, _  = st.columns([0.20, 0.20, 0.10])
     with c00:   
         with st.container(border=True, height = 500): 
-            st.subheader("Select 1st features") 
+            st.subheader("Select feature set 1") 
             # select a model type
             mod_sel_short = list(set(["_".join(x.split("_")[4:])  for x in ss['dapar']['li_npz']]))
+            mod_sel_short.sort()
             selected_model = st.radio("Model used to extracted features", options = mod_sel_short, index=0)
             npz_sub_finame = [a for a in ss['dapar']['li_npz'] if selected_model in a]
             # get dimred options that are available for this model    
@@ -66,7 +67,7 @@ else :
                     npz_finame = [a for a in ss['dapar']['li_npz'] if ndim_sel in a and selected_model in a]
                     npz_finame = npz_finame[0]
                     npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
-                    npzfile = np.load(npzfile_full_path)
+                    npzfile = np.load(npzfile_full_path, allow_pickle=True)
                     X_red = npzfile['X_red'] 
                     X_2D  = npzfile['X_2D']
                     N     = npzfile['N']
@@ -99,18 +100,20 @@ else :
         # concatenate a second feature array (Experimental)
         with c01: 
             with st.container(border=True, height = 500): 
-                st.subheader("Select 2nd features") 
+                st.subheader("Select feature set 2") 
 
                 # exclude already selected model
                 mod_sel_short_b = [a for a in mod_sel_short if a != selected_model]
+                mod_sel_short_b.sort()
                 selected_model_b = st.radio("Model used to extracted features", options = mod_sel_short_b, index=0, key = "spec01")
+                # st.text(selected_model_b)
                 with st.form("form02_b", border=False):
                     submitted_3 = st.form_submit_button("Add features dataset", type = "primary")  
                     if submitted_3:      
                         npz_finame = [a for a in ss['dapar']['li_npz'] if ndim_sel in a and selected_model_b in a]
                         npz_finame = npz_finame[0]
                         npzfile_full_path = os.path.join(ss['dapar']['feat_path'], npz_finame)
-                        npzfile = np.load(npzfile_full_path)
+                        npzfile = np.load(npzfile_full_path, allow_pickle=True)
                         X_red = npzfile['X_red']
                         N     = npzfile['N']
                         # put selected data into ss

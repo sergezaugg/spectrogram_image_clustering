@@ -47,7 +47,7 @@ if 'upar' not in ss:
         }
 
 with st.sidebar:  
-    st.header(''':primary[**Unsupervised clustering for pre-annotation of spectrogram datasets (beta)**]''')
+    st.header(''':primary[**Unsupervised clustering for pre-annotation of spectrogram datasets (Demo with static data!)**]''')
     # st.header('''(beta)''')
     st.info('Data source: ' + data_source_format(ss['upar']['datsou']))
     st.info('Features 1: ' + ("_".join(ss['dapar']['dataset_name'].split("_")[4:])[0:22] )) # yes, APITA
@@ -59,8 +59,8 @@ with st.sidebar:
                 (2) Activate features     
                 (3) Tune DBSCAN params    
                 (4) Get adequate Nb clusters*  
-                (4) Search consistent clusters   
-                (5) Assign clusters to pool     
+                (5) Search consistent clusters   
+                (6) Assign clusters to pool     
                 (7) Save pool as a class variable    
                 (8) Repeat 2-7 to make more variables      
                 ''')
@@ -68,13 +68,13 @@ with st.sidebar:
     # logos an links
     st.text("")
     c1,c2=st.columns([80,200])
-    c1.image(image='pics/z_logo_orange.png', width=65)
-    c2.markdown(''':primary[v0.9.14 (beta)]  
+    c1.image(image='pics/z_logo_red.png', width=65)
+    c2.markdown(''':primary[v0.9.15 (beta)]  
     :primary[Created by]
     :primary[[Serge Zaugg](https://www.linkedin.com/in/dkifh34rtn345eb5fhrthdbgf45/)]    
     :primary[[Pollito-ML](https://github.com/sergezaugg)]
     ''')
-    st.logo(image='pics/z_logo_orange.png', size="large", link="https://github.com/sergezaugg")
+    st.logo(image='pics/z_logo_red.png', size="large", link="https://github.com/sergezaugg")
 
 p01 = st.Page("page01.py", title="ML-summary")
 p02 = st.Page("page02.py", title="Cluster spectrograms")
