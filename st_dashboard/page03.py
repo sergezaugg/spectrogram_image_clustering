@@ -50,6 +50,7 @@ else :
             st.subheader("Select 1st features") 
             # select a model type
             mod_sel_short = list(set(["_".join(x.split("_")[4:])  for x in ss['dapar']['li_npz']]))
+            mod_sel_short.sort()
             selected_model = st.radio("Model used to extracted features", options = mod_sel_short, index=0)
             npz_sub_finame = [a for a in ss['dapar']['li_npz'] if selected_model in a]
             # get dimred options that are available for this model    
@@ -103,6 +104,7 @@ else :
 
                 # exclude already selected model
                 mod_sel_short_b = [a for a in mod_sel_short if a != selected_model]
+                mod_sel_short_b.sort()
                 selected_model_b = st.radio("Model used to extracted features", options = mod_sel_short_b, index=0, key = "spec01")
                 with st.form("form02_b", border=False):
                     submitted_3 = st.form_submit_button("Add features dataset", type = "primary")  
