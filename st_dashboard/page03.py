@@ -106,6 +106,7 @@ else :
                 mod_sel_short_b = [a for a in mod_sel_short if a != selected_model]
                 mod_sel_short_b.sort()
                 selected_model_b = st.radio("Model used to extracted features", options = mod_sel_short_b, index=0, key = "spec01")
+                st.text(selected_model_b)
                 with st.form("form02_b", border=False):
                     submitted_3 = st.form_submit_button("Add features dataset", type = "primary")  
                     if submitted_3:      
