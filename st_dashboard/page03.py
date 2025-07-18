@@ -56,7 +56,7 @@ else :
             # get dimred options that are available for this model    
             dimred_options = ["_".join(x.split("_")[0:2])  for x in npz_sub_finame]
             # dirty trick to get dimred_options sorted logically for user
-            dimred_full_sorted = ['dimred_2', 'dimred_4', 'dimred_8', 'dimred_16', 'dimred_32', 'dimred_64']
+            dimred_full_sorted = ['dimred_2', 'dimred_4', 'dimred_8'] # , 'dimred_16', 'dimred_32', 'dimred_64']
             dimred_options = [a for a in dimred_full_sorted if a in dimred_options]
             #  select dim reduction 
             with st.form("form02", border=False):

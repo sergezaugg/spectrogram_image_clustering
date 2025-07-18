@@ -40,7 +40,7 @@ if len(ss['dapar']['X_dimred_conc']) > 0 :
         with c02:
             with st.container(border=True, height = 275): 
                 # eps_options = (10.0**(np.arange(-3.0, 0.50, 0.05))).round(3)
-                eps_options = np.concatenate([np.arange(0.01, 0.1, 0.01), np.arange(0.1, 2.1, 0.02)]).round(2)
+                eps_options = np.concatenate([np.arange(0.01, 0.1, 0.01), np.arange(0.1, 1.8, 0.02)]).round(2)
                 min_samples_options = np.arange(10, 51, 5)          
                 # form-submit version
                 with st.form("form_01", border=False):
